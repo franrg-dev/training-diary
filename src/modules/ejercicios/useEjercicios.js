@@ -1,0 +1,79 @@
+import { useState, useEffect, useCallback } from 'react'
+import db from '../../db/database'
+
+/**
+ * Hook que encapsula todas las operaciones CRUD sobre la tabla ejercicios.
+ * Recarga la lista automáticamente tras cada operación de escritura.
+ */
+export function useEjercicios() {
+  const [ejercicios, setEjercicios] = useState([])
+  const [cargando, setCargando]   = useState(true)
+  const [error, setError]         = useState(null)
+
+  // Carga todos los ejercicios ordenados por nombre
+  const cargar = useCallback(async () => {
+    try {
+      const lista = await db.ejercicios.orderBy('nombre').toArray()
+      setEjercicios(lista)
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      setCargando(false)
+    }
+  }, [])
+
+  useEffect(() => { cargar() }, [cargar])
+
+  // Crea un nuevo ejercicio y devuelve su id generado
+  const crear = useCallback(async (datos) => {
+    const grupos = datos.gruposMuscular || []
+    const id = await db.ejercicios.add({
+      nombre:          datos.nombre.trim(),
+      gruposMuscular:  grupos,
+      // grupoPrincipal: grupo cuyo icono/color representa al ejercicio en listas
+      grupoPrincipal:  datos.grupoPrincipal || grupos[0] || '',
+      series:          Number(datos.series) || 0,
+      repeticiones:    datos.repeticiones.trim(),
+      ejecucion:       datos.ejecucion.trim(),
+      sustitutos:      datos.sustitutos || [],
+    })
+    await cargar()
+    return id
+  }, [cargar])
+
+  // Actualiza un ejercicio existente por id
+  const actualizar = useCallback(async (id, datos) => {
+    const grupos = datos.gruposMuscular || []
+    await db.ejercicios.update(id, {
+      nombre:          datos.nombre.trim(),
+      gruposMuscular:  grupos,
+      grupoPrincipal:  datos.grupoPrincipal || grupos[0] || '',
+      series:          Number(datos.series) || 0,
+      repeticiones:    datos.repeticiones.trim(),
+      ejecucion:       datos.ejecucion.trim(),
+      sustitutos:      datos.sustitutos || [],
+    })
+    await cargar()
+  }, [cargar])
+
+  // Elimina un ejercicio por id y limpia referencias en sustitutos de otros
+  const eliminar = useCallback(async (id) => {
+    await db.transaction('rw', db.ejercicios, async () => {
+      // Quitar este ejercicio de la lista de sustitutos de otros ejercicios
+      const conEsteComoSustituto = await db.ejercicios
+        .filter(ej => Array.isArray(ej.sustitutos) && ej.sustitutos.includes(id))
+        .toArray()
+
+      for (const ej of conEsteComoSustituto) {
+        await db.ejercicios.update(ej.id, {
+          sustitutos: ej.sustitutos.filter(s => s !== id),
+        })
+      }
+
+      await db.ejercicios.delete(id)
+    })
+    await cargar()
+  }, [cargar])
+
+  return { ejercicios, cargando, error, crear, actualizar, eliminar }
+}
