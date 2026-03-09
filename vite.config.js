@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // GitHub Pages sirve desde /training-diary/ en producción
+  base: process.env.NODE_ENV === 'production' ? '/training-diary/' : '/',
   // Accesible desde Chrome en Windows via localhost en WSL2
   server: {
     host: true,

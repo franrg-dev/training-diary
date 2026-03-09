@@ -1,18 +1,20 @@
 import Dexie from 'dexie'
+import dexieCloud from 'dexie-cloud-addon'
 
-// Instancia de la base de datos local (IndexedDB via Dexie)
-const db = new Dexie('DiarioEntrenamiento')
+// Instancia de la base de datos local (IndexedDB via Dexie + Cloud sync)
+const db = new Dexie('DiarioEntrenamiento', { addons: [dexieCloud] })
 
 /**
- * Definición del esquema de la base de datos.
- * El número de versión debe incrementarse cada vez que se modifique el esquema.
+ * Esquema de la base de datos.
  *
  * Sintaxis Dexie para índices:
- *   ++id    → clave primaria autoincremental
+ *   ++id    → clave primaria autoincremental (solo local)
+ *   @id     → clave primaria UUID generada en cliente (necesaria para sync cloud)
  *   nombre  → índice simple
  *   *array  → índice multi-entrada (para arrays)
  */
-// v1: esquema original (necesario para que Dexie gestione migraciones)
+
+// v1: esquema original
 db.version(1).stores({
   ejercicios: '++id, nombre, grupoMuscular',
   sesiones:   '++id, nombre',
@@ -21,14 +23,12 @@ db.version(1).stores({
 })
 
 // v2: grupoMuscular (string) → gruposMuscular (array con índice multi-entrada)
-// El prefijo * en *gruposMuscular permite consultar por cualquier valor del array.
 db.version(2).stores({
   ejercicios: '++id, nombre, *gruposMuscular',
   sesiones:   '++id, nombre',
   diario:     '++id, fecha, sesionId',
   registro:   '++id, ejercicioId, fecha',
 }).upgrade(tx =>
-  // Convierte los registros existentes: string → array de un elemento
   tx.ejercicios.toCollection().modify(ej => {
     if (typeof ej.grupoMuscular === 'string') {
       ej.gruposMuscular = [ej.grupoMuscular]
@@ -39,9 +39,24 @@ db.version(2).stores({
   })
 )
 
+// v3: @id en lugar de ++id para sincronización cross-device con Dexie Cloud.
+// Los registros existentes (con id entero) se quedan locales; los nuevos
+// reciben un UUID y se sincronizan automáticamente entre dispositivos.
+db.version(3).stores({
+  ejercicios: '@id, nombre, *gruposMuscular',
+  sesiones:   '@id, nombre',
+  diario:     '@id, fecha, sesionId',
+  registro:   '@id, ejercicioId, fecha',
+})
+
+// Configuración del cloud (se activa solo cuando el usuario inicia sesión)
+db.cloud.configure({
+  databaseUrl: 'https://zjtti7z2o.dexie.cloud',
+  requireAuth: false, // La app funciona sin login; con login los datos se sincronizan
+})
+
 /**
  * Tipos de grupos musculares permitidos.
- * Usado para validar y mostrar opciones en la UI.
  */
 export const GRUPOS_MUSCULARES = [
   'pecho',

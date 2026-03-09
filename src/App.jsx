@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import NavBar from './components/NavBar'
+import PanelSync from './components/PanelSync'
 import PaginaEjercicios from './modules/ejercicios/PaginaEjercicios'
 import PaginaSesiones from './modules/sesiones/PaginaSesiones'
 import PaginaDiario from './modules/diario/PaginaDiario'
@@ -30,6 +31,9 @@ export default function App() {
 
       {/* Barra de navegación inferior compartida por todas las secciones */}
       <NavBar />
+
+      {/* Botón flotante de sincronización con Dexie Cloud */}
+      <PanelSync />
     </BrowserRouter>
   )
 }
