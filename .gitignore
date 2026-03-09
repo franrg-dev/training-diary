@@ -29,3 +29,4 @@ dist-ssr
 # Dev PWA build artifacts
 dev-dist/
 dexie-cloud.key
+.env.local

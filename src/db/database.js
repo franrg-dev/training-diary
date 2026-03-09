@@ -50,8 +50,9 @@ db.version(3).stores({
 })
 
 // Configuración del cloud (se activa solo cuando el usuario inicia sesión)
+// La URL se inyecta como variable de entorno en build (VITE_DEXIE_URL)
 db.cloud.configure({
-  databaseUrl: 'https://zjtti7z2o.dexie.cloud',
+  databaseUrl: import.meta.env.VITE_DEXIE_URL,
   requireAuth: false, // La app funciona sin login; con login los datos se sincronizan
 })
 
