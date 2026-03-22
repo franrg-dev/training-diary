@@ -81,7 +81,7 @@ html, body {
 .contenido-principal {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: calc(var(--altura-navbar) + var(--safe-area-bottom) + 16px);
+  padding-bottom: calc(var(--altura-navbar) + 16px);
   padding-top: calc(var(--safe-area-top));
 }
 
