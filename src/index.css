@@ -62,17 +62,18 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow: hidden;
   background-color: var(--color-fondo);
   color: var(--color-texto);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  /* Evitar el rebote de scroll en iOS */
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  height: 100dvh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -80,7 +81,7 @@ html, body {
 /* Área de contenido principal (deja espacio para la navbar inferior) */
 .contenido-principal {
   flex: 1;
-  min-height: 0;    /* permite que flex shrink active el scroll interno */
+  min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: calc(var(--altura-navbar) + var(--safe-area-bottom) + 16px);
