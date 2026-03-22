@@ -59,20 +59,27 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-fondo);
+}
+
+body {
+  height: 100%;
   margin: 0;
   padding: 0;
   background-color: var(--color-fondo);
   color: var(--color-texto);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  /* Evitar el rebote de scroll en iOS */
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  height: 100dvh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
