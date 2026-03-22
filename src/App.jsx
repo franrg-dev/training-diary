@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import NavBar             from './components/NavBar'
 import PaginaHubEjercicios from './modules/ejercicios/PaginaHubEjercicios'
@@ -23,6 +23,19 @@ export default function App() {
 
   const resetSeccion = useCallback((ruta) => {
     setClaves(prev => ({ ...prev, [ruta]: (prev[ruta] || 0) + 1 }))
+  }, [])
+
+  // Forzar recálculo del viewport en iOS para que position:fixed
+  // se posicione correctamente desde el primer render
+  useEffect(() => {
+    document.body.style.minHeight = 'calc(100dvh + 1px)'
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 1)
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0)
+        document.body.style.minHeight = ''
+      })
+    })
   }, [])
 
   function k(ruta) { return claves[ruta] || 0 }
