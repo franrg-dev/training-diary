@@ -80,7 +80,7 @@ html, body {
 /* Área de contenido principal (deja espacio para la navbar inferior) */
 .contenido-principal {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding-bottom: calc(var(--altura-navbar) + 16px);
   padding-top: calc(var(--safe-area-top));
 }
