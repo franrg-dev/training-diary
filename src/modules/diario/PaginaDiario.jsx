@@ -1,29 +1,30 @@
 import { useState } from 'react'
-import { useDiario }     from './useDiario'
-import { useEjercicios } from '../ejercicios/useEjercicios'
-import { useSesiones }   from '../sesiones/useSesiones'
-import { useRegistro }   from '../registro/useRegistro'
-import CalendarioDiario  from './CalendarioDiario'
-import DetalleDia        from './DetalleDia'
-import FormularioDia     from './FormularioDia'
+import { useDiario }               from './useDiario'
+import { useEjercicios }           from '../ejercicios/useEjercicios'
+import { useSesiones }             from '../sesiones/useSesiones'
+import { useRegistro }             from '../registro/useRegistro'
+import CalendarioDiario            from './CalendarioDiario'
+import DetalleEntrenamiento        from './DetalleEntrenamiento'
+import DetalleDia                  from './DetalleDia'
+import FormularioDatosGenerales    from './FormularioDatosGenerales'
+import FormularioEntrenamiento     from './FormularioEntrenamiento'
 
 /**
  * Módulo Diario — Controlador de navegación interna.
- * Flujo: Calendario → Detalle (día con entrada) | Calendario → Formulario (día vacío)
- *        Detalle → Formulario (editar)
+ * Máquina de estados: 'calendario' | 'verEntrenamiento' | 'verDia' | 'editarDatos' | 'editarEntrenamiento'
  */
 export default function PaginaDiario() {
-  const { entradas, cargando, entradasDelMes, entradaPorFecha, crear, actualizar, eliminar } = useDiario()
-  const { ejercicios } = useEjercicios()
-  const { sesiones }   = useSesiones()
-  const { ultimoPorEjercicio } = useRegistro()
+  const { cargando, entradas, entradasDelMes, entradaPorFecha, crear, actualizar } = useDiario()
+  const { ejercicios }         = useEjercicios()
+  const { sesiones }           = useSesiones()
+  const { ultimoPorEjercicio, registrosPorEjercicio } = useRegistro()
 
   const hoy = new Date()
-  const [mesVisualizado, setMesVisualizado]   = useState(hoy.getMonth())
-  const [anioVisualizado, setAnioVisualizado] = useState(hoy.getFullYear())
-  const [pantalla, setPantalla]               = useState('calendario')
+  const [mesVisualizado, setMesVisualizado]       = useState(hoy.getMonth())
+  const [anioVisualizado, setAnioVisualizado]     = useState(hoy.getFullYear())
+  const [pantalla, setPantalla]                   = useState('calendario')
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null)
-  const [entradaActiva, setEntradaActiva]     = useState(null)
+  const [entradaActiva, setEntradaActiva]         = useState(null)
 
   function handleCambiarMes(delta) {
     setMesVisualizado(prev => {
@@ -36,14 +37,14 @@ export default function PaginaDiario() {
 
   function handleSeleccionarDia(fecha) {
     setFechaSeleccionada(fecha)
-    const entrada = entradaPorFecha(fecha)
-    if (entrada) {
-      setEntradaActiva(entrada)
-      setPantalla('detalle')
-    } else {
-      setEntradaActiva(null)
-      setPantalla('formulario')
-    }
+    setEntradaActiva(entradaPorFecha(fecha) || null)
+    setPantalla('verEntrenamiento')
+  }
+
+  function handleSeleccionarEntrenamiento(fecha) {
+    setFechaSeleccionada(fecha)
+    setEntradaActiva(entradaPorFecha(fecha) || null)
+    setPantalla('editarEntrenamiento')
   }
 
   function irACalendario() {
@@ -52,18 +53,46 @@ export default function PaginaDiario() {
     setEntradaActiva(null)
   }
 
-  async function handleGuardar(datos) {
-    if (entradaActiva) {
-      await actualizar(entradaActiva.id, datos)
-    } else {
-      await crear(datos)
-    }
-    irACalendario()
+  function handleCambiarDia(delta) {
+    const [anio, mes, dia] = fechaSeleccionada.split('-').map(Number)
+    const d = new Date(anio, mes - 1, dia + delta)
+    const nuevaFecha = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    setFechaSeleccionada(nuevaFecha)
+    setEntradaActiva(entradaPorFecha(nuevaFecha) || null)
   }
 
-  async function handleEliminar() {
-    await eliminar(entradaActiva.id)
-    irACalendario()
+  async function handleGuardarDatos(nuevosDatos) {
+    const fusion = {
+      fecha:            fechaSeleccionada,
+      sesionId:         entradaActiva?.sesionId         || null,
+      ejerciciosDia:    entradaActiva?.ejerciciosDia    || [],
+      ejerciciosCardio: entradaActiva?.ejerciciosCardio || [],
+      ...nuevosDatos,
+    }
+    if (entradaActiva?.id) {
+      await actualizar(entradaActiva.id, fusion)
+      setEntradaActiva(prev => ({ ...prev, ...nuevosDatos }))
+    } else {
+      const id = await crear(fusion)
+      setEntradaActiva({ id, ...fusion })
+    }
+    setPantalla('verEntrenamiento')
+  }
+
+  async function handleGuardarEntrenamiento(nuevosDatos) {
+    const fusion = {
+      fecha: fechaSeleccionada,
+      ...entradaActiva,
+      ...nuevosDatos,
+    }
+    if (entradaActiva?.id) {
+      await actualizar(entradaActiva.id, fusion)
+      setEntradaActiva(prev => ({ ...prev, ...nuevosDatos }))
+    } else {
+      const id = await crear(fusion)
+      setEntradaActiva({ id, ...fusion })
+    }
+    setPantalla('verEntrenamiento')
   }
 
   const entradasMes = entradasDelMes(anioVisualizado, mesVisualizado)
@@ -73,33 +102,48 @@ export default function PaginaDiario() {
       {pantalla === 'calendario' && !cargando && (
         <CalendarioDiario
           entradasDelMes={entradasMes}
+          todasEntradas={entradas}
           mesVisualizado={mesVisualizado}
           anioVisualizado={anioVisualizado}
           onCambiarMes={handleCambiarMes}
           onSeleccionarDia={handleSeleccionarDia}
+          onSeleccionarEntrenamiento={handleSeleccionarEntrenamiento}
+          sesiones={sesiones}
         />
       )}
 
-      {pantalla === 'detalle' && entradaActiva && (
-        <DetalleDia
+      {pantalla === 'verEntrenamiento' && fechaSeleccionada && (
+        <DetalleEntrenamiento
+          fecha={fechaSeleccionada}
           entrada={entradaActiva}
           ejercicios={ejercicios}
           sesiones={sesiones}
-          onEditar={() => setPantalla('formulario')}
-          onEliminar={handleEliminar}
+          registrosPorEjercicio={registrosPorEjercicio}
+          onEditarDatos={() => setPantalla('editarDatos')}
+          onEditarEntrenamiento={() => setPantalla('editarEntrenamiento')}
           onVolver={irACalendario}
+          onCambiarDia={handleCambiarDia}
         />
       )}
 
-      {pantalla === 'formulario' && fechaSeleccionada && (
-        <FormularioDia
+      {pantalla === 'editarDatos' && fechaSeleccionada && (
+        <FormularioDatosGenerales
+          fecha={fechaSeleccionada}
+          entrada={entradaActiva}
+          onGuardar={handleGuardarDatos}
+          onCancelar={() => setPantalla('verEntrenamiento')}
+        />
+      )}
+
+      {pantalla === 'editarEntrenamiento' && fechaSeleccionada && (
+        <FormularioEntrenamiento
           fecha={fechaSeleccionada}
           entrada={entradaActiva}
           ejercicios={ejercicios}
           sesiones={sesiones}
           ultimoPorEjercicio={ultimoPorEjercicio}
-          onGuardar={handleGuardar}
-          onCancelar={entradaActiva ? () => setPantalla('detalle') : irACalendario}
+          onGuardar={handleGuardarEntrenamiento}
+          onCancelar={irACalendario}
         />
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
+import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 
 const DIAS_LARGO  = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 const MESES_LARGO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
@@ -23,112 +24,9 @@ function Seccion({ icono, titulo }) {
   )
 }
 
-// ─── Subsección ───────────────────────────────────────────────────────────
-
-function SubSeccion({ titulo }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '16px 0 10px' }}>
-      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-        {titulo}
-      </p>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#2e2e2e' }} />
-    </div>
-  )
-}
-
-// ─── Input numérico compacto ──────────────────────────────────────────────
-
-function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly = false, highlight = false }) {
-  return (
-    <div>
-      <label style={estiloLabelPequeno}>{label}</label>
-      <div style={{ position: 'relative' }}>
-        <input
-          type="number"
-          inputMode="decimal"
-          placeholder={placeholder}
-          value={value}
-          onChange={e => onChange && onChange(e.target.value)}
-          readOnly={readOnly}
-          style={{
-            ...estiloInputBase,
-            textAlign: 'center',
-            color: readOnly ? '#4b5563' : highlight ? '#f97316' : '#f5f5f5',
-            backgroundColor: readOnly ? '#111' : '#1e1e1e',
-            paddingRight: sufijo ? '30px' : '10px',
-            fontWeight: highlight ? '700' : '400',
-          }}
-        />
-        {sufijo && <span style={estiloSufijo}>{sufijo}</span>}
-      </div>
-    </div>
-  )
-}
-
-
-// ─── Checkbox compacto (para filas de 4 columnas) ────────────────────────
-
-function CheckCompact({ label, checked, onChange }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onChange(!checked)}
-      style={{
-        width: '100%', padding: '9px 4px',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px',
-        backgroundColor: checked ? '#f9731622' : '#1e1e1e',
-        border: `1px solid ${checked ? '#f97316' : '#2e2e2e'}`,
-        borderRadius: '8px', cursor: 'pointer',
-        color: checked ? '#f97316' : '#6b7280',
-        transition: 'all 0.15s',
-      }}
-    >
-      <div style={{
-        width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0,
-        backgroundColor: checked ? '#f97316' : 'transparent',
-        border: `2px solid ${checked ? '#f97316' : '#4b5563'}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        {checked && (
-          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 13l4 4L19 7" />
-          </svg>
-        )}
-      </div>
-      <span style={{ fontSize: '10px', fontWeight: checked ? '600' : '400', textTransform: 'uppercase', letterSpacing: '0.03em', lineHeight: 1 }}>{label}</span>
-    </button>
-  )
-}
-
-// ─── Grids ────────────────────────────────────────────────────────────────
-
-function Grid2({ children }) {
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-      {children}
-    </div>
-  )
-}
-
-function Grid3({ children }) {
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-      {children}
-    </div>
-  )
-}
-
-function Grid4({ children }) {
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-      {children}
-    </div>
-  )
-}
-
 // ─── Componente principal ─────────────────────────────────────────────────
 
-export default function FormularioDia({
+export default function FormularioEntrenamiento({
   fecha,
   entrada,
   ejercicios,
@@ -136,7 +34,6 @@ export default function FormularioDia({
   ultimoPorEjercicio,
   onGuardar,
   onCancelar,
-  onEliminar,
 }) {
   // — Fuerza —
   const [sesionId, setSesionId]           = useState(entrada?.sesionId || null)
@@ -145,57 +42,16 @@ export default function FormularioDia({
   const [selectorFuerzaAbierto, setSelectorFuerzaAbierto] = useState(false)
   const [busquedaFuerza, setBusquedaFuerza]               = useState('')
 
+  // — Notas generales —
+  const [notasEntrenamiento, setNotasEntrenamiento] = useState(entrada?.notasEntrenamiento || '')
+
   // — Cardio —
   const [ejerciciosCardio, setEjerciciosCardio]           = useState(() => entrada?.ejerciciosCardio || [])
   const [selectorCardioAbierto, setSelectorCardioAbierto] = useState(false)
   const [busquedaCardio, setBusquedaCardio]               = useState('')
 
-  // — Nutrición —
-  const [kcalConsumidas, setKcalConsumidas] = useState(entrada?.kcalConsumidas || '')
-  const [proteinas, setProteinas]           = useState(entrada?.proteinas      || '')
-  const [carbohidratos, setCarbohidratos]   = useState(entrada?.carbohidratos  || '')
-  const [grasas, setGrasas]                 = useState(entrada?.grasas         || '')
-
-  // — Actividad —
-  const [kcalQuemadas, setKcalQuemadas]         = useState(entrada?.kcalQuemadas    || '')
-  const [metabolismoBasal, setMetabolismoBasal] = useState(entrada?.metabolismoBasal || '')
-  const [pasos, setPasos]                       = useState(entrada?.pasos           || '')
-
-  // — Hábitos —
-  const [movilidad, setMovilidad] = useState(entrada?.movilidad ?? false)
-  const [core, setCore]           = useState(entrada?.core      ?? false)
-  const [agua, setAgua]           = useState(entrada?.agua      || '')
-
-  // — Sueño —
-  const [suenoHoras, setSuenoHoras]                   = useState(entrada?.suenoHoras         || '')
-  const [suenoHoraAcostarse, setSuenoHoraAcostarse]   = useState(entrada?.suenoHoraAcostarse || '')
-  const [suenoCalidad, setSuenoCalidad]               = useState(entrada?.suenoCalidad       || '')
-
-  // — Esfuerzo —
-  const [esfuerzo, setEsfuerzo] = useState(entrada?.esfuerzo || '')
-
-  // — Composición corporal —
-  const [horaPesaje, setHoraPesaje]           = useState(entrada?.horaPesaje      || '')
-  const [bascula, setBascula]                 = useState(entrada?.bascula         || '')
-  const [peso, setPeso]                       = useState(entrada?.peso            || '')
-  const [imc, setImc]                         = useState(entrada?.imc             || '')
-  const [grasaPorcentaje, setGrasaPorcentaje] = useState(entrada?.grasaPorcentaje || '')
-  const [grasaVisceral, setGrasaVisceral]     = useState(entrada?.grasaVisceral   || '')
-  const [musculo, setMusculo]                 = useState(entrada?.musculo         || '')
-  const [masaOsea, setMasaOsea]               = useState(entrada?.masaOsea        || '')
-  const [edadCorporal, setEdadCorporal]       = useState(entrada?.edadCorporal    || '')
-
-  const [guardando, setGuardando]             = useState(false)
-  const [confirmarBorrar, setConfirmarBorrar] = useState(false)
-  const [eliminando, setEliminando]           = useState(false)
-
-  // Diferencia kcal (auto)
-  const diferenciaKcal = useMemo(() => {
-    const c = Number(kcalConsumidas)  || 0
-    const q = Number(kcalQuemadas)    || 0
-    const b = Number(metabolismoBasal) || 0
-    return (c || q || b) ? c - q - b : ''
-  }, [kcalConsumidas, kcalQuemadas, metabolismoBasal])
+  const [guardando, setGuardando] = useState(false)
+  const [errorMsg,  setErrorMsg]  = useState(null)
 
   // Mapas y candidatos
   const mapaEjercicios = useMemo(
@@ -247,7 +103,8 @@ export default function FormularioDia({
   // ─ Cardio helpers ─
   function añadirEjercicioCardio(ejId) {
     if (ejerciciosCardio.some(e => e.ejercicioId === ejId)) return
-    setEjerciciosCardio(prev => [...prev, { ejercicioId: ejId, duracion: '', distancia: '', kcal: '' }])
+    const ej = mapaEjercicios[ejId]
+    setEjerciciosCardio(prev => [...prev, { ejercicioId: ejId, modo: ej?.modo || 'km', duracion: '', ritmo: '', volumen: '', sensaciones: '' }])
     setSelectorCardioAbierto(false)
     setBusquedaCardio('')
   }
@@ -271,10 +128,11 @@ export default function FormularioDia({
   // ─ Guardar ─
   async function handleGuardar() {
     setGuardando(true)
+    setErrorMsg(null)
     try {
       await onGuardar({
-        fecha,
         sesionId,
+        notasEntrenamiento: notasEntrenamiento.trim(),
         ejerciciosDia: ejerciciosDia.map(({ _sugerenciaPeso, ...r }) => ({
           ...r,
           peso:         Number(r.peso) || 0,
@@ -282,27 +140,20 @@ export default function FormularioDia({
           repeticiones: String(r.repeticiones),
         })),
         ejerciciosCardio: ejerciciosCardio.map(e => ({
-          ...e,
-          duracion:  Number(e.duracion)  || 0,
-          distancia: Number(e.distancia) || 0,
-          kcal:      Number(e.kcal)      || 0,
+          ejercicioId:  e.ejercicioId,
+          modo:         e.modo || 'km',
+          duracion:     Number(e.duracion) || 0,
+          ritmo:        e.ritmo?.trim()    || '',
+          volumen:      Number(e.volumen)  || 0,
+          sensaciones:  e.sensaciones?.trim() || '',
         })),
-        kcalConsumidas, proteinas, carbohidratos, grasas,
-        kcalQuemadas, metabolismoBasal, pasos,
-        movilidad, core, agua,
-        suenoHoras, suenoHoraAcostarse, suenoCalidad,
-        esfuerzo,
-        horaPesaje, bascula,
-        peso, imc, grasaPorcentaje, grasaVisceral, musculo, masaOsea, edadCorporal,
       })
+    } catch (err) {
+      console.error('Error al guardar entrenamiento:', err)
+      setErrorMsg(err?.message || String(err) || 'Error desconocido')
     } finally {
       setGuardando(false)
     }
-  }
-
-  async function handleEliminar() {
-    setEliminando(true)
-    await onEliminar()
   }
 
   const sesionSeleccionada = sesiones.find(s => s.id === sesionId)
@@ -311,123 +162,24 @@ export default function FormularioDia({
     <div style={{ padding: '0 16px 40px' }}>
 
       {/* ─ Cabecera ─ */}
-      <div style={{ display: 'flex', alignItems: 'center', padding: '14px 0 4px', gap: '8px' }}>
-        <button onClick={onCancelar} style={estiloAccion(false)}>← Volver</button>
-        <span style={{ flex: 1, fontSize: '13px', fontWeight: '600', color: '#a1a1a1', textAlign: 'center' }}>
-          {formatearFechaLarga(fecha)}
-        </span>
-        {entrada && (
-          <button onClick={() => setConfirmarBorrar(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', padding: '4px', lineHeight: 1 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-              <path d="M10 11v6M14 11v6" /><path d="M9 6V4h6v2" />
-            </svg>
-          </button>
-        )}
-        <button onClick={handleGuardar} disabled={guardando} style={estiloAccion(guardando)}>
-          {guardando ? 'Guardando…' : 'Guardar'}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 20px', gap: '8px' }}>
+        <button
+          onClick={onCancelar}
+          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Volver
         </button>
-      </div>
-
-      {/* ─ Confirmación de borrado ─ */}
-      {confirmarBorrar && (
-        <div style={{ margin: '10px 0', padding: '14px', backgroundColor: '#1a1a1a', border: '1px solid #dc262644', borderRadius: '12px' }}>
-          <p style={{ margin: '0 0 12px', color: '#f5f5f5', fontSize: '14px', fontWeight: '500' }}>¿Eliminar este día?</p>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={() => setConfirmarBorrar(false)} style={{ flex: 1, padding: '10px', backgroundColor: 'transparent', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#a1a1a1', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Cancelar</button>
-            <button onClick={handleEliminar} disabled={eliminando} style={{ flex: 1, padding: '10px', backgroundColor: '#dc2626', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '600', cursor: 'pointer', opacity: eliminando ? 0.6 : 1 }}>
-              {eliminando ? 'Eliminando…' : 'Eliminar'}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ══════════════════════════════════════════════
-          SECCIÓN 1 — DATOS GENERALES (sin título)
-      ══════════════════════════════════════════════ */}
-
-      {/* Fila 1: Sueño horas | Acostarse | Puntuación */}
-      <Grid3>
-        <InputNum label="Sueño" placeholder="7.5" value={suenoHoras} onChange={setSuenoHoras} sufijo="h" />
-        <div>
-          <label style={estiloLabelPequeno}>Acostarse</label>
-          <input type="time" value={suenoHoraAcostarse} onChange={e => setSuenoHoraAcostarse(e.target.value)}
-            style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
-        </div>
-        <InputNum label="Puntuación" placeholder="8" value={suenoCalidad} onChange={setSuenoCalidad} />
-      </Grid3>
-
-      {/* Fila 2: %Esfuerzo | KCal Quemadas */}
-      <Grid2>
-        <InputNum label="% Esfuerzo" placeholder="70" value={esfuerzo} onChange={setEsfuerzo} sufijo="%" highlight={!!esfuerzo} />
-        <InputNum label="KCal Quemadas" value={kcalQuemadas} onChange={setKcalQuemadas} sufijo="kcal" />
-      </Grid2>
-
-      {/* Fila 3: MB | KCal Consumidas */}
-      <Grid2>
-        <InputNum label="MB" placeholder="0" value={metabolismoBasal} onChange={setMetabolismoBasal} sufijo="kcal" />
-        <InputNum label="KCal Consumidas" value={kcalConsumidas} onChange={setKcalConsumidas} sufijo="kcal" />
-      </Grid2>
-
-      {/* Fila 4: Dif.KCal | Pr | Ch | Gr */}
-      <Grid4>
-        <InputNum label="Dif.KCal" value={diferenciaKcal} readOnly
-          highlight={diferenciaKcal !== '' && diferenciaKcal > 0} sufijo="kcal" />
-        <InputNum label="Pr" placeholder="0" value={proteinas} onChange={setProteinas} sufijo="g" />
-        <InputNum label="Ch" placeholder="0" value={carbohidratos} onChange={setCarbohidratos} sufijo="g" />
-        <InputNum label="Gr" placeholder="0" value={grasas} onChange={setGrasas} sufijo="g" />
-      </Grid4>
-
-      {/* Fila 5: Pasos | Movilidad | Core | Agua */}
-      <Grid4>
-        <InputNum label="Pasos" placeholder="0" value={pasos} onChange={setPasos} />
-        <CheckCompact label="Movilidad" checked={movilidad} onChange={setMovilidad} />
-        <CheckCompact label="Core" checked={core} onChange={setCore} />
-        <InputNum label="Agua" placeholder="0.0" value={agua} onChange={setAgua} sufijo="L" />
-      </Grid4>
-
-      {/* ── Valores Corporales ── */}
-      <SubSeccion titulo="Valores Corporales" />
-
-      {/* Fila 6: Hora pesaje | Báscula */}
-      <Grid2>
-        <div>
-          <label style={estiloLabelPequeno}>Hora pesaje</label>
-          <input type="time" value={horaPesaje} onChange={e => setHoraPesaje(e.target.value)}
-            style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
-        </div>
-        <div>
-          <label style={estiloLabelPequeno}>Báscula</label>
-          <select value={bascula} onChange={e => setBascula(e.target.value)}
-            style={{ ...estiloInputBase, color: bascula ? '#f5f5f5' : '#4b5563' }}>
-            <option value="">—</option>
-            <option value="B.Valencia">B.Valencia</option>
-            <option value="B.Jumilla">B.Jumilla</option>
-          </select>
-        </div>
-      </Grid2>
-
-      {/* Fila 7: Peso | %Grasa | Músculo */}
-      <Grid3>
-        <InputNum label="Peso" placeholder="70.0" value={peso} onChange={setPeso} sufijo="kg" highlight={!!peso} />
-        <InputNum label="% Grasa" placeholder="15.0" value={grasaPorcentaje} onChange={setGrasaPorcentaje} sufijo="%" />
-        <InputNum label="Músculo" placeholder="55.0" value={musculo} onChange={setMusculo} sufijo="kg" />
-      </Grid3>
-
-      {/* Fila 8: IMC | Grasa Visceral | Masa Ósea */}
-      <Grid3>
-        <InputNum label="IMC" placeholder="22.5" value={imc} onChange={setImc} />
-        <InputNum label="G.Visceral" placeholder="5" value={grasaVisceral} onChange={setGrasaVisceral} />
-        <InputNum label="Masa Ósea" placeholder="3.0" value={masaOsea} onChange={setMasaOsea} sufijo="kg" />
-      </Grid3>
-
-      {/* Fila 9: Edad Corporal */}
-      <div style={{ maxWidth: '130px', marginBottom: '8px' }}>
-        <InputNum label="Edad Corporal" placeholder="25" value={edadCorporal} onChange={setEdadCorporal} />
+        <p style={{ flex: 1, margin: 0, fontSize: '15px', fontWeight: '700', color: '#f5f5f5', textAlign: 'center' }}>
+          {formatearFechaLarga(fecha)}
+        </p>
+        <div style={{ width: '52px' }} />
       </div>
 
       {/* ══════════════════════════════════════════════
-          SECCIÓN 2 — FUERZA
+          SECCIÓN — FUERZA
       ══════════════════════════════════════════════ */}
       <Seccion icono="💪" titulo="Fuerza" />
 
@@ -464,7 +216,7 @@ export default function FormularioDia({
         return (
           <div key={idx} style={estiloCardEjercicio}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-              <span style={{ fontSize: '15px' }}>{col.emoji}</span>
+              <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
               <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
               <button onClick={() => setEjerciciosDia(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
@@ -477,7 +229,7 @@ export default function FormularioDia({
                 {item.unidad || 'kg'}
               </button>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
               <div>
                 <label style={estiloLabelPequeno}>Series</label>
                 <input type="number" inputMode="numeric" placeholder="3" value={item.series}
@@ -490,6 +242,16 @@ export default function FormularioDia({
                   onChange={e => actualizarFuerza(idx, 'repeticiones', e.target.value)}
                   style={{ ...estiloInputBase, textAlign: 'center' }} />
               </div>
+            </div>
+            <div>
+              <label style={{ ...estiloLabelPequeno, display: 'flex', justifyContent: 'space-between' }}>
+                <span>Sensaciones</span>
+                <span style={{ color: (item.sensaciones || '').length > 130 ? '#f97316' : '#4b5563' }}>{(item.sensaciones || '').length}/150</span>
+              </label>
+              <input type="text" placeholder="Cómo fue el ejercicio…" value={item.sensaciones || ''}
+                maxLength={150}
+                onChange={e => actualizarFuerza(idx, 'sensaciones', e.target.value)}
+                style={{ ...estiloInputBase }} />
             </div>
           </div>
         )
@@ -506,7 +268,7 @@ export default function FormularioDia({
       )}
 
       {/* ══════════════════════════════════════════════
-          SECCIÓN 3 — CARDIO
+          SECCIÓN — CARDIO
       ══════════════════════════════════════════════ */}
       <Seccion icono="🏃" titulo="Cardio" />
 
@@ -515,36 +277,45 @@ export default function FormularioDia({
         if (!ej) return null
         return (
           <div key={idx} style={estiloCardEjercicio}>
+            {/* Cabecera: icono + nombre + quitar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-              <span style={{ fontSize: '15px' }}>🏃</span>
+              <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
               <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
               <button onClick={() => setEjerciciosCardio(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
+            {/* Campos */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
               <div>
                 <label style={estiloLabelPequeno}>Duración</label>
                 <div style={{ position: 'relative' }}>
-                  <input type="number" inputMode="numeric" placeholder="0" value={item.duracion}
+                  <input type="number" inputMode="numeric" placeholder="0" min="0" value={item.duracion}
                     onChange={e => actualizarCardio(idx, 'duracion', e.target.value)}
                     style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '28px' }} />
                   <span style={estiloSufijo}>min</span>
                 </div>
               </div>
               <div>
-                <label style={estiloLabelPequeno}>Distancia</label>
-                <div style={{ position: 'relative' }}>
-                  <input type="number" inputMode="decimal" placeholder="0" value={item.distancia}
-                    onChange={e => actualizarCardio(idx, 'distancia', e.target.value)}
-                    style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '24px' }} />
-                  <span style={estiloSufijo}>km</span>
-                </div>
-              </div>
-              <div>
-                <label style={estiloLabelPequeno}>kcal</label>
-                <input type="number" inputMode="numeric" placeholder="0" value={item.kcal}
-                  onChange={e => actualizarCardio(idx, 'kcal', e.target.value)}
+                <label style={estiloLabelPequeno}>{item.modo === 'veces' ? 'Rp/m' : 'Km/h'}</label>
+                <input type="text" placeholder="0" value={item.ritmo}
+                  onChange={e => actualizarCardio(idx, 'ritmo', e.target.value)}
                   style={{ ...estiloInputBase, textAlign: 'center' }} />
               </div>
+              <div>
+                <label style={estiloLabelPequeno}>{item.modo === 'veces' ? 'Rp' : 'Km'}</label>
+                <input type="number" inputMode="decimal" placeholder="0" min="0" value={item.volumen}
+                  onChange={e => actualizarCardio(idx, 'volumen', e.target.value)}
+                  style={{ ...estiloInputBase, textAlign: 'center' }} />
+              </div>
+            </div>
+            <div style={{ marginTop: '8px' }}>
+              <label style={{ ...estiloLabelPequeno, display: 'flex', justifyContent: 'space-between' }}>
+                <span>Sensaciones</span>
+                <span style={{ color: (item.sensaciones || '').length > 220 ? '#f97316' : '#4b5563' }}>{(item.sensaciones || '').length}/250</span>
+              </label>
+              <input type="text" placeholder="Cómo fue la actividad…" value={item.sensaciones || ''}
+                maxLength={250}
+                onChange={e => actualizarCardio(idx, 'sensaciones', e.target.value)}
+                style={{ ...estiloInputBase }} />
             </div>
           </div>
         )
@@ -561,6 +332,45 @@ export default function FormularioDia({
             ? 'Añade ejercicios con grupo "cardio" al catálogo'
             : 'Sin resultados'} />
       )}
+
+      {/* ══ Notas generales del entrenamiento ══ */}
+      <Seccion icono="💬" titulo="Sensaciones generales" />
+      <div style={{ marginBottom: '8px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
+          <span style={{ fontSize: '10px', color: notasEntrenamiento.length > 550 ? '#f97316' : '#4b5563' }}>{notasEntrenamiento.length}/600</span>
+        </div>
+        <textarea
+          placeholder="Sensaciones generales, observaciones del día…"
+          value={notasEntrenamiento}
+          maxLength={600}
+          onChange={e => setNotasEntrenamiento(e.target.value)}
+          rows={3}
+          style={{ ...estiloInputBase, resize: 'vertical', minHeight: '80px', lineHeight: '1.6' }}
+        />
+      </div>
+
+      {/* Error */}
+      {errorMsg && (
+        <div style={{ backgroundColor: '#7f1d1d', border: '1px solid #ef4444', borderRadius: '10px', padding: '12px 14px', marginTop: '16px', marginBottom: '8px' }}>
+          <p style={{ margin: 0, fontSize: '13px', color: '#fca5a5', fontWeight: '600' }}>Error al guardar:</p>
+          <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#fca5a5' }}>{errorMsg}</p>
+        </div>
+      )}
+
+      {/* Botón guardar */}
+      <button
+        type="button"
+        onClick={handleGuardar}
+        disabled={guardando}
+        style={{
+          width: '100%', padding: '14px', marginTop: '16px',
+          backgroundColor: guardando ? '#374151' : '#f97316',
+          color: '#fff', fontWeight: '700', fontSize: '16px',
+          border: 'none', borderRadius: '12px', cursor: guardando ? 'default' : 'pointer',
+        }}
+      >
+        {guardando ? 'Guardando…' : 'Guardar'}
+      </button>
 
     </div>
   )
@@ -579,11 +389,10 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
         {candidatos.length === 0
           ? <p style={estiloVacio}>{vacio}</p>
           : candidatos.map(ej => {
-              const col = COLORES_GRUPO[ej.grupoPrincipal || (ej.gruposMuscular || [])[0]] || COLORES_GRUPO.core
-              const u   = ultimosPesos[ej.id]
+              const u = ultimosPesos[ej.id]
               return (
                 <button key={ej.id} type="button" onClick={() => onSeleccionar(ej.id)} style={estiloItemSelector}>
-                  <span style={{ fontSize: '15px' }}>{col.emoji}</span>
+                  <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                   <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5', textAlign: 'left' }}>{ej.nombre}</span>
                   {u && <span style={{ fontSize: '12px', color: '#f97316', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
                 </button>
