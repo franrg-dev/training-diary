@@ -74,16 +74,31 @@ export default function CalendarioDiario({
 
   return (
     <div>
-      {/* — Cabecera con navegación de mes — */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 16px 16px' }}>
-        <h1 style={{ margin: 0, fontSize: '28px', fontWeight: '700', color: '#f5f5f5' }}>Diario</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+      {/* — Título página — */}
+      <div style={{ padding: '20px 16px 12px' }}>
+        <h1 style={{ margin: 0, fontSize: '28px', fontWeight: '700', color: 'var(--color-texto)' }}>Diario</h1>
+      </div>
+
+      {/* — Card del calendario — */}
+      <div style={{
+        margin: '0 16px',
+        backgroundColor: 'var(--color-superficie)',
+        border: '1px solid var(--color-borde)',
+        borderRadius: '16px',
+        overflow: 'hidden',
+      }}>
+        {/* Navegación de mes dentro de la card */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '14px 12px 10px',
+          borderBottom: '1px solid var(--color-borde)',
+        }}>
           <button onClick={() => onCambiarMes(-1)} style={estiloNavMes} aria-label="Mes anterior">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
-          <span style={{ fontSize: '14px', fontWeight: '600', color: '#f5f5f5', minWidth: '140px', textAlign: 'center' }}>
+          <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--color-texto)' }}>
             {NOMBRES_MES[mesVisualizado]} {anioVisualizado}
           </span>
           <button onClick={() => onCambiarMes(1)} style={estiloNavMes} aria-label="Mes siguiente">
@@ -92,55 +107,54 @@ export default function CalendarioDiario({
             </svg>
           </button>
         </div>
-      </div>
 
-      {/* — Grid del calendario — */}
-      <div style={{ padding: '0 12px' }}>
-        {/* Cabecera días de la semana */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', marginBottom: '2px' }}>
-          {DIAS_SEMANA.map(d => (
-            <div key={d} style={{ textAlign: 'center', fontSize: '12px', color: '#6b7280', fontWeight: '600', padding: '4px 0' }}>
-              {d}
-            </div>
-          ))}
-        </div>
+        {/* Grid del calendario */}
+        <div style={{ padding: '8px 8px 10px' }}>
+          {/* Cabecera días de la semana */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', marginBottom: '4px' }}>
+            {DIAS_SEMANA.map(d => (
+              <div key={d} style={{ textAlign: 'center', fontSize: '11px', color: 'var(--color-texto-secundario)', fontWeight: '600', padding: '4px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {d}
+              </div>
+            ))}
+          </div>
 
-        {/* Celdas */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px' }}>
-          {celdas.map((dia, idx) => {
-            if (!dia) return <div key={idx} style={{ minHeight: '44px' }} />
-            const fechaStr    = getFechaStr(dia)
-            const esHoy       = esHoyMes && dia === hoy.getDate()
-            const tieneEntrada = fechasConEntrada.has(fechaStr)
-            return (
-              <button
-                key={idx}
-                onClick={() => onSeleccionarDia(fechaStr)}
-                style={{
-                  display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', justifyContent: 'center', gap: '3px',
-                  padding: '6px 2px', minHeight: '44px',
-                  borderRadius: '10px', border: 'none',
-                  backgroundColor: esHoy ? '#f97316' : 'transparent',
-                  cursor: 'pointer',
-                }}
-              >
-                <span style={{
-                  fontSize: '15px',
-                  fontWeight: esHoy ? '700' : '400',
-                  color: esHoy ? '#fff' : '#f5f5f5',
-                  lineHeight: 1,
-                }}>
-                  {dia}
-                </span>
-                {/* Punto indicador */}
-                <div style={{
-                  width: '5px', height: '5px', borderRadius: '50%',
-                  backgroundColor: tieneEntrada && !esHoy ? '#f97316' : 'transparent',
-                }} />
-              </button>
-            )
-          })}
+          {/* Celdas */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px' }}>
+            {celdas.map((dia, idx) => {
+              if (!dia) return <div key={idx} style={{ minHeight: '42px' }} />
+              const fechaStr     = getFechaStr(dia)
+              const esHoy        = esHoyMes && dia === hoy.getDate()
+              const tieneEntrada = fechasConEntrada.has(fechaStr)
+              return (
+                <button
+                  key={idx}
+                  onClick={() => onSeleccionarDia(fechaStr)}
+                  style={{
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center', gap: '3px',
+                    padding: '6px 2px', minHeight: '42px',
+                    borderRadius: '10px', border: 'none',
+                    backgroundColor: esHoy ? '#f97316' : 'transparent',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span style={{
+                    fontSize: '15px',
+                    fontWeight: esHoy ? '700' : '400',
+                    color: esHoy ? '#fff' : 'var(--color-texto)',
+                    lineHeight: 1,
+                  }}>
+                    {dia}
+                  </span>
+                  <div style={{
+                    width: '5px', height: '5px', borderRadius: '50%',
+                    backgroundColor: tieneEntrada && !esHoy ? '#f97316' : 'transparent',
+                  }} />
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
@@ -154,7 +168,7 @@ export default function CalendarioDiario({
 
         {proximas.length === 0 && (
           <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '8px' }}>
-            <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+            <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
               Toca un día del calendario para registrar un entrenamiento
             </p>
           </div>
@@ -183,12 +197,12 @@ export default function CalendarioDiario({
               cursor: 'pointer', textAlign: 'left',
             }}
           >
-            <span style={{ fontSize: '13px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em', flex: 1 }}>
+            <span style={{ fontSize: '13px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em', flex: 1 }}>
               Historial · {historial.length} sesión{historial.length !== 1 ? 'es' : ''}
             </span>
             <svg
               width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="#6b7280" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+              stroke="var(--color-texto-secundario)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
               style={{ transition: 'transform 0.2s', transform: historialAbierto ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0 }}
             >
               <polyline points="6 9 12 15 18 9" />
@@ -226,8 +240,8 @@ function TarjetaEntrada({ entrada, hoyStr, mapaSesiones, onSeleccionar }) {
       style={{
         display: 'flex', alignItems: 'center', gap: '12px',
         width: '100%', padding: '12px 14px', marginBottom: '8px',
-        backgroundColor: '#1a1a1a',
-        border: `1px solid ${esHoy ? '#f9731666' : '#2e2e2e'}`,
+        backgroundColor: 'var(--color-superficie)',
+        border: `1px solid ${esHoy ? '#f9731666' : 'var(--color-borde)'}`,
         borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
       }}
     >
@@ -240,10 +254,10 @@ function TarjetaEntrada({ entrada, hoyStr, mapaSesiones, onSeleccionar }) {
         {parseInt(entrada.fecha.split('-')[2], 10)}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ margin: '0 0 2px', fontWeight: '600', color: '#f5f5f5', fontSize: '14px' }}>
+        <p style={{ margin: '0 0 2px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px' }}>
           {esHoy ? 'Hoy' : formatearFechaEntrada(entrada.fecha)}
         </p>
-        <p style={{ margin: 0, color: '#6b7280', fontSize: '13px' }}>
+        <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '13px' }}>
           {sesion ? <span style={{ color: '#f97316' }}>{sesion.nombre}</span> : null}
           {sesion && (numFuerza > 0 || numCardio > 0) ? ' · ' : null}
           {numFuerza > 0 ? `${numFuerza} fuerza` : null}
@@ -272,6 +286,6 @@ const estiloNavMes = {
 }
 
 const estiloSeccion = {
-  margin: '0 0 12px', fontSize: '13px', color: '#6b7280',
+  margin: '0 0 12px', fontSize: '13px', color: 'var(--color-texto-secundario)',
   fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em',
 }

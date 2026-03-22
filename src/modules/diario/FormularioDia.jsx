@@ -17,8 +17,8 @@ function Seccion({ icono, titulo }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '24px 0 14px' }}>
       <span style={{ fontSize: '18px', lineHeight: 1 }}>{icono}</span>
-      <span style={{ fontSize: '16px', fontWeight: '700', color: '#f5f5f5' }}>{titulo}</span>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#2e2e2e', marginLeft: '6px' }} />
+      <span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-texto)' }}>{titulo}</span>
+      <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-borde)', marginLeft: '6px' }} />
     </div>
   )
 }
@@ -28,10 +28,10 @@ function Seccion({ icono, titulo }) {
 function SubSeccion({ titulo }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '16px 0 10px' }}>
-      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
         {titulo}
       </p>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#2e2e2e' }} />
+      <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-borde)' }} />
     </div>
   )
 }
@@ -53,8 +53,8 @@ function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly 
           style={{
             ...estiloInputBase,
             textAlign: 'center',
-            color: readOnly ? '#4b5563' : highlight ? '#f97316' : '#f5f5f5',
-            backgroundColor: readOnly ? '#111' : '#1e1e1e',
+            color: readOnly ? 'var(--color-texto-inactivo)' : highlight ? '#f97316' : 'var(--color-texto)',
+            backgroundColor: readOnly ? 'var(--color-fondo)' : 'var(--color-superficie)',
             paddingRight: sufijo ? '30px' : '10px',
             fontWeight: highlight ? '700' : '400',
           }}
@@ -76,17 +76,17 @@ function CheckCompact({ label, checked, onChange }) {
       style={{
         width: '100%', padding: '9px 4px',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px',
-        backgroundColor: checked ? '#f9731622' : '#1e1e1e',
-        border: `1px solid ${checked ? '#f97316' : '#2e2e2e'}`,
+        backgroundColor: checked ? '#f9731622' : 'var(--color-superficie)',
+        border: `1px solid ${checked ? '#f97316' : 'var(--color-borde)'}`,
         borderRadius: '8px', cursor: 'pointer',
-        color: checked ? '#f97316' : '#6b7280',
+        color: checked ? '#f97316' : 'var(--color-texto-secundario)',
         transition: 'all 0.15s',
       }}
     >
       <div style={{
         width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0,
         backgroundColor: checked ? '#f97316' : 'transparent',
-        border: `2px solid ${checked ? '#f97316' : '#4b5563'}`,
+        border: `2px solid ${checked ? '#f97316' : 'var(--color-texto-inactivo)'}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {checked && (
@@ -313,11 +313,11 @@ export default function FormularioDia({
       {/* ─ Cabecera ─ */}
       <div style={{ display: 'flex', alignItems: 'center', padding: '14px 0 4px', gap: '8px' }}>
         <button onClick={onCancelar} style={estiloAccion(false)}>← Volver</button>
-        <span style={{ flex: 1, fontSize: '13px', fontWeight: '600', color: '#a1a1a1', textAlign: 'center' }}>
+        <span style={{ flex: 1, fontSize: '13px', fontWeight: '600', color: 'var(--color-texto-secundario)', textAlign: 'center' }}>
           {formatearFechaLarga(fecha)}
         </span>
         {entrada && (
-          <button onClick={() => setConfirmarBorrar(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', padding: '4px', lineHeight: 1 }}>
+          <button onClick={() => setConfirmarBorrar(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-texto-secundario)', padding: '4px', lineHeight: 1 }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
               <path d="M10 11v6M14 11v6" /><path d="M9 6V4h6v2" />
@@ -331,10 +331,10 @@ export default function FormularioDia({
 
       {/* ─ Confirmación de borrado ─ */}
       {confirmarBorrar && (
-        <div style={{ margin: '10px 0', padding: '14px', backgroundColor: '#1a1a1a', border: '1px solid #dc262644', borderRadius: '12px' }}>
-          <p style={{ margin: '0 0 12px', color: '#f5f5f5', fontSize: '14px', fontWeight: '500' }}>¿Eliminar este día?</p>
+        <div style={{ margin: '10px 0', padding: '14px', backgroundColor: 'var(--color-superficie)', border: '1px solid #dc262644', borderRadius: '12px' }}>
+          <p style={{ margin: '0 0 12px', color: 'var(--color-texto)', fontSize: '14px', fontWeight: '500' }}>¿Eliminar este día?</p>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={() => setConfirmarBorrar(false)} style={{ flex: 1, padding: '10px', backgroundColor: 'transparent', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#a1a1a1', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Cancelar</button>
+            <button onClick={() => setConfirmarBorrar(false)} style={{ flex: 1, padding: '10px', backgroundColor: 'transparent', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Cancelar</button>
             <button onClick={handleEliminar} disabled={eliminando} style={{ flex: 1, padding: '10px', backgroundColor: '#dc2626', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '600', cursor: 'pointer', opacity: eliminando ? 0.6 : 1 }}>
               {eliminando ? 'Eliminando…' : 'Eliminar'}
             </button>
@@ -399,7 +399,7 @@ export default function FormularioDia({
         <div>
           <label style={estiloLabelPequeno}>Báscula</label>
           <select value={bascula} onChange={e => setBascula(e.target.value)}
-            style={{ ...estiloInputBase, color: bascula ? '#f5f5f5' : '#4b5563' }}>
+            style={{ ...estiloInputBase, color: bascula ? 'var(--color-texto)' : 'var(--color-texto-inactivo)' }}>
             <option value="">—</option>
             <option value="B.Valencia">B.Valencia</option>
             <option value="B.Jumilla">B.Jumilla</option>
@@ -433,8 +433,8 @@ export default function FormularioDia({
 
       <label style={estiloLabel}>Sesión</label>
       {sesionSeleccionada ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 14px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '10px', marginBottom: '12px' }}>
-          <span style={{ flex: 1, color: '#f5f5f5', fontSize: '14px', fontWeight: '600' }}>{sesionSeleccionada.nombre}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 14px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '10px', marginBottom: '12px' }}>
+          <span style={{ flex: 1, color: 'var(--color-texto)', fontSize: '14px', fontWeight: '600' }}>{sesionSeleccionada.nombre}</span>
           <button onClick={() => setSesionId(null)} style={estiloX}>×</button>
         </div>
       ) : (
@@ -449,8 +449,8 @@ export default function FormularioDia({
             ? <p style={estiloVacio}>Sin sesiones creadas</p>
             : sesiones.map(s => (
                 <button key={s.id} type="button" onClick={() => seleccionarSesion(s)} style={estiloItemSelector}>
-                  <span style={{ fontSize: '14px', color: '#f5f5f5', fontWeight: '600' }}>{s.nombre}</span>
-                  {s.descripcion && <span style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>{s.descripcion}</span>}
+                  <span style={{ fontSize: '14px', color: 'var(--color-texto)', fontWeight: '600' }}>{s.nombre}</span>
+                  {s.descripcion && <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)', marginTop: '2px' }}>{s.descripcion}</span>}
                 </button>
               ))
           }
@@ -465,7 +465,7 @@ export default function FormularioDia({
           <div key={idx} style={estiloCardEjercicio}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
               <span style={{ fontSize: '15px' }}>{col.emoji}</span>
-              <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
+              <span style={{ flex: 1, fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
               <button onClick={() => setEjerciciosDia(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
@@ -473,7 +473,7 @@ export default function FormularioDia({
                 value={item.peso} onChange={e => actualizarFuerza(idx, 'peso', e.target.value)}
                 style={{ ...estiloInputBase, flex: 1, textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#f97316' }} />
               <button type="button" onClick={() => actualizarFuerza(idx, 'unidad', item.unidad === 'kg' ? 'lb' : 'kg')}
-                style={{ padding: '10px 12px', backgroundColor: '#242424', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#a1a1a1', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
+                style={{ padding: '10px 12px', backgroundColor: 'var(--color-superficie-2)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
                 {item.unidad || 'kg'}
               </button>
             </div>
@@ -517,7 +517,7 @@ export default function FormularioDia({
           <div key={idx} style={estiloCardEjercicio}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
               <span style={{ fontSize: '15px' }}>🏃</span>
-              <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
+              <span style={{ flex: 1, fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
               <button onClick={() => setEjerciciosCardio(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
@@ -571,9 +571,9 @@ export default function FormularioDia({
 function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ultimosPesos, vacio }) {
   return (
     <div style={{ ...estiloListaSelector, marginTop: '8px' }}>
-      <div style={{ padding: '8px', borderBottom: '1px solid #2e2e2e' }}>
+      <div style={{ padding: '8px', borderBottom: '1px solid var(--color-borde)' }}>
         <input type="search" placeholder="Buscar…" value={busqueda} onChange={e => onBusqueda(e.target.value)} autoFocus
-          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#f5f5f5', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }} />
+          style={{ width: '100%', padding: '8px 10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }} />
       </div>
       <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
         {candidatos.length === 0
@@ -584,7 +584,7 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
               return (
                 <button key={ej.id} type="button" onClick={() => onSeleccionar(ej.id)} style={estiloItemSelector}>
                   <span style={{ fontSize: '15px' }}>{col.emoji}</span>
-                  <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5', textAlign: 'left' }}>{ej.nombre}</span>
+                  <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)', textAlign: 'left' }}>{ej.nombre}</span>
                   {u && <span style={{ fontSize: '12px', color: '#f97316', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
                 </button>
               )
@@ -598,16 +598,16 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
 // ─── Estilos ─────────────────────────────────────────────────────────────
 
 function estiloAccion(dis) {
-  return { background: 'none', border: 'none', color: dis ? '#6b7280' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
+  return { background: 'none', border: 'none', color: dis ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
 }
 
-const estiloLabel        = { display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: '500', color: '#a1a1a1', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: '#1e1e1e', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#f5f5f5', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
-const estiloBotonDash    = { width: '100%', padding: '10px', backgroundColor: 'transparent', border: '1px dashed #2e2e2e', borderRadius: '10px', color: '#6b7280', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '8px' }
-const estiloCardEjercicio = { backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '10px', padding: '12px', marginBottom: '8px' }
-const estiloX            = { background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '20px', padding: 0, lineHeight: 1, flexShrink: 0 }
-const estiloListaSelector = { backgroundColor: '#111', border: '1px solid #2e2e2e', borderRadius: '12px', overflow: 'hidden' }
-const estiloItemSelector  = { display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '11px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #1a1a1a', cursor: 'pointer', textAlign: 'left' }
-const estiloVacio        = { margin: 0, padding: '18px', textAlign: 'center', color: '#6b7280', fontSize: '13px' }
-const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: '#4b5563', pointerEvents: 'none' }
+const estiloLabel        = { display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: '500', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
+const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
+const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
+const estiloBotonDash    = { width: '100%', padding: '10px', backgroundColor: 'transparent', border: '1px dashed var(--color-borde)', borderRadius: '10px', color: 'var(--color-texto-secundario)', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '8px' }
+const estiloCardEjercicio = { backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '10px', padding: '12px', marginBottom: '8px' }
+const estiloX            = { background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '20px', padding: 0, lineHeight: 1, flexShrink: 0 }
+const estiloListaSelector = { backgroundColor: 'var(--color-fondo)', border: '1px solid var(--color-borde)', borderRadius: '12px', overflow: 'hidden' }
+const estiloItemSelector  = { display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '11px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--color-superficie)', cursor: 'pointer', textAlign: 'left' }
+const estiloVacio        = { margin: 0, padding: '18px', textAlign: 'center', color: 'var(--color-texto-secundario)', fontSize: '13px' }
+const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-inactivo)', pointerEvents: 'none' }

@@ -124,6 +124,17 @@ export function useDiario() {
       musculo:              Number(datos.musculo)           || 0,
       masaOsea:             Number(datos.masaOsea)         || 0,
       edadCorporal:         Number(datos.edadCorporal)     || 0,
+      // Entrenamiento general — Fuerza
+      notasEntrenamiento:       datos.notasEntrenamiento               || '',
+      fuerzaHoraInicio:         datos.fuerzaHoraInicio                 || '',
+      fuerzaDuracion:           Number(datos.fuerzaDuracion)           || 0,
+      fuerzaKcalQuemadas:       Number(datos.fuerzaKcalQuemadas)       || 0,
+      fuerzaFrecuenciaCardiaca: Number(datos.fuerzaFrecuenciaCardiaca) || 0,
+      fuerzaLugar:              datos.fuerzaLugar                      || '',
+      // Entrenamiento general — Cardio
+      cardioHoraInicio:         datos.cardioHoraInicio                 || '',
+      cardioKcalQuemadas:       Number(datos.cardioKcalQuemadas)       || 0,
+      cardioFrecuenciaCardiaca: Number(datos.cardioFrecuenciaCardiaca) || 0,
     }
   }
 

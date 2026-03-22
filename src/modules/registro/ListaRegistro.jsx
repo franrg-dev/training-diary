@@ -50,15 +50,15 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
       {/* — Cabecera — */}
       <div style={{ padding: '20px 16px 0' }}>
         {tituloDropdown ?? (
-          <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>Registro</h1>
+          <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>Registro</h1>
         )}
-        <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>Historial de progreso por ejercicio</p>
+        <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>Historial de progreso por ejercicio</p>
       </div>
 
       {/* — Buscador — */}
       <div style={{ padding: '14px 16px 0', position: 'relative' }}>
         <svg
-          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-18%)', color: '#6b7280' }}
+          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-18%)', color: 'var(--color-texto-secundario)' }}
           width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
         >
@@ -70,12 +70,12 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
           placeholder="Buscar ejercicio…"
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
-          style={{ width: '100%', padding: '10px 12px 10px 36px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '10px', color: '#f5f5f5', fontSize: '15px', outline: 'none' }}
+          style={{ width: '100%', padding: '10px 12px 10px 36px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '10px', color: 'var(--color-texto)', fontSize: '15px', outline: 'none' }}
         />
         {busqueda && (
           <button
             onClick={() => setBusqueda('')}
-            style={{ position: 'absolute', right: '28px', top: '50%', transform: 'translateY(-18%)', background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '18px', padding: 0 }}
+            style={{ position: 'absolute', right: '28px', top: '50%', transform: 'translateY(-18%)', background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: 0 }}
           >×</button>
         )}
       </div>
@@ -83,9 +83,9 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
       {/* — Lista — */}
       <div style={{ padding: '14px 16px 0' }}>
         {ejerciciosOrdenados.length === 0 ? (
-          <div style={{ textAlign: 'center', marginTop: '60px', color: '#6b7280' }}>
+          <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--color-texto-secundario)' }}>
             <p style={{ fontSize: '40px', margin: '0 0 12px' }}>{busqueda ? '🔍' : '📊'}</p>
-            <p style={{ margin: '0 0 4px', fontWeight: '600', color: '#a1a1a1' }}>
+            <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto-secundario)' }}>
               {busqueda ? 'Sin resultados' : 'Sin ejercicios en el catálogo'}
             </p>
             <p style={{ margin: 0, fontSize: '14px' }}>
@@ -101,17 +101,17 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
               <button
                 key={ej.id}
                 onClick={() => onSeleccionar(ej)}
-                style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '14px', marginBottom: '8px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '12px', cursor: 'pointer', textAlign: 'left' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '14px', marginBottom: '8px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '12px', cursor: 'pointer', textAlign: 'left' }}
               >
                 <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={20} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ margin: '0 0 3px', fontWeight: '600', color: '#f5f5f5', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <p style={{ margin: '0 0 3px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {ej.nombre}
                   </p>
                   {ultimo ? (
-                    <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-texto-secundario)' }}>
                       {esCardio ? (
                         <>
                           {ultimo.duracion && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.duracion} min </span>}
@@ -127,10 +127,10 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
                       )}
                     </p>
                   ) : (
-                    <p style={{ margin: 0, fontSize: '13px', color: '#4b5563' }}>Sin datos</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-texto-inactivo)' }}>Sin datos</p>
                   )}
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e2e2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-borde)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="9 18 15 12 9 6" />
                 </svg>
               </button>

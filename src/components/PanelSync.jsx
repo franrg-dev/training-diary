@@ -64,7 +64,7 @@ export default function PanelSync() {
   function getIndicador() {
     if (sincronizando)  return { color: '#f97316', title: 'Sincronizando…' }
     if (estaLogueado)   return { color: '#22c55e', title: 'Sincronizado' }
-    return { color: '#4b5563', title: 'Sin cuenta — datos solo locales' }
+    return { color: 'var(--color-texto-inactivo)', title: 'Sin cuenta — datos solo locales' }
   }
 
   const { color, title } = getIndicador()
@@ -83,8 +83,8 @@ export default function PanelSync() {
           width: '36px',
           height: '36px',
           borderRadius: '10px',
-          backgroundColor: '#1a1a1a',
-          border: '1px solid #2e2e2e',
+          backgroundColor: 'var(--color-superficie)',
+          border: '1px solid var(--color-borde)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -110,33 +110,33 @@ export default function PanelSync() {
             left: '16px',
             right: '16px',
             zIndex: 400,
-            backgroundColor: '#1a1a1a',
-            border: '1px solid #2e2e2e',
+            backgroundColor: 'var(--color-superficie)',
+            border: '1px solid var(--color-borde)',
             borderRadius: '16px',
             padding: '20px',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: '#f5f5f5' }}>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: 'var(--color-texto)' }}>
                 Sincronización
               </h3>
-              <button onClick={() => setAbierto(false)} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '20px', padding: 0, lineHeight: 1 }}>×</button>
+              <button onClick={() => setAbierto(false)} style={{ background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '20px', padding: 0, lineHeight: 1 }}>×</button>
             </div>
 
             {estaLogueado ? (
               // — Usuario logueado —
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', backgroundColor: '#242424', borderRadius: '10px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', backgroundColor: 'var(--color-superficie-2)', borderRadius: '10px', marginBottom: '16px' }}>
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: sincronizando ? '#f97316' : '#22c55e', flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#f5f5f5', fontWeight: '600', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <p style={{ margin: '0 0 2px', fontSize: '13px', color: 'var(--color-texto)', fontWeight: '600', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {usuario.email}
                     </p>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
                       {sincronizando ? 'Sincronizando…' : 'Sincronizado'}
                     </p>
                   </div>
                 </div>
-                <p style={{ margin: '0 0 16px', fontSize: '13px', color: '#6b7280', lineHeight: '1.5' }}>
+                <p style={{ margin: '0 0 16px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
                   Los datos se sincronizan automáticamente entre todos tus dispositivos.
                 </p>
                 <button
@@ -149,7 +149,7 @@ export default function PanelSync() {
             ) : (
               // — Sin sesión —
               <div>
-                <p style={{ margin: '0 0 16px', fontSize: '14px', color: '#a1a1a1', lineHeight: '1.6' }}>
+                <p style={{ margin: '0 0 16px', fontSize: '14px', color: 'var(--color-texto-secundario)', lineHeight: '1.6' }}>
                   Inicia sesión para sincronizar tus datos entre iPhone y ordenador. No necesitas contraseña — recibirás un código por email.
                 </p>
 
@@ -175,8 +175,8 @@ export default function PanelSync() {
                   </>
                 ) : (
                   <>
-                    <p style={{ margin: '0 0 10px', fontSize: '13px', color: '#6b7280' }}>
-                      Código enviado a <strong style={{ color: '#f5f5f5' }}>{email}</strong>
+                    <p style={{ margin: '0 0 10px', fontSize: '13px', color: 'var(--color-texto-secundario)' }}>
+                      Código enviado a <strong style={{ color: 'var(--color-texto)' }}>{email}</strong>
                     </p>
                     <input
                       type="text"
@@ -198,7 +198,7 @@ export default function PanelSync() {
                     </button>
                     <button
                       onClick={() => { setPaso('email'); setOtp(''); setError(null) }}
-                      style={{ width: '100%', padding: '10px', marginTop: '8px', backgroundColor: 'transparent', border: 'none', color: '#6b7280', fontSize: '13px', cursor: 'pointer' }}
+                      style={{ width: '100%', padding: '10px', marginTop: '8px', backgroundColor: 'transparent', border: 'none', color: 'var(--color-texto-secundario)', fontSize: '13px', cursor: 'pointer' }}
                     >
                       Cambiar email
                     </button>
@@ -235,8 +235,8 @@ function IconoCloud({ color, sincronizando }) {
 
 const estiloInput = {
   width: '100%', padding: '12px',
-  backgroundColor: '#242424', border: '1px solid #2e2e2e',
-  borderRadius: '10px', color: '#f5f5f5',
+  backgroundColor: 'var(--color-superficie-2)', border: '1px solid var(--color-borde)',
+  borderRadius: '10px', color: 'var(--color-texto)',
   fontSize: '15px', outline: 'none', fontFamily: 'inherit',
 }
 

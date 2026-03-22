@@ -1,19 +1,56 @@
 @import "tailwindcss";
 
-/* Variables CSS para los colores del tema */
+/* Variables CSS para los colores del tema — modo oscuro (defecto) */
 :root {
+  /* Paleta iOS Dark — sin negros puros */
   --color-fondo: #0f0f0f;
-  --color-superficie: #1a1a1a;
-  --color-superficie-2: #242424;
-  --color-borde: #2e2e2e;
-  --color-texto: #f5f5f5;
-  --color-texto-secundario: #a1a1a1;
+  --color-superficie: #1c1c1e;
+  --color-superficie-2: #2c2c2e;
+  --color-borde: rgba(255, 255, 255, 0.1);
+  --color-texto: #f2f2f7;
+  --color-texto-secundario: #8e8e93;
+  --color-texto-inactivo: #3a3a3c;
   --color-acento: #f97316;
   --color-acento-hover: #ea6c0a;
+  /* Navbar glass */
+  --navbar-bg: rgba(28, 28, 30, 0.78);
+  --navbar-borde: rgba(255, 255, 255, 0.1);
+  --navbar-sombra: 0 8px 24px rgba(0, 0, 0, 0.45);
   /* Safe area para iPhone (home indicator y notch) */
   --safe-area-top: env(safe-area-inset-top);
   --safe-area-bottom: env(safe-area-inset-bottom);
   --altura-navbar: 76px;
+}
+
+/* Modo claro — paleta iOS Light, sin blancos ni negros puros */
+[data-tema="claro"] {
+  --color-fondo: #f2f2f7;
+  --color-superficie: #ffffff;
+  --color-superficie-2: #e9e9ee;
+  --color-borde: rgba(60, 60, 67, 0.14);
+  --color-texto: #1c1c1e;
+  --color-texto-secundario: #6c6c70;
+  --color-texto-inactivo: #c7c7cc;
+  /* Navbar glass */
+  --navbar-bg: rgba(242, 242, 247, 0.78);
+  --navbar-borde: rgba(60, 60, 67, 0.1);
+  --navbar-sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Modo automático: sigue la preferencia del sistema si está en claro */
+@media (prefers-color-scheme: light) {
+  :root:not([data-tema="oscuro"]):not([data-tema="claro"]) {
+    --color-fondo: #f2f2f7;
+    --color-superficie: #ffffff;
+    --color-superficie-2: #e9e9ee;
+    --color-borde: rgba(60, 60, 67, 0.14);
+    --color-texto: #1c1c1e;
+    --color-texto-secundario: #6c6c70;
+    --color-texto-inactivo: #c7c7cc;
+    --navbar-bg: rgba(242, 242, 247, 0.78);
+    --navbar-borde: rgba(60, 60, 67, 0.1);
+    --navbar-sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
 }
 
 /* Reset y base */

@@ -40,11 +40,11 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
           <div>
             {tituloDropdown ?? (
-              <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>
+              <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>
                 Ejercicios
               </h1>
             )}
-            <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+            <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
               {ejercicios.length} en el catálogo
             </p>
           </div>
@@ -70,7 +70,7 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
         {/* — Buscador — */}
         <div style={{ position: 'relative', marginBottom: '14px' }}>
           <svg
-            style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280' }}
+            style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-texto-secundario)' }}
             width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
           >
@@ -85,10 +85,10 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
             style={{
               width: '100%',
               padding: '10px 12px 10px 36px',
-              backgroundColor: '#1a1a1a',
-              border: '1px solid #2e2e2e',
+              backgroundColor: 'var(--color-superficie)',
+              border: '1px solid var(--color-borde)',
               borderRadius: '10px',
-              color: '#f5f5f5',
+              color: 'var(--color-texto)',
               fontSize: '15px',
               outline: 'none',
             }}
@@ -98,7 +98,7 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
               onClick={() => setBusqueda('')}
               style={{
                 position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '18px',
+                background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px',
                 padding: '0', lineHeight: 1,
               }}
             >×</button>
@@ -139,7 +139,7 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
       {/* — Contenido de la lista — */}
       <div style={{ padding: '0 16px' }}>
         {cargando ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', marginTop: '40px' }}>Cargando…</p>
+          <p style={{ color: 'var(--color-texto-secundario)', textAlign: 'center', marginTop: '40px' }}>Cargando…</p>
         ) : ejerciciosFiltrados.length === 0 ? (
           <EstadoVacio busqueda={busqueda} hayEjercicios={ejercicios.length > 0} onNuevo={onNuevo} />
         ) : (
@@ -162,9 +162,9 @@ function ChipGrupo({ etiqueta, activo, color, onClick }) {
         flexShrink: 0,
         padding: '6px 14px',
         borderRadius: '20px',
-        border: `1px solid ${activo ? (color || '#f97316') : '#2e2e2e'}`,
+        border: `1px solid ${activo ? (color || '#f97316') : 'var(--color-borde)'}`,
         backgroundColor: activo ? (color ? color + '22' : '#f9731622') : 'transparent',
-        color: activo ? (color || '#f97316') : '#6b7280',
+        color: activo ? (color || '#f97316') : 'var(--color-texto-secundario)',
         fontSize: '13px',
         fontWeight: activo ? '600' : '400',
         cursor: 'pointer',
@@ -188,7 +188,7 @@ function TarjetaEjercicio({ ejercicio, onClick }) {
       style={{
         display: 'flex', alignItems: 'center', gap: '14px',
         width: '100%', padding: '14px', marginBottom: '8px',
-        backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e',
+        backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)',
         borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
       }}
     >
@@ -206,7 +206,7 @@ function TarjetaEjercicio({ ejercicio, onClick }) {
 
       {/* Nombre y grupos */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ margin: '0 0 4px', fontWeight: '600', color: '#f5f5f5', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {ejercicio.nombre}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
@@ -216,13 +216,13 @@ function TarjetaEjercicio({ ejercicio, onClick }) {
           </span>
           {/* Badges de grupos adicionales */}
           {resto.map((c, i) => (
-            <span key={i} style={{ fontSize: '11px', color: '#6b7280' }}>
+            <span key={i} style={{ fontSize: '11px', color: 'var(--color-texto-secundario)' }}>
               · <span style={{ color: c.texto }}>{capitalizarGrupo(grupos[i + 1])}</span>
             </span>
           ))}
           {/* Volumen si existe */}
           {ejercicio.series > 0 && (
-            <span style={{ fontSize: '11px', color: '#4b5563', marginLeft: '4px' }}>
+            <span style={{ fontSize: '11px', color: 'var(--color-texto-inactivo)', marginLeft: '4px' }}>
               · {ejercicio.series}×{ejercicio.repeticiones || '—'}
             </span>
           )}
@@ -230,7 +230,7 @@ function TarjetaEjercicio({ ejercicio, onClick }) {
       </div>
 
       {/* Chevron */}
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e2e2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-borde)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="9 18 15 12 9 6" />
       </svg>
     </button>
@@ -241,9 +241,9 @@ function EstadoVacio({ busqueda, hayEjercicios, onNuevo }) {
   if (busqueda || hayEjercicios) {
     // Búsqueda sin resultados
     return (
-      <div style={{ textAlign: 'center', marginTop: '60px', color: '#6b7280' }}>
+      <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--color-texto-secundario)' }}>
         <p style={{ fontSize: '40px', margin: '0 0 12px' }}>🔍</p>
-        <p style={{ margin: '0 0 4px', fontWeight: '600', color: '#a1a1a1' }}>Sin resultados</p>
+        <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto-secundario)' }}>Sin resultados</p>
         <p style={{ margin: 0, fontSize: '14px' }}>Prueba con otro término o filtro</p>
       </div>
     )
@@ -253,10 +253,10 @@ function EstadoVacio({ busqueda, hayEjercicios, onNuevo }) {
   return (
     <div style={{ textAlign: 'center', marginTop: '60px' }}>
       <p style={{ fontSize: '48px', margin: '0 0 16px' }}>🏋️</p>
-      <p style={{ margin: '0 0 6px', fontWeight: '600', color: '#f5f5f5', fontSize: '17px' }}>
+      <p style={{ margin: '0 0 6px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '17px' }}>
         Tu catálogo está vacío
       </p>
-      <p style={{ margin: '0 0 24px', color: '#6b7280', fontSize: '14px' }}>
+      <p style={{ margin: '0 0 24px', color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
         Añade tu primer ejercicio para empezar
       </p>
       <button onClick={onNuevo} className="app-btn-acento">

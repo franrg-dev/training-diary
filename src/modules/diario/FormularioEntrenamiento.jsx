@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
 import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
+import { getLugares } from '../ajustes/useLugares'
 
 const DIAS_LARGO  = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 const MESES_LARGO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
@@ -18,8 +19,8 @@ function Seccion({ icono, titulo }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '24px 0 14px' }}>
       <span style={{ fontSize: '18px', lineHeight: 1 }}>{icono}</span>
-      <span style={{ fontSize: '16px', fontWeight: '700', color: '#f5f5f5' }}>{titulo}</span>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#2e2e2e', marginLeft: '6px' }} />
+      <span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-texto)' }}>{titulo}</span>
+      <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-borde)', marginLeft: '6px' }} />
     </div>
   )
 }
@@ -35,12 +36,21 @@ export default function FormularioEntrenamiento({
   onGuardar,
   onCancelar,
 }) {
+  const lugares = getLugares()
+
   // — Fuerza —
   const [sesionId, setSesionId]           = useState(entrada?.sesionId || null)
   const [ejerciciosDia, setEjerciciosDia] = useState(() => entrada?.ejerciciosDia || [])
   const [selectorSesionAbierto, setSelectorSesionAbierto] = useState(false)
   const [selectorFuerzaAbierto, setSelectorFuerzaAbierto] = useState(false)
   const [busquedaFuerza, setBusquedaFuerza]               = useState('')
+
+  // — General Fuerza —
+  const [fuerzaHoraInicio,       setFuerzaHoraInicio]       = useState(entrada?.fuerzaHoraInicio       || '')
+  const [fuerzaDuracion,         setFuerzaDuracion]         = useState(entrada?.fuerzaDuracion         || '')
+  const [fuerzaKcalQuemadas,     setFuerzaKcalQuemadas]     = useState(entrada?.fuerzaKcalQuemadas     || '')
+  const [fuerzaFrecuenciaCardiaca, setFuerzaFrecuenciaCardiaca] = useState(entrada?.fuerzaFrecuenciaCardiaca || '')
+  const [fuerzaLugar,            setFuerzaLugar]            = useState(entrada?.fuerzaLugar            || '')
 
   // — Notas generales —
   const [notasEntrenamiento, setNotasEntrenamiento] = useState(entrada?.notasEntrenamiento || '')
@@ -49,6 +59,11 @@ export default function FormularioEntrenamiento({
   const [ejerciciosCardio, setEjerciciosCardio]           = useState(() => entrada?.ejerciciosCardio || [])
   const [selectorCardioAbierto, setSelectorCardioAbierto] = useState(false)
   const [busquedaCardio, setBusquedaCardio]               = useState('')
+
+  // — General Cardio —
+  const [cardioHoraInicio,         setCardioHoraInicio]         = useState(entrada?.cardioHoraInicio         || '')
+  const [cardioKcalQuemadas,       setCardioKcalQuemadas]       = useState(entrada?.cardioKcalQuemadas       || '')
+  const [cardioFrecuenciaCardiaca, setCardioFrecuenciaCardiaca] = useState(entrada?.cardioFrecuenciaCardiaca || '')
 
   const [guardando, setGuardando] = useState(false)
   const [errorMsg,  setErrorMsg]  = useState(null)
@@ -132,6 +147,13 @@ export default function FormularioEntrenamiento({
     try {
       await onGuardar({
         sesionId,
+        fuerzaHoraInicio, fuerzaDuracion: Number(fuerzaDuracion) || 0,
+        fuerzaKcalQuemadas: Number(fuerzaKcalQuemadas) || 0,
+        fuerzaFrecuenciaCardiaca: Number(fuerzaFrecuenciaCardiaca) || 0,
+        fuerzaLugar,
+        cardioHoraInicio,
+        cardioKcalQuemadas: Number(cardioKcalQuemadas) || 0,
+        cardioFrecuenciaCardiaca: Number(cardioFrecuenciaCardiaca) || 0,
         notasEntrenamiento: notasEntrenamiento.trim(),
         ejerciciosDia: ejerciciosDia.map(({ _sugerenciaPeso, ...r }) => ({
           ...r,
@@ -172,7 +194,7 @@ export default function FormularioEntrenamiento({
           </svg>
           Volver
         </button>
-        <p style={{ flex: 1, margin: 0, fontSize: '15px', fontWeight: '700', color: '#f5f5f5', textAlign: 'center' }}>
+        <p style={{ flex: 1, margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--color-texto)', textAlign: 'center' }}>
           {formatearFechaLarga(fecha)}
         </p>
         <div style={{ width: '52px' }} />
@@ -185,8 +207,8 @@ export default function FormularioEntrenamiento({
 
       <label style={estiloLabel}>Sesión</label>
       {sesionSeleccionada ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 14px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '10px', marginBottom: '12px' }}>
-          <span style={{ flex: 1, color: '#f5f5f5', fontSize: '14px', fontWeight: '600' }}>{sesionSeleccionada.nombre}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 14px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '10px', marginBottom: '12px' }}>
+          <span style={{ flex: 1, color: 'var(--color-texto)', fontSize: '14px', fontWeight: '600' }}>{sesionSeleccionada.nombre}</span>
           <button onClick={() => setSesionId(null)} style={estiloX}>×</button>
         </div>
       ) : (
@@ -201,13 +223,55 @@ export default function FormularioEntrenamiento({
             ? <p style={estiloVacio}>Sin sesiones creadas</p>
             : sesiones.map(s => (
                 <button key={s.id} type="button" onClick={() => seleccionarSesion(s)} style={estiloItemSelector}>
-                  <span style={{ fontSize: '14px', color: '#f5f5f5', fontWeight: '600' }}>{s.nombre}</span>
-                  {s.descripcion && <span style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>{s.descripcion}</span>}
+                  <span style={{ fontSize: '14px', color: 'var(--color-texto)', fontWeight: '600' }}>{s.nombre}</span>
+                  {s.descripcion && <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)', marginTop: '2px' }}>{s.descripcion}</span>}
                 </button>
               ))
           }
         </div>
       )}
+
+      {/* — Parámetros generales Fuerza — */}
+      <div style={estiloCardEjercicio}>
+        <p style={{ ...estiloLabel, marginBottom: '10px' }}>General</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+          <div>
+            <label style={estiloLabelPequeno}>Hora inicio</label>
+            <InputHora value={fuerzaHoraInicio} onChange={setFuerzaHoraInicio} />
+          </div>
+          <div style={{ position: 'relative' }}>
+            <label style={estiloLabelPequeno}>Duración</label>
+            <input type="number" inputMode="numeric" placeholder="60" min="0" value={fuerzaDuracion}
+              onChange={e => setFuerzaDuracion(e.target.value)}
+              style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '32px' }} />
+            <span style={estiloSufijo}>min</span>
+          </div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+          <div style={{ position: 'relative' }}>
+            <label style={estiloLabelPequeno}>KCal quemadas</label>
+            <input type="number" inputMode="numeric" placeholder="0" min="0" value={fuerzaKcalQuemadas}
+              onChange={e => setFuerzaKcalQuemadas(e.target.value)}
+              style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '32px' }} />
+            <span style={estiloSufijo}>kcal</span>
+          </div>
+          <div style={{ position: 'relative' }}>
+            <label style={estiloLabelPequeno}>Ritmo Cardíaco</label>
+            <input type="number" inputMode="numeric" placeholder="0" min="0" value={fuerzaFrecuenciaCardiaca}
+              onChange={e => setFuerzaFrecuenciaCardiaca(e.target.value)}
+              style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '32px' }} />
+            <span style={estiloSufijo}>lpm</span>
+          </div>
+        </div>
+        <div>
+          <label style={estiloLabelPequeno}>Lugar</label>
+          <select value={fuerzaLugar} onChange={e => setFuerzaLugar(e.target.value)}
+            style={{ ...estiloInputBase, color: fuerzaLugar ? 'var(--color-texto)' : 'var(--color-texto-secundario)' }}>
+            <option value="">—</option>
+            {lugares.map(l => <option key={l} value={l}>{l}</option>)}
+          </select>
+        </div>
+      </div>
 
       {ejerciciosDia.map((item, idx) => {
         const ej = mapaEjercicios[item.ejercicioId]
@@ -217,7 +281,7 @@ export default function FormularioEntrenamiento({
           <div key={idx} style={estiloCardEjercicio}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
               <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
-              <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
+              <span style={{ flex: 1, fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
               <button onClick={() => setEjerciciosDia(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
@@ -225,7 +289,7 @@ export default function FormularioEntrenamiento({
                 value={item.peso} onChange={e => actualizarFuerza(idx, 'peso', e.target.value)}
                 style={{ ...estiloInputBase, flex: 1, textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#f97316' }} />
               <button type="button" onClick={() => actualizarFuerza(idx, 'unidad', item.unidad === 'kg' ? 'lb' : 'kg')}
-                style={{ padding: '10px 12px', backgroundColor: '#242424', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#a1a1a1', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
+                style={{ padding: '10px 12px', backgroundColor: 'var(--color-superficie-2)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
                 {item.unidad || 'kg'}
               </button>
             </div>
@@ -246,7 +310,7 @@ export default function FormularioEntrenamiento({
             <div>
               <label style={{ ...estiloLabelPequeno, display: 'flex', justifyContent: 'space-between' }}>
                 <span>Sensaciones</span>
-                <span style={{ color: (item.sensaciones || '').length > 130 ? '#f97316' : '#4b5563' }}>{(item.sensaciones || '').length}/150</span>
+                <span style={{ color: (item.sensaciones || '').length > 130 ? '#f97316' : 'var(--color-texto-inactivo)' }}>{(item.sensaciones || '').length}/150</span>
               </label>
               <input type="text" placeholder="Cómo fue el ejercicio…" value={item.sensaciones || ''}
                 maxLength={150}
@@ -272,6 +336,31 @@ export default function FormularioEntrenamiento({
       ══════════════════════════════════════════════ */}
       <Seccion icono="🏃" titulo="Cardio" />
 
+      {/* — Parámetros generales Cardio — */}
+      <div style={{ ...estiloCardEjercicio, marginTop: '4px' }}>
+        <p style={{ ...estiloLabel, marginBottom: '10px' }}>General</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+          <div>
+            <label style={estiloLabelPequeno}>Hora inicio</label>
+            <InputHora value={cardioHoraInicio} onChange={setCardioHoraInicio} />
+          </div>
+          <div style={{ position: 'relative' }}>
+            <label style={estiloLabelPequeno}>KCal</label>
+            <input type="number" inputMode="numeric" placeholder="0" min="0" value={cardioKcalQuemadas}
+              onChange={e => setCardioKcalQuemadas(e.target.value)}
+              style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '32px' }} />
+            <span style={estiloSufijo}>kcal</span>
+          </div>
+          <div style={{ position: 'relative' }}>
+            <label style={estiloLabelPequeno}>Ritmo Cardíaco</label>
+            <input type="number" inputMode="numeric" placeholder="0" min="0" value={cardioFrecuenciaCardiaca}
+              onChange={e => setCardioFrecuenciaCardiaca(e.target.value)}
+              style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '32px' }} />
+            <span style={estiloSufijo}>lpm</span>
+          </div>
+        </div>
+      </div>
+
       {ejerciciosCardio.map((item, idx) => {
         const ej = mapaEjercicios[item.ejercicioId]
         if (!ej) return null
@@ -280,7 +369,7 @@ export default function FormularioEntrenamiento({
             {/* Cabecera: icono + nombre + quitar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
               <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
-              <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
+              <span style={{ flex: 1, fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
               <button onClick={() => setEjerciciosCardio(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
             {/* Campos */}
@@ -310,7 +399,7 @@ export default function FormularioEntrenamiento({
             <div style={{ marginTop: '8px' }}>
               <label style={{ ...estiloLabelPequeno, display: 'flex', justifyContent: 'space-between' }}>
                 <span>Sensaciones</span>
-                <span style={{ color: (item.sensaciones || '').length > 220 ? '#f97316' : '#4b5563' }}>{(item.sensaciones || '').length}/250</span>
+                <span style={{ color: (item.sensaciones || '').length > 220 ? '#f97316' : 'var(--color-texto-inactivo)' }}>{(item.sensaciones || '').length}/250</span>
               </label>
               <input type="text" placeholder="Cómo fue la actividad…" value={item.sensaciones || ''}
                 maxLength={250}
@@ -337,7 +426,7 @@ export default function FormularioEntrenamiento({
       <Seccion icono="💬" titulo="Sensaciones generales" />
       <div style={{ marginBottom: '8px' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
-          <span style={{ fontSize: '10px', color: notasEntrenamiento.length > 550 ? '#f97316' : '#4b5563' }}>{notasEntrenamiento.length}/600</span>
+          <span style={{ fontSize: '10px', color: notasEntrenamiento.length > 550 ? '#f97316' : 'var(--color-texto-inactivo)' }}>{notasEntrenamiento.length}/600</span>
         </div>
         <textarea
           placeholder="Sensaciones generales, observaciones del día…"
@@ -364,7 +453,7 @@ export default function FormularioEntrenamiento({
         disabled={guardando}
         style={{
           width: '100%', padding: '14px', marginTop: '16px',
-          backgroundColor: guardando ? '#374151' : '#f97316',
+          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : '#f97316',
           color: '#fff', fontWeight: '700', fontSize: '16px',
           border: 'none', borderRadius: '12px', cursor: guardando ? 'default' : 'pointer',
         }}
@@ -376,14 +465,23 @@ export default function FormularioEntrenamiento({
   )
 }
 
+// ─── Input hora ───────────────────────────────────────────────────────────
+
+function InputHora({ value, onChange }) {
+  return (
+    <input type="time" value={value || ''} onChange={e => onChange(e.target.value)}
+      style={{ ...estiloInputBase, textAlign: 'center' }} />
+  )
+}
+
 // ─── Selector de ejercicio ────────────────────────────────────────────────
 
 function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ultimosPesos, vacio }) {
   return (
     <div style={{ ...estiloListaSelector, marginTop: '8px' }}>
-      <div style={{ padding: '8px', borderBottom: '1px solid #2e2e2e' }}>
+      <div style={{ padding: '8px', borderBottom: '1px solid var(--color-borde)' }}>
         <input type="search" placeholder="Buscar…" value={busqueda} onChange={e => onBusqueda(e.target.value)} autoFocus
-          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#f5f5f5', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }} />
+          style={{ width: '100%', padding: '8px 10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }} />
       </div>
       <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
         {candidatos.length === 0
@@ -393,7 +491,7 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
               return (
                 <button key={ej.id} type="button" onClick={() => onSeleccionar(ej.id)} style={estiloItemSelector}>
                   <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
-                  <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5', textAlign: 'left' }}>{ej.nombre}</span>
+                  <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)', textAlign: 'left' }}>{ej.nombre}</span>
                   {u && <span style={{ fontSize: '12px', color: '#f97316', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
                 </button>
               )
@@ -407,16 +505,16 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
 // ─── Estilos ─────────────────────────────────────────────────────────────
 
 function estiloAccion(dis) {
-  return { background: 'none', border: 'none', color: dis ? '#6b7280' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
+  return { background: 'none', border: 'none', color: dis ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
 }
 
-const estiloLabel        = { display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: '500', color: '#a1a1a1', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: '#1e1e1e', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#f5f5f5', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
-const estiloBotonDash    = { width: '100%', padding: '10px', backgroundColor: 'transparent', border: '1px dashed #2e2e2e', borderRadius: '10px', color: '#6b7280', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '8px' }
-const estiloCardEjercicio = { backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '10px', padding: '12px', marginBottom: '8px' }
-const estiloX            = { background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '20px', padding: 0, lineHeight: 1, flexShrink: 0 }
-const estiloListaSelector = { backgroundColor: '#111', border: '1px solid #2e2e2e', borderRadius: '12px', overflow: 'hidden' }
-const estiloItemSelector  = { display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '11px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #1a1a1a', cursor: 'pointer', textAlign: 'left' }
-const estiloVacio        = { margin: 0, padding: '18px', textAlign: 'center', color: '#6b7280', fontSize: '13px' }
-const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: '#4b5563', pointerEvents: 'none' }
+const estiloLabel        = { display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: '500', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
+const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
+const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
+const estiloBotonDash    = { width: '100%', padding: '10px', backgroundColor: 'transparent', border: '1px dashed var(--color-borde)', borderRadius: '10px', color: 'var(--color-texto-secundario)', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '8px' }
+const estiloCardEjercicio = { backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '10px', padding: '12px', marginBottom: '8px' }
+const estiloX            = { background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '20px', padding: 0, lineHeight: 1, flexShrink: 0 }
+const estiloListaSelector = { backgroundColor: 'var(--color-fondo)', border: '1px solid var(--color-borde)', borderRadius: '12px', overflow: 'hidden' }
+const estiloItemSelector  = { display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '11px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--color-superficie)', cursor: 'pointer', textAlign: 'left' }
+const estiloVacio        = { margin: 0, padding: '18px', textAlign: 'center', color: 'var(--color-texto-secundario)', fontSize: '13px' }
+const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-inactivo)', pointerEvents: 'none' }

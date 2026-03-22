@@ -24,7 +24,7 @@ export default function SelectorSeccion({ opciones, activa, onChange }) {
         style={{
           display: 'flex', alignItems: 'center', gap: '5px',
           background: 'none', border: 'none', padding: 0,
-          cursor: 'pointer', color: '#f5f5f5',
+          cursor: 'pointer', color: 'var(--color-texto)',
           fontSize: '28px', fontWeight: '700', lineHeight: 1,
         }}
       >
@@ -60,8 +60,8 @@ export default function SelectorSeccion({ opciones, activa, onChange }) {
               left: 0,
               zIndex: 50,
               minWidth: '180px',
-              backgroundColor: '#1a1a1a',
-              border: '1px solid #2e2e2e',
+              backgroundColor: 'var(--color-superficie)',
+              border: '1px solid var(--color-borde)',
               borderRadius: '20px',
               boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
               overflow: 'hidden',
@@ -79,9 +79,9 @@ export default function SelectorSeccion({ opciones, activa, onChange }) {
                   gap: '12px',
                   backgroundColor: 'transparent',
                   border: 'none',
-                  borderTop: i > 0 ? '1px solid #2e2e2e' : 'none',
+                  borderTop: i > 0 ? '1px solid var(--color-borde)' : 'none',
                   textAlign: 'left',
-                  color: op.id === activa ? '#f97316' : '#f5f5f5',
+                  color: op.id === activa ? '#f97316' : 'var(--color-texto)',
                   fontSize: '16px',
                   fontWeight: op.id === activa ? '600' : '400',
                   cursor: 'pointer',

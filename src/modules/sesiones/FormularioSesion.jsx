@@ -105,13 +105,13 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
         >
           Cancelar
         </button>
-        <h2 style={{ margin: 0, fontSize: '17px', fontWeight: '600', color: '#f5f5f5' }}>
+        <h2 style={{ margin: 0, fontSize: '17px', fontWeight: '600', color: 'var(--color-texto)' }}>
           {esNuevo ? 'Nueva sesión' : 'Editar sesión'}
         </h2>
         <button
           onClick={handleGuardar}
           disabled={guardando}
-          style={{ background: 'none', border: 'none', color: guardando ? '#6b7280' : '#f97316', fontSize: '15px', fontWeight: '600', cursor: guardando ? 'default' : 'pointer', padding: 0 }}
+          style={{ background: 'none', border: 'none', color: guardando ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '15px', fontWeight: '600', cursor: guardando ? 'default' : 'pointer', padding: 0 }}
         >
           {guardando ? 'Guardando…' : 'Guardar'}
         </button>
@@ -147,16 +147,16 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
           if (!ej) return null
           const colores = COLORES_GRUPO[ej.grupoPrincipal || (ej.gruposMuscular || [])[0]] || COLORES_GRUPO.core
           return (
-            <div key={idx} style={{ backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '12px', padding: '12px', marginBottom: '8px' }}>
+            <div key={idx} style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '12px', padding: '12px', marginBottom: '8px' }}>
               {/* Nombre + controles de orden */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                 <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
-                <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span style={{ flex: 1, fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {ej.nombre}
                 </span>
                 <button type="button" onClick={() => moverEjercicio(idx, -1)} disabled={idx === 0} style={estiloBotonOrden(idx === 0)}>↑</button>
                 <button type="button" onClick={() => moverEjercicio(idx, 1)} disabled={idx === campos.ejercicios.length - 1} style={estiloBotonOrden(idx === campos.ejercicios.length - 1)}>↓</button>
-                <button type="button" onClick={() => quitarEjercicio(idx)} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '18px', padding: '0 0 0 4px', lineHeight: 1 }}>×</button>
+                <button type="button" onClick={() => quitarEjercicio(idx)} style={{ background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: '0 0 0 4px', lineHeight: 1 }}>×</button>
               </div>
               {/* Series y repeticiones */}
               <div style={{ display: 'flex', gap: '8px' }}>
@@ -198,20 +198,20 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
 
         {/* Panel de búsqueda de ejercicios */}
         {selectorAbierto && (
-          <div style={{ marginTop: '8px', backgroundColor: '#111', border: '1px solid #2e2e2e', borderRadius: '12px', overflow: 'hidden' }}>
-            <div style={{ padding: '10px', borderBottom: '1px solid #2e2e2e' }}>
+          <div style={{ marginTop: '8px', backgroundColor: 'var(--color-fondo)', border: '1px solid var(--color-borde)', borderRadius: '12px', overflow: 'hidden' }}>
+            <div style={{ padding: '10px', borderBottom: '1px solid var(--color-borde)' }}>
               <input
                 type="search"
                 placeholder="Buscar ejercicio…"
                 value={busquedaEj}
                 onChange={e => setBusquedaEj(e.target.value)}
                 autoFocus
-                style={{ width: '100%', padding: '8px 12px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#f5f5f5', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }}
+                style={{ width: '100%', padding: '8px 12px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }}
               />
             </div>
             <div style={{ maxHeight: '260px', overflowY: 'auto' }}>
               {candidatos.length === 0 ? (
-                <p style={{ margin: 0, padding: '20px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>
+                <p style={{ margin: 0, padding: '20px', textAlign: 'center', color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
                   {ejercicios.length === 0 ? 'Añade ejercicios al catálogo primero' : 'Sin resultados'}
                 </p>
               ) : (
@@ -222,11 +222,11 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
                       key={ej.id}
                       type="button"
                       onClick={() => añadirEjercicio(ej)}
-                      style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #1a1a1a', cursor: 'pointer', textAlign: 'left' }}
+                      style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--color-superficie)', cursor: 'pointer', textAlign: 'left' }}
                     >
                       <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
-                      <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5' }}>{ej.nombre}</span>
-                      <span style={{ fontSize: '11px', color: '#6b7280', flexShrink: 0 }}>
+                      <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)' }}>{ej.nombre}</span>
+                      <span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', flexShrink: 0 }}>
                         {(ej.gruposMuscular || []).map(capitalizarGrupo).join(', ')}
                       </span>
                     </button>
@@ -246,7 +246,7 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
 function Campo({ etiqueta, error, requerido, children }) {
   return (
     <div style={{ marginBottom: '20px' }}>
-      <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '500', color: '#a1a1a1', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '500', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {etiqueta}{requerido && <span style={{ color: '#f97316', marginLeft: '3px' }}>*</span>}
       </label>
       {children}
@@ -258,17 +258,17 @@ function Campo({ etiqueta, error, requerido, children }) {
 function estiloInput(conError = false) {
   return {
     width: '100%', padding: '12px',
-    backgroundColor: '#1a1a1a',
-    border: `1px solid ${conError ? '#f87171' : '#2e2e2e'}`,
-    borderRadius: '10px', color: '#f5f5f5',
+    backgroundColor: 'var(--color-superficie)',
+    border: `1px solid ${conError ? '#f87171' : 'var(--color-borde)'}`,
+    borderRadius: '10px', color: 'var(--color-texto)',
     fontSize: '15px', outline: 'none', fontFamily: 'inherit',
   }
 }
 
 function estiloBotonOrden(deshabilitado) {
   return {
-    background: 'none', border: '1px solid #2e2e2e', borderRadius: '6px',
-    color: deshabilitado ? '#3a3a3a' : '#6b7280',
+    background: 'none', border: '1px solid var(--color-borde)', borderRadius: '6px',
+    color: deshabilitado ? 'var(--color-texto-inactivo)' : 'var(--color-texto-secundario)',
     cursor: deshabilitado ? 'default' : 'pointer',
     width: '24px', height: '24px',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -278,21 +278,21 @@ function estiloBotonOrden(deshabilitado) {
 
 const estiloBotonDasheado = {
   width: '100%', padding: '10px',
-  backgroundColor: 'transparent', border: '1px dashed #2e2e2e',
-  borderRadius: '10px', color: '#6b7280', fontSize: '14px',
+  backgroundColor: 'transparent', border: '1px dashed var(--color-borde)',
+  borderRadius: '10px', color: 'var(--color-texto-secundario)', fontSize: '14px',
   cursor: 'pointer', display: 'flex', alignItems: 'center',
   justifyContent: 'center', gap: '6px',
 }
 
 const estiloInputPequeno = {
   width: '100%', padding: '8px 10px', textAlign: 'center',
-  backgroundColor: '#242424', border: '1px solid #2e2e2e',
-  borderRadius: '8px', color: '#f5f5f5',
+  backgroundColor: 'var(--color-superficie-2)', border: '1px solid var(--color-borde)',
+  borderRadius: '8px', color: 'var(--color-texto)',
   fontSize: '14px', outline: 'none', fontFamily: 'inherit',
 }
 
 const estiloLabelPequeno = {
   display: 'block', marginBottom: '4px',
-  fontSize: '11px', color: '#6b7280',
+  fontSize: '11px', color: 'var(--color-texto-secundario)',
   textTransform: 'uppercase', letterSpacing: '0.05em',
 }

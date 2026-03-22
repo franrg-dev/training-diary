@@ -122,7 +122,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
         >
           Cancelar
         </button>
-        <h2 style={{ margin: 0, fontSize: '17px', fontWeight: '600', color: '#f5f5f5' }}>
+        <h2 style={{ margin: 0, fontSize: '17px', fontWeight: '600', color: 'var(--color-texto)' }}>
           {esNuevo ? 'Nuevo ejercicio' : 'Editar ejercicio'}
         </h2>
         <button
@@ -130,7 +130,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
           disabled={guardando}
           style={{
             background: 'none', border: 'none',
-            color: guardando ? '#6b7280' : '#f97316',
+            color: guardando ? 'var(--color-texto-secundario)' : '#f97316',
             fontSize: '15px', fontWeight: '600', cursor: guardando ? 'default' : 'pointer', padding: 0,
           }}
         >
@@ -168,9 +168,9 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                 style={{
                   padding: '8px 14px',
                   borderRadius: '20px',
-                  border: `1px solid ${activo ? colores.border : '#2e2e2e'}`,
+                  border: `1px solid ${activo ? colores.border : 'var(--color-borde)'}`,
                   backgroundColor: activo ? colores.bg : 'transparent',
-                  color: activo ? colores.texto : '#6b7280',
+                  color: activo ? colores.texto : 'var(--color-texto-secundario)',
                   fontSize: '14px',
                   fontWeight: activo ? '600' : '400',
                   cursor: 'pointer',
@@ -197,7 +197,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
       {/* — Grupo principal (solo si hay 2 o más grupos seleccionados) — */}
       {campos.gruposMuscular.length >= 2 && (
         <Campo etiqueta="Grupo principal">
-          <p style={{ margin: '0 0 10px', fontSize: '13px', color: '#6b7280', lineHeight: '1.5' }}>
+          <p style={{ margin: '0 0 10px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
             Elige qué grupo representa visualmente a este ejercicio (icono y color en la lista).
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -212,9 +212,9 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                   style={{
                     padding: '8px 14px',
                     borderRadius: '20px',
-                    border: `1px solid ${esPrincipal ? colores.border : '#2e2e2e'}`,
+                    border: `1px solid ${esPrincipal ? colores.border : 'var(--color-borde)'}`,
                     backgroundColor: esPrincipal ? colores.bg : 'transparent',
-                    color: esPrincipal ? colores.texto : '#6b7280',
+                    color: esPrincipal ? colores.texto : 'var(--color-texto-secundario)',
                     fontSize: '14px',
                     fontWeight: esPrincipal ? '600' : '400',
                     cursor: 'pointer',
@@ -277,9 +277,9 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                 style={{
                   flex: 1, padding: '12px',
                   backgroundColor: campos.modo === val ? '#f9731622' : 'transparent',
-                  border: `1px solid ${campos.modo === val ? '#f97316' : '#2e2e2e'}`,
+                  border: `1px solid ${campos.modo === val ? '#f97316' : 'var(--color-borde)'}`,
                   borderRadius: '10px',
-                  color: campos.modo === val ? '#f97316' : '#6b7280',
+                  color: campos.modo === val ? '#f97316' : 'var(--color-texto-secundario)',
                   fontSize: '14px', fontWeight: '600', cursor: 'pointer',
                 }}
               >
@@ -347,8 +347,8 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
             onClick={() => { setSelectorAbierto(o => !o); setBusquedaSust('') }}
             style={{
               width: '100%', padding: '10px',
-              backgroundColor: 'transparent', border: '1px dashed #2e2e2e',
-              borderRadius: '10px', color: '#6b7280', fontSize: '14px',
+              backgroundColor: 'transparent', border: '1px dashed var(--color-borde)',
+              borderRadius: '10px', color: 'var(--color-texto-secundario)', fontSize: '14px',
               cursor: 'pointer', display: 'flex', alignItems: 'center',
               justifyContent: 'center', gap: '6px',
             }}
@@ -360,8 +360,8 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
 
         {/* Panel selector de sustitutos */}
         {selectorAbierto && (
-          <div style={{ marginTop: '8px', backgroundColor: '#111', border: '1px solid #2e2e2e', borderRadius: '12px', overflow: 'hidden' }}>
-            <div style={{ padding: '10px', borderBottom: '1px solid #2e2e2e' }}>
+          <div style={{ marginTop: '8px', backgroundColor: 'var(--color-fondo)', border: '1px solid var(--color-borde)', borderRadius: '12px', overflow: 'hidden' }}>
+            <div style={{ padding: '10px', borderBottom: '1px solid var(--color-borde)' }}>
               <input
                 type="search"
                 placeholder="Buscar…"
@@ -373,7 +373,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
             </div>
             <div style={{ maxHeight: '260px', overflowY: 'auto' }}>
               {candidatosFiltrados.length === 0 ? (
-                <p style={{ margin: 0, padding: '20px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>
+                <p style={{ margin: 0, padding: '20px', textAlign: 'center', color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
                   Sin resultados
                 </p>
               ) : (
@@ -390,21 +390,21 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                         display: 'flex', alignItems: 'center', gap: '12px',
                         width: '100%', padding: '12px 14px',
                         backgroundColor: seleccionado ? '#f9731610' : 'transparent',
-                        border: 'none', borderBottom: '1px solid #1a1a1a',
+                        border: 'none', borderBottom: '1px solid var(--color-superficie)',
                         cursor: 'pointer', textAlign: 'left',
                       }}
                     >
                       <span style={{ flexShrink: 0 }}>
                         <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                       </span>
-                      <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5' }}>{ej.nombre}</span>
-                      <span style={{ fontSize: '11px', color: '#6b7280', flexShrink: 0 }}>
+                      <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)' }}>{ej.nombre}</span>
+                      <span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', flexShrink: 0 }}>
                         {(ej.gruposMuscular || []).map(capitalizarGrupo).join(', ')}
                       </span>
                       <div
                         style={{
                           width: '20px', height: '20px', borderRadius: '6px', flexShrink: 0,
-                          border: `2px solid ${seleccionado ? '#f97316' : '#2e2e2e'}`,
+                          border: `2px solid ${seleccionado ? '#f97316' : 'var(--color-borde)'}`,
                           backgroundColor: seleccionado ? '#f97316' : 'transparent',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}
@@ -424,7 +424,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
         )}
 
         {candidatosSustitutos.length === 0 && (
-          <p style={{ margin: '6px 0 0', color: '#6b7280', fontSize: '13px' }}>
+          <p style={{ margin: '6px 0 0', color: 'var(--color-texto-secundario)', fontSize: '13px' }}>
             Añade más ejercicios al catálogo para poder asignar sustitutos.
           </p>
         )}
@@ -440,7 +440,7 @@ function Campo({ etiqueta, error, requerido, children, style }) {
     <div style={{ marginBottom: '20px', ...style }}>
       <label style={{
         display: 'block', marginBottom: '8px',
-        fontSize: '13px', fontWeight: '500', color: '#a1a1a1',
+        fontSize: '13px', fontWeight: '500', color: 'var(--color-texto-secundario)',
         textTransform: 'uppercase', letterSpacing: '0.05em',
       }}>
         {etiqueta}{requerido && <span style={{ color: '#f97316', marginLeft: '3px' }}>*</span>}
@@ -454,9 +454,9 @@ function Campo({ etiqueta, error, requerido, children, style }) {
 function estiloInput(conError = false) {
   return {
     width: '100%', padding: '12px',
-    backgroundColor: '#1a1a1a',
-    border: `1px solid ${conError ? '#f87171' : '#2e2e2e'}`,
-    borderRadius: '10px', color: '#f5f5f5',
+    backgroundColor: 'var(--color-superficie)',
+    border: `1px solid ${conError ? '#f87171' : 'var(--color-borde)'}`,
+    borderRadius: '10px', color: 'var(--color-texto)',
     fontSize: '15px', outline: 'none', fontFamily: 'inherit',
   }
 }

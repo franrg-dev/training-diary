@@ -23,11 +23,11 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 16px 0' }}>
         <div>
           {tituloDropdown ?? (
-            <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>
               Sesiones
             </h1>
           )}
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+          <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
             {sesiones.length} plantilla{sesiones.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
       {/* — Buscador — */}
       <div style={{ padding: '14px 16px 0', position: 'relative' }}>
         <svg
-          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-18%)', color: '#6b7280' }}
+          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-18%)', color: 'var(--color-texto-secundario)' }}
           width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
         >
@@ -65,8 +65,8 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
           onChange={e => setBusqueda(e.target.value)}
           style={{
             width: '100%', padding: '10px 12px 10px 36px',
-            backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e',
-            borderRadius: '10px', color: '#f5f5f5', fontSize: '15px', outline: 'none',
+            backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)',
+            borderRadius: '10px', color: 'var(--color-texto)', fontSize: '15px', outline: 'none',
           }}
         />
         {busqueda && (
@@ -74,7 +74,7 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
             onClick={() => setBusqueda('')}
             style={{
               position: 'absolute', right: '28px', top: '50%', transform: 'translateY(-18%)',
-              background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '18px', padding: 0,
+              background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: 0,
             }}
           >×</button>
         )}
@@ -83,7 +83,7 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
       {/* — Lista — */}
       <div style={{ padding: '14px 16px 0' }}>
         {cargando ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', marginTop: '40px' }}>Cargando…</p>
+          <p style={{ color: 'var(--color-texto-secundario)', textAlign: 'center', marginTop: '40px' }}>Cargando…</p>
         ) : sesionesFiltradas.length === 0 ? (
           <EstadoVacio busqueda={busqueda} haySesiones={sesiones.length > 0} onNuevo={onNuevo} />
         ) : (
@@ -106,15 +106,15 @@ function TarjetaSesion({ sesion, mapaEjercicios, onClick }) {
       style={{
         display: 'flex', alignItems: 'center', gap: '12px',
         width: '100%', padding: '14px', marginBottom: '8px',
-        backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e',
+        backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)',
         borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ margin: '0 0 4px', fontWeight: '600', color: '#f5f5f5', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {sesion.nombre}
         </p>
-        <p style={{ margin: 0, color: '#6b7280', fontSize: '13px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '13px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {sesion.descripcion || `${numEjercicios} ejercicio${numEjercicios !== 1 ? 's' : ''}`}
         </p>
       </div>
@@ -125,7 +125,7 @@ function TarjetaSesion({ sesion, mapaEjercicios, onClick }) {
       }}>
         {numEjercicios}
       </span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e2e2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-borde)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="9 18 15 12 9 6" />
       </svg>
     </button>
@@ -135,9 +135,9 @@ function TarjetaSesion({ sesion, mapaEjercicios, onClick }) {
 function EstadoVacio({ busqueda, haySesiones, onNuevo }) {
   if (busqueda || haySesiones) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '60px', color: '#6b7280' }}>
+      <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--color-texto-secundario)' }}>
         <p style={{ fontSize: '40px', margin: '0 0 12px' }}>🔍</p>
-        <p style={{ margin: '0 0 4px', fontWeight: '600', color: '#a1a1a1' }}>Sin resultados</p>
+        <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto-secundario)' }}>Sin resultados</p>
         <p style={{ margin: 0, fontSize: '14px' }}>Prueba con otro término</p>
       </div>
     )
@@ -145,10 +145,10 @@ function EstadoVacio({ busqueda, haySesiones, onNuevo }) {
   return (
     <div style={{ textAlign: 'center', marginTop: '60px' }}>
       <p style={{ fontSize: '48px', margin: '0 0 16px' }}>📋</p>
-      <p style={{ margin: '0 0 6px', fontWeight: '600', color: '#f5f5f5', fontSize: '17px' }}>
+      <p style={{ margin: '0 0 6px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '17px' }}>
         Sin plantillas de sesión
       </p>
-      <p style={{ margin: '0 0 24px', color: '#6b7280', fontSize: '14px' }}>
+      <p style={{ margin: '0 0 24px', color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
         Crea tu primera sesión de entrenamiento
       </p>
       <button onClick={onNuevo} className="app-btn-acento">

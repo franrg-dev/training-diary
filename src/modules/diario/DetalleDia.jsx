@@ -1,3 +1,5 @@
+import { getObjetivos } from '../ajustes/useObjetivos'
+
 const DIAS_LARGO  = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 const MESES_LARGO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
                      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
@@ -13,10 +15,10 @@ function formatearFechaLarga(fechaStr) {
 function SubSeccion({ titulo }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '16px 0 10px' }}>
-      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
         {titulo}
       </p>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#2e2e2e' }} />
+      <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-borde)' }} />
     </div>
   )
 }
@@ -27,10 +29,10 @@ function Campo({ label, valor, sufijo, naranja = false }) {
   const vacio = valor === '' || valor === null || valor === undefined || valor === 0 || valor === '0' || valor === false
   return (
     <div>
-      <p style={{ margin: '0 0 3px', fontSize: '10px', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <p style={{ margin: '0 0 3px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {label}
       </p>
-      <p style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: vacio ? '#374151' : naranja ? '#f97316' : '#f5f5f5' }}>
+      <p style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : naranja ? '#f97316' : 'var(--color-texto)' }}>
         {vacio ? '—' : `${valor}${sufijo ? `\u00a0${sufijo}` : ''}`}
       </p>
     </div>
@@ -42,13 +44,13 @@ function Campo({ label, valor, sufijo, naranja = false }) {
 function CampoCheck({ label, valor }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
-      <p style={{ margin: 0, fontSize: '10px', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <p style={{ margin: 0, fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {label}
       </p>
       <div style={{
         width: '20px', height: '20px', borderRadius: '5px',
-        backgroundColor: valor ? '#f97316' : '#1e1e1e',
-        border: `2px solid ${valor ? '#f97316' : '#374151'}`,
+        backgroundColor: valor ? '#f97316' : 'var(--color-superficie)',
+        border: `2px solid ${valor ? '#f97316' : 'var(--color-texto-inactivo)'}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {valor && (
@@ -87,6 +89,57 @@ function Grid4({ children }) {
   )
 }
 
+// ─── Barra de progreso ─────────────────────────────────────────────────────
+
+function BarraProgreso({ icono, label, valor, objetivo, formato, objetivoFormato }) {
+  const pct     = objetivo > 0 ? Math.min((valor / objetivo) * 100, 100) : 0
+  const completo = valor >= objetivo
+  const fmtVal  = formato ? formato(valor) : valor
+  const fmtObj  = objetivoFormato ? objetivoFormato(objetivo) : objetivo
+
+  return (
+    <div style={{
+      backgroundColor: 'var(--color-superficie-2)',
+      border: `1px solid ${completo ? '#f9731666' : 'var(--color-borde)'}`,
+      borderRadius: '12px',
+      padding: '12px 14px',
+      marginBottom: '8px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ fontSize: '16px', lineHeight: 1 }}>{icono}</span>
+          <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            {label}
+          </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+          <span style={{ fontSize: '16px', fontWeight: '700', color: completo ? '#f97316' : 'var(--color-texto)' }}>
+            {fmtVal}
+          </span>
+          <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
+            / {fmtObj}
+          </span>
+        </div>
+      </div>
+      {/* Barra */}
+      <div style={{ height: '6px', backgroundColor: 'var(--color-borde)', borderRadius: '3px', overflow: 'hidden' }}>
+        <div style={{
+          height: '100%',
+          width: `${pct}%`,
+          backgroundColor: completo ? '#f97316' : '#f9731688',
+          borderRadius: '3px',
+          transition: 'width 0.3s ease',
+        }} />
+      </div>
+      {pct > 0 && (
+        <p style={{ margin: '5px 0 0', fontSize: '11px', color: 'var(--color-texto-secundario)', textAlign: 'right' }}>
+          {Math.round(pct)}%{completo ? ' ✓' : ''}
+        </p>
+      )}
+    </div>
+  )
+}
+
 // ─── Componente principal ─────────────────────────────────────────────────
 
 /**
@@ -95,6 +148,7 @@ function Grid4({ children }) {
  */
 export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
   const e = entrada || {}
+  const objetivos = getObjetivos()
 
   // Diferencia kcal calculada
   const c = Number(e.kcalConsumidas)   || 0
@@ -125,7 +179,7 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
         </button>
       </div>
 
-      <h1 style={{ margin: '0 0 20px', fontSize: '20px', fontWeight: '700', color: '#f5f5f5' }}>
+      <h1 style={{ margin: '0 0 20px', fontSize: '20px', fontWeight: '700', color: 'var(--color-texto)' }}>
         {formatearFechaLarga(fecha)}
       </h1>
 
@@ -160,13 +214,36 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
         <Campo label="Gr" valor={e.grasas} sufijo="g" />
       </Grid4>
 
-      {/* Fila 5: Pasos | Movilidad | Core | Agua */}
-      <Grid4>
-        <Campo label="Pasos" valor={e.pasos} />
+      {/* Fila 5: Movilidad | Core + barras de pasos y agua */}
+      <Grid2>
         <CampoCheck label="Movilidad" valor={!!e.movilidad} />
         <CampoCheck label="Core" valor={!!e.core} />
-        <Campo label="Agua" valor={e.agua} sufijo="L" />
-      </Grid4>
+      </Grid2>
+
+      {/* Pasos — barra de progreso si hay objetivo */}
+      {objetivos.pasos > 0
+        ? <BarraProgreso
+            icono="👟"
+            label="Pasos"
+            valor={Number(e.pasos) || 0}
+            objetivo={objetivos.pasos}
+            formato={v => v.toLocaleString('es')}
+          />
+        : <div style={{ marginBottom: '8px' }}><Campo label="Pasos" valor={e.pasos} /></div>
+      }
+
+      {/* Agua — barra de progreso si hay objetivo */}
+      {objetivos.agua > 0
+        ? <BarraProgreso
+            icono="💧"
+            label="Agua"
+            valor={Number(e.agua) || 0}
+            objetivo={objetivos.agua}
+            formato={v => `${v.toFixed(1)} L`}
+            objetivoFormato={v => `${v} L`}
+          />
+        : <div style={{ marginBottom: '8px' }}><Campo label="Agua" valor={e.agua} sufijo="L" /></div>
+      }
 
       {/* ── Valores Corporales ── */}
       <SubSeccion titulo="Valores Corporales" />

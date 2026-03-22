@@ -59,7 +59,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
           <IconoEjercicio grupos={grupos} grupoPrincipal={ejercicio.grupoPrincipal} size={26} />
         </div>
         <div>
-          <h1 style={{ margin: '0 0 8px', fontSize: '22px', fontWeight: '700', color: '#f5f5f5' }}>
+          <h1 style={{ margin: '0 0 8px', fontSize: '22px', fontWeight: '700', color: 'var(--color-texto)' }}>
             {ejercicio.nombre}
           </h1>
           {/* Un badge por cada grupo muscular */}
@@ -87,7 +87,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
       {/* — Modo de registro cardio — */}
       {grupos.includes('cardio') && (
         <div className="app-card" style={{ marginBottom: '12px' }}>
-          <p style={{ margin: '0 0 8px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ margin: '0 0 8px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Unidad de medida
           </p>
           <p style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: '#f97316' }}>
@@ -99,7 +99,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
       {/* — Volumen de trabajo — */}
       {(ejercicio.series > 0 || ejercicio.repeticiones) && (
         <div className="app-card" style={{ marginBottom: '12px' }}>
-          <p style={{ margin: '0 0 12px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ margin: '0 0 12px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Volumen de trabajo
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
@@ -108,7 +108,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
                 <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: '#f97316' }}>
                   {ejercicio.series}
                 </p>
-                <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>Series</p>
+                <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>Series</p>
               </div>
             )}
             {ejercicio.repeticiones && (
@@ -116,7 +116,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
                 <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: '#f97316' }}>
                   {ejercicio.repeticiones}
                 </p>
-                <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>Repeticiones</p>
+                <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>Repeticiones</p>
               </div>
             )}
           </div>
@@ -126,10 +126,10 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
       {/* — Ejecución — */}
       {ejercicio.ejecucion && (
         <div className="app-card" style={{ marginBottom: '12px' }}>
-          <p style={{ margin: '0 0 8px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ margin: '0 0 8px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Ejecución
           </p>
-          <p style={{ margin: 0, color: '#d1d5db', fontSize: '15px', lineHeight: '1.65', whiteSpace: 'pre-wrap' }}>
+          <p style={{ margin: 0, color: 'var(--color-texto)', fontSize: '15px', lineHeight: '1.65', whiteSpace: 'pre-wrap' }}>
             {ejercicio.ejecucion}
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
       {/* — Sustitutos — */}
       {sustitutos.length > 0 && (
         <div className="app-card" style={{ marginBottom: '12px' }}>
-          <p style={{ margin: '0 0 12px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ margin: '0 0 12px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Ejercicios sustitutos
           </p>
           {sustitutos.map(sust => {
@@ -149,12 +149,12 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
                 key={sust.id}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '10px',
-                  padding: '8px 0', borderBottom: '1px solid #2e2e2e',
+                  padding: '8px 0', borderBottom: '1px solid var(--color-borde)',
                 }}
               >
                 <span style={{ fontSize: '16px' }}>{cPrimero.emoji}</span>
-                <span style={{ fontSize: '14px', color: '#f5f5f5', flex: 1 }}>{sust.nombre}</span>
-                <span style={{ fontSize: '12px', color: '#6b7280' }}>
+                <span style={{ fontSize: '14px', color: 'var(--color-texto)', flex: 1 }}>{sust.nombre}</span>
+                <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
                   {gruposSust.map(capitalizarGrupo).join(', ')}
                 </span>
               </div>
@@ -170,10 +170,10 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
           style={{
             flex: 1,
             padding: '13px',
-            backgroundColor: '#1a1a1a',
-            border: '1px solid #2e2e2e',
+            backgroundColor: 'var(--color-superficie)',
+            border: '1px solid var(--color-borde)',
             borderRadius: '12px',
-            color: '#f5f5f5',
+            color: 'var(--color-texto)',
             fontSize: '15px',
             fontWeight: '600',
             cursor: 'pointer',
@@ -205,15 +205,15 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
           style={{
             marginTop: '12px',
             padding: '16px',
-            backgroundColor: '#1a1a1a',
+            backgroundColor: 'var(--color-superficie)',
             border: '1px solid #dc262644',
             borderRadius: '12px',
           }}
         >
-          <p style={{ margin: '0 0 14px', color: '#f5f5f5', fontSize: '15px', fontWeight: '500' }}>
+          <p style={{ margin: '0 0 14px', color: 'var(--color-texto)', fontSize: '15px', fontWeight: '500' }}>
             ¿Eliminar <strong>{ejercicio.nombre}</strong>?
           </p>
-          <p style={{ margin: '0 0 16px', color: '#a1a1a1', fontSize: '13px', lineHeight: '1.5' }}>
+          <p style={{ margin: '0 0 16px', color: 'var(--color-texto-secundario)', fontSize: '13px', lineHeight: '1.5' }}>
             Se eliminará del catálogo y de la lista de sustitutos de otros ejercicios. Esta acción no se puede deshacer.
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -222,8 +222,8 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
               disabled={eliminando}
               style={{
                 flex: 1, padding: '11px',
-                backgroundColor: 'transparent', border: '1px solid #2e2e2e',
-                borderRadius: '10px', color: '#a1a1a1', fontSize: '14px',
+                backgroundColor: 'transparent', border: '1px solid var(--color-borde)',
+                borderRadius: '10px', color: 'var(--color-texto-secundario)', fontSize: '14px',
                 fontWeight: '600', cursor: 'pointer',
               }}
             >

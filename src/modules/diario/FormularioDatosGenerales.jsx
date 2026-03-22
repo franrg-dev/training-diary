@@ -61,7 +61,7 @@ function InputHora({ value, onChange }) {
       type="time"
       value={value || ''}
       onChange={e => onChange(e.target.value)}
-      style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }}
+      style={{ ...estiloInputBase, textAlign: 'center' }}
     />
   )
 }
@@ -71,10 +71,10 @@ function InputHora({ value, onChange }) {
 function SubSeccion({ titulo }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '16px 0 10px' }}>
-      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+      <p style={{ margin: 0, fontSize: '11px', fontWeight: '600', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
         {titulo}
       </p>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#2e2e2e' }} />
+      <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-borde)' }} />
     </div>
   )
 }
@@ -97,8 +97,8 @@ function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly 
           style={{
             ...estiloInputBase,
             textAlign: 'center',
-            color: readOnly ? '#4b5563' : highlight ? '#f97316' : '#f5f5f5',
-            backgroundColor: readOnly ? '#111' : '#1e1e1e',
+            color: readOnly ? 'var(--color-texto-inactivo)' : highlight ? '#f97316' : 'var(--color-texto)',
+            backgroundColor: readOnly ? 'var(--color-fondo)' : 'var(--color-superficie)',
             paddingRight: sufijo ? '30px' : '10px',
             fontWeight: highlight ? '700' : '400',
           }}
@@ -119,17 +119,17 @@ function CheckCompact({ label, checked, onChange }) {
       style={{
         width: '100%', padding: '9px 4px',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px',
-        backgroundColor: checked ? '#f9731622' : '#1e1e1e',
-        border: `1px solid ${checked ? '#f97316' : '#2e2e2e'}`,
+        backgroundColor: checked ? '#f9731622' : 'var(--color-superficie)',
+        border: `1px solid ${checked ? '#f97316' : 'var(--color-borde)'}`,
         borderRadius: '8px', cursor: 'pointer',
-        color: checked ? '#f97316' : '#6b7280',
+        color: checked ? '#f97316' : 'var(--color-texto-secundario)',
         transition: 'all 0.15s',
       }}
     >
       <div style={{
         width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0,
         backgroundColor: checked ? '#f97316' : 'transparent',
-        border: `2px solid ${checked ? '#f97316' : '#4b5563'}`,
+        border: `2px solid ${checked ? '#f97316' : 'var(--color-texto-inactivo)'}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {checked && (
@@ -258,7 +258,7 @@ export default function FormularioDatosGenerales({
           </svg>
           Volver
         </button>
-        <p style={{ flex: 1, margin: 0, fontSize: '15px', fontWeight: '700', color: '#f5f5f5', textAlign: 'center' }}>
+        <p style={{ flex: 1, margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--color-texto)', textAlign: 'center' }}>
           {formatearFechaLarga(fecha)}
         </p>
         <div style={{ width: '52px' }} />
@@ -324,7 +324,7 @@ export default function FormularioDatosGenerales({
         <div>
           <label style={estiloLabelPequeno}>Báscula</label>
           <select value={bascula} onChange={e => setBascula(e.target.value)}
-            style={{ ...estiloInputBase, color: bascula ? '#f5f5f5' : '#4b5563' }}>
+            style={{ ...estiloInputBase, color: bascula ? 'var(--color-texto)' : 'var(--color-texto-inactivo)' }}>
             <option value="">—</option>
             <option value="B.Valencia">B.Valencia</option>
             <option value="B.Jumilla">B.Jumilla</option>
@@ -366,7 +366,7 @@ export default function FormularioDatosGenerales({
         disabled={guardando}
         style={{
           width: '100%', padding: '14px',
-          backgroundColor: guardando ? '#374151' : '#f97316',
+          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : '#f97316',
           color: '#fff', fontWeight: '700', fontSize: '16px',
           border: 'none', borderRadius: '12px', cursor: guardando ? 'default' : 'pointer',
         }}
@@ -381,9 +381,9 @@ export default function FormularioDatosGenerales({
 // ─── Estilos ─────────────────────────────────────────────────────────────
 
 function estiloAccion(dis) {
-  return { background: 'none', border: 'none', color: dis ? '#6b7280' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
+  return { background: 'none', border: 'none', color: dis ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
 }
 
-const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: '#1e1e1e', border: '1px solid #2e2e2e', borderRadius: '8px', color: '#f5f5f5', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
-const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: '#4b5563', pointerEvents: 'none' }
+const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
+const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
+const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-inactivo)', pointerEvents: 'none' }

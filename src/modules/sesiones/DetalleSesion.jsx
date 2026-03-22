@@ -37,11 +37,11 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
         </button>
       </div>
 
-      <h1 style={{ margin: '0 0 8px', fontSize: '24px', fontWeight: '700', color: '#f5f5f5' }}>
+      <h1 style={{ margin: '0 0 8px', fontSize: '24px', fontWeight: '700', color: 'var(--color-texto)' }}>
         {sesion.nombre}
       </h1>
       {sesion.descripcion && (
-        <p style={{ margin: '0 0 20px', color: '#a1a1a1', fontSize: '14px', lineHeight: '1.6' }}>
+        <p style={{ margin: '0 0 20px', color: 'var(--color-texto-secundario)', fontSize: '14px', lineHeight: '1.6' }}>
           {sesion.descripcion}
         </p>
       )}
@@ -61,16 +61,16 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
                 style={{
                   display: 'flex', alignItems: 'center', gap: '12px',
                   padding: '10px 0',
-                  borderBottom: i < sesion.ejercicios.length - 1 ? '1px solid #2e2e2e' : 'none',
+                  borderBottom: i < sesion.ejercicios.length - 1 ? '1px solid var(--color-borde)' : 'none',
                 }}
               >
                 <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ margin: '0 0 2px', fontSize: '14px', fontWeight: '600', color: '#f5f5f5', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <p style={{ margin: '0 0 2px', fontSize: '14px', fontWeight: '600', color: 'var(--color-texto)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {ej.nombre}
                   </p>
                   {(item.series || item.repeticiones) && (
-                    <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
                       {item.series || '—'} series × {item.repeticiones || '—'} reps
                     </p>
                   )}
@@ -81,7 +81,7 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
         </div>
       ) : (
         <div className="app-card" style={{ marginBottom: '12px', textAlign: 'center' }}>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>Sin ejercicios en esta sesión</p>
+          <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>Sin ejercicios en esta sesión</p>
         </div>
       )}
 
@@ -93,18 +93,18 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
 
       {/* — Confirmación de borrado inline — */}
       {confirmarBorrar && (
-        <div style={{ marginTop: '12px', padding: '16px', backgroundColor: '#1a1a1a', border: '1px solid #dc262644', borderRadius: '12px' }}>
-          <p style={{ margin: '0 0 14px', color: '#f5f5f5', fontSize: '15px', fontWeight: '500' }}>
+        <div style={{ marginTop: '12px', padding: '16px', backgroundColor: 'var(--color-superficie)', border: '1px solid #dc262644', borderRadius: '12px' }}>
+          <p style={{ margin: '0 0 14px', color: 'var(--color-texto)', fontSize: '15px', fontWeight: '500' }}>
             ¿Eliminar <strong>{sesion.nombre}</strong>?
           </p>
-          <p style={{ margin: '0 0 16px', color: '#a1a1a1', fontSize: '13px', lineHeight: '1.5' }}>
+          <p style={{ margin: '0 0 16px', color: 'var(--color-texto-secundario)', fontSize: '13px', lineHeight: '1.5' }}>
             Se eliminará la plantilla. Los entrenamientos del diario que la usaban no se verán afectados.
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
             <button
               onClick={() => setConfirmarBorrar(false)}
               disabled={eliminando}
-              style={{ flex: 1, padding: '11px', backgroundColor: 'transparent', border: '1px solid #2e2e2e', borderRadius: '10px', color: '#a1a1a1', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}
+              style={{ flex: 1, padding: '11px', backgroundColor: 'transparent', border: '1px solid var(--color-borde)', borderRadius: '10px', color: 'var(--color-texto-secundario)', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}
             >
               Cancelar
             </button>
@@ -122,6 +122,6 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
   )
 }
 
-const estiloSeccion    = { margin: '0 0 10px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }
-const estiloBotonEditar  = { flex: 1, padding: '13px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '12px', color: '#f5f5f5', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }
+const estiloSeccion    = { margin: '0 0 10px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }
+const estiloBotonEditar  = { flex: 1, padding: '13px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '12px', color: 'var(--color-texto)', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }
 const estiloBotonEliminar = { flex: 1, padding: '13px', backgroundColor: '#7f1d1d22', border: '1px solid #dc262644', borderRadius: '12px', color: '#f87171', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }
