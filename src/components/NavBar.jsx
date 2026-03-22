@@ -25,12 +25,21 @@ export default function NavBar() {
 
   return (
     <>
-      <nav
+      {/* Wrapper fijado a bottom:0 (posición más fiable en iOS).
+          El padding crea el margen visual alrededor de la pill. */}
+      <div
         style={{
           position: 'fixed',
-          bottom: '16px',
-          left: '16px',
-          right: '16px',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '0 16px 16px',
+          pointerEvents: 'none',
+          zIndex: 100,
+        }}
+      >
+      <nav
+        style={{
           height: '64px',
           backgroundColor: 'var(--navbar-bg)',
           backdropFilter: 'blur(24px) saturate(180%)',
@@ -40,7 +49,7 @@ export default function NavBar() {
           boxShadow: 'var(--navbar-sombra)',
           display: 'flex',
           alignItems: 'center',
-          zIndex: 100,
+          pointerEvents: 'auto',
         }}
       >
         {/* Suplementos + Ejercicios */}
@@ -110,6 +119,7 @@ export default function NavBar() {
           </NavLink>
         ))}
       </nav>
+      </div>
     </>
   )
 }
