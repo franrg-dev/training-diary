@@ -516,7 +516,7 @@ export default function FormularioEntrenamiento({
 function InputHora({ value, onChange }) {
   return (
     <input type="time" value={value || ''} onChange={e => onChange(e.target.value)}
-      style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
+      style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark', paddingLeft: '4px', paddingRight: '4px', minWidth: 0, fontSize: '13px' }} />
   )
 }
 
