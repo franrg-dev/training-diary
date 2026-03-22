@@ -27,7 +27,7 @@ export default function NavBar() {
     <>
       <nav
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '1px',
           left: '16px',
           right: '16px',
