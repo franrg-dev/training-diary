@@ -3,14 +3,14 @@
  * Se usa en tarjetas, badges y el formulario.
  */
 export const COLORES_GRUPO = {
-  pecho:    { bg: '#3b1d8a22', border: '#7c3aed66', texto: '#a78bfa', emoji: '🫁' },
-  espalda:  { bg: '#0e374422', border: '#0891b266', texto: '#22d3ee', emoji: '🔙' },
-  hombro:   { bg: '#2d1b6922', border: '#6d28d966', texto: '#c4b5fd', emoji: '🔺' },
-  bíceps:   { bg: '#1e3a8a22', border: '#2563eb66', texto: '#60a5fa', emoji: '💪' },
-  tríceps:  { bg: '#1e1b4b22', border: '#4338ca66', texto: '#818cf8', emoji: '🔻' },
-  pierna:   { bg: '#064e3b22', border: '#05966966', texto: '#34d399', emoji: '🦵' },
-  core:     { bg: '#78350f22', border: '#d9740666', texto: '#fbbf24', emoji: '⚡' },
-  cardio:   { bg: '#7f1d1d22', border: '#dc262666', texto: '#f87171', emoji: '❤️' },
+  pecho:    { bg: '#E5393522', border: '#E5393566', texto: '#E53935', iconoColor: '#E53935' },
+  espalda:  { bg: '#1E88E522', border: '#1E88E566', texto: '#1E88E5', iconoColor: '#1E88E5' },
+  hombro:   { bg: '#FB8C0022', border: '#FB8C0066', texto: '#FB8C00', iconoColor: '#FB8C00' },
+  bíceps:   { bg: '#FDD83522', border: '#FDD83566', texto: '#FDD835', iconoColor: '#FDD835' },
+  tríceps:  { bg: '#8E24AA22', border: '#8E24AA66', texto: '#8E24AA', iconoColor: '#8E24AA' },
+  pierna:   { bg: '#43A04722', border: '#43A04766', texto: '#43A047', iconoColor: '#43A047' },
+  core:     { bg: '#6D4C4122', border: '#6D4C4166', texto: '#6D4C41', iconoColor: '#6D4C41' },
+  cardio:   { bg: '#00ACC122', border: '#00ACC166', texto: '#00ACC1', iconoColor: '#00ACC1' },
 }
 
 /**

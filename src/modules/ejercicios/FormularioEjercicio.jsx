@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { GRUPOS_MUSCULARES } from '../../db/database'
 import { COLORES_GRUPO, capitalizarGrupo } from './coloresGrupo'
+import { IconoEjercicio } from './iconosEjercicio'
 
 /**
  * Formulario de creación y edición de ejercicios.
@@ -26,6 +27,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
       repeticiones:   ejercicio?.repeticiones   || '',
       ejecucion:      ejercicio?.ejecucion      || '',
       sustitutos:     ejercicio?.sustitutos     || [],
+      modo:           ejercicio?.modo           || 'km',
     }
   })
   const [errores, setErrores]                 = useState({})
@@ -237,8 +239,8 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
         </Campo>
       )}
 
-      {/* — Campos: Series y Repeticiones (en fila) — */}
-      <div style={{ display: 'flex', gap: '12px' }}>
+      {/* — Campos: Series y Repeticiones (solo si no es cardio) — */}
+      {!campos.gruposMuscular.includes('cardio') && <div style={{ display: 'flex', gap: '12px' }}>
         <Campo etiqueta="Series" style={{ flex: 1 }}>
           <input
             type="number"
@@ -261,7 +263,32 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
             style={{ ...estiloInput(), textAlign: 'center', fontSize: '18px' }}
           />
         </Campo>
-      </div>
+      </div>}
+
+      {/* — Modo de registro (solo cardio) — */}
+      {campos.gruposMuscular.includes('cardio') && (
+        <Campo etiqueta="Unidad de medida">
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {[['km', 'Km/h · Km'], ['veces', 'Rp/m · Rp']].map(([val, label]) => (
+              <button
+                key={val}
+                type="button"
+                onClick={() => actualizarCampo('modo', val)}
+                style={{
+                  flex: 1, padding: '12px',
+                  backgroundColor: campos.modo === val ? '#f9731622' : 'transparent',
+                  border: `1px solid ${campos.modo === val ? '#f97316' : '#2e2e2e'}`,
+                  borderRadius: '10px',
+                  color: campos.modo === val ? '#f97316' : '#6b7280',
+                  fontSize: '14px', fontWeight: '600', cursor: 'pointer',
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </Campo>
+      )}
 
       {/* — Campo: Ejecución — */}
       <Campo etiqueta="Descripción de ejecución">
@@ -354,8 +381,6 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                   const seleccionado = campos.sustitutos.includes(ej.id)
                   const primerGrupo  = (ej.gruposMuscular || [])[0]
                   const c = COLORES_GRUPO[primerGrupo] || COLORES_GRUPO.core
-                  // Emojis de todos los grupos del ejercicio candidato
-                  const emojis = (ej.gruposMuscular || []).map(g => COLORES_GRUPO[g]?.emoji).filter(Boolean).join(' ')
                   return (
                     <button
                       key={ej.id}
@@ -369,7 +394,9 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                         cursor: 'pointer', textAlign: 'left',
                       }}
                     >
-                      <span style={{ fontSize: '16px', flexShrink: 0 }}>{emojis || c.emoji}</span>
+                      <span style={{ flexShrink: 0 }}>
+                        <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
+                      </span>
                       <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5' }}>{ej.nombre}</span>
                       <span style={{ fontSize: '11px', color: '#6b7280', flexShrink: 0 }}>
                         {(ej.gruposMuscular || []).map(capitalizarGrupo).join(', ')}

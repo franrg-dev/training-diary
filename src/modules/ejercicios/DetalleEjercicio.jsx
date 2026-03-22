@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { COLORES_GRUPO, capitalizarGrupo } from './coloresGrupo'
+import { IconoEjercicio } from './iconosEjercicio'
 
 /**
  * Vista de detalle de un ejercicio.
@@ -52,10 +53,10 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
             width: '56px', height: '56px', borderRadius: '14px',
             backgroundColor: colores.bg, border: `1px solid ${colores.border}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '26px', flexShrink: 0,
+            flexShrink: 0,
           }}
         >
-          {colores.emoji}
+          <IconoEjercicio grupos={grupos} grupoPrincipal={ejercicio.grupoPrincipal} size={26} />
         </div>
         <div>
           <h1 style={{ margin: '0 0 8px', fontSize: '22px', fontWeight: '700', color: '#f5f5f5' }}>
@@ -83,13 +84,25 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
         </div>
       </div>
 
+      {/* — Modo de registro cardio — */}
+      {grupos.includes('cardio') && (
+        <div className="app-card" style={{ marginBottom: '12px' }}>
+          <p style={{ margin: '0 0 8px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            Unidad de medida
+          </p>
+          <p style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: '#f97316' }}>
+            {ejercicio.modo === 'veces' ? 'Rp/m · Rp' : 'Km/h · Km'}
+          </p>
+        </div>
+      )}
+
       {/* — Volumen de trabajo — */}
       {(ejercicio.series > 0 || ejercicio.repeticiones) && (
         <div className="app-card" style={{ marginBottom: '12px' }}>
           <p style={{ margin: '0 0 12px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Volumen de trabajo
           </p>
-          <div style={{ display: 'flex', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
             {ejercicio.series > 0 && (
               <div>
                 <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: '#f97316' }}>

@@ -28,14 +28,16 @@ export function useEjercicios() {
   const crear = useCallback(async (datos) => {
     const grupos = datos.gruposMuscular || []
     const id = await db.ejercicios.add({
+      id:              crypto.randomUUID(),
       nombre:          datos.nombre.trim(),
       gruposMuscular:  grupos,
-      // grupoPrincipal: grupo cuyo icono/color representa al ejercicio en listas
       grupoPrincipal:  datos.grupoPrincipal || grupos[0] || '',
       series:          Number(datos.series) || 0,
       repeticiones:    datos.repeticiones.trim(),
       ejecucion:       datos.ejecucion.trim(),
       sustitutos:      datos.sustitutos || [],
+      // modo: solo relevante para cardio ('km' | 'veces')
+      modo:            grupos.includes('cardio') ? (datos.modo || 'km') : undefined,
     })
     await cargar()
     return id
@@ -52,6 +54,7 @@ export function useEjercicios() {
       repeticiones:    datos.repeticiones.trim(),
       ejecucion:       datos.ejecucion.trim(),
       sustitutos:      datos.sustitutos || [],
+      modo:            grupos.includes('cardio') ? (datos.modo || 'km') : undefined,
     })
     await cargar()
   }, [cargar])

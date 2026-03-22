@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
+import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 
 /**
  * Vista de detalle de una sesión de entrenamiento.
@@ -63,10 +64,7 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
                   borderBottom: i < sesion.ejercicios.length - 1 ? '1px solid #2e2e2e' : 'none',
                 }}
               >
-                <span style={{ fontSize: '13px', color: '#4b5563', fontWeight: '600', width: '20px', textAlign: 'right', flexShrink: 0 }}>
-                  {i + 1}.
-                </span>
-                <span style={{ fontSize: '16px' }}>{colores.emoji}</span>
+                <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ margin: '0 0 2px', fontSize: '14px', fontWeight: '600', color: '#f5f5f5', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {ej.nombre}

@@ -1,12 +1,13 @@
 import { useState, useMemo } from 'react'
 import { GRUPOS_MUSCULARES } from '../../db/database'
 import { COLORES_GRUPO, capitalizarGrupo } from './coloresGrupo'
+import { IconoEjercicio } from './iconosEjercicio'
 
 /**
  * Vista de lista del módulo Ejercicios.
  * Muestra todos los ejercicios con búsqueda por nombre y filtro por grupo muscular.
  */
-export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, onNuevo }) {
+export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, onNuevo, tituloDropdown = null }) {
   const [busqueda, setBusqueda]       = useState('')
   const [grupoFiltro, setGrupoFiltro] = useState(null) // null = todos
 
@@ -38,9 +39,11 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
       <div style={{ padding: '20px 16px 0' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
           <div>
-            <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>
-              Ejercicios
-            </h1>
+            {tituloDropdown ?? (
+              <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>
+                Ejercicios
+              </h1>
+            )}
             <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
               {ejercicios.length} en el catálogo
             </p>
@@ -195,10 +198,10 @@ function TarjetaEjercicio({ ejercicio, onClick }) {
           width: '42px', height: '42px', borderRadius: '10px',
           backgroundColor: primero.bg, border: `1px solid ${primero.border}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0, fontSize: '18px',
+          flexShrink: 0,
         }}
       >
-        {primero.emoji}
+        <IconoEjercicio grupos={ejercicio.gruposMuscular} grupoPrincipal={ejercicio.grupoPrincipal} size={20} />
       </div>
 
       {/* Nombre y grupos */}

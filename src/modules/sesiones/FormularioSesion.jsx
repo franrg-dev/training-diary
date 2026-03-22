@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { COLORES_GRUPO, capitalizarGrupo } from '../ejercicios/coloresGrupo'
+import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 
 /**
  * Formulario de creación/edición de sesiones.
@@ -149,7 +150,7 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
             <div key={idx} style={{ backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '12px', padding: '12px', marginBottom: '8px' }}>
               {/* Nombre + controles de orden */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                <span style={{ fontSize: '16px' }}>{colores.emoji}</span>
+                <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                 <span style={{ flex: 1, fontWeight: '600', color: '#f5f5f5', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {ej.nombre}
                 </span>
@@ -223,7 +224,7 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
                       onClick={() => añadirEjercicio(ej)}
                       style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px 14px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #1a1a1a', cursor: 'pointer', textAlign: 'left' }}
                     >
-                      <span style={{ fontSize: '16px', flexShrink: 0 }}>{colores.emoji}</span>
+                      <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                       <span style={{ flex: 1, fontSize: '14px', color: '#f5f5f5' }}>{ej.nombre}</span>
                       <span style={{ fontSize: '11px', color: '#6b7280', flexShrink: 0 }}>
                         {(ej.gruposMuscular || []).map(capitalizarGrupo).join(', ')}
