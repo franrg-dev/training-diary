@@ -72,7 +72,7 @@ html, body {
 }
 
 #root {
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -80,7 +80,9 @@ html, body {
 /* Área de contenido principal (deja espacio para la navbar inferior) */
 .contenido-principal {
   flex: 1;
+  min-height: 0;    /* permite que flex shrink active el scroll interno */
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: calc(var(--altura-navbar) + var(--safe-area-bottom) + 16px);
   padding-top: var(--safe-area-top);
 }
