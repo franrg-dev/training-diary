@@ -65,6 +65,7 @@ export default function FormularioEntrenamiento({
   const [cardioKcalQuemadas,       setCardioKcalQuemadas]       = useState(entrada?.cardioKcalQuemadas       || '')
   const [cardioFrecuenciaCardiaca, setCardioFrecuenciaCardiaca] = useState(entrada?.cardioFrecuenciaCardiaca || '')
 
+  const [idxSustituyendo, setIdxSustituyendo] = useState(null)
   const [guardando, setGuardando] = useState(false)
   const [errorMsg,  setErrorMsg]  = useState(null)
 
@@ -122,6 +123,19 @@ export default function FormularioEntrenamiento({
     setEjerciciosCardio(prev => [...prev, { ejercicioId: ejId, modo: ej?.modo || 'km', duracion: '', ritmo: '', volumen: '', sensaciones: '' }])
     setSelectorCardioAbierto(false)
     setBusquedaCardio('')
+  }
+
+  function sustituirEjercicio(idx, nuevoId) {
+    const actual = ejerciciosDia[idx]
+    const u = ultimosPesos[nuevoId]
+    setEjerciciosDia(prev => prev.map((e, i) => i !== idx ? e : {
+      ...actual,
+      ejercicioId:     nuevoId,
+      peso:            u ? String(u.peso) : '',
+      unidad:          u?.unidad || actual.unidad || 'kg',
+      _sugerenciaPeso: u ? `${u.peso} ${u.unidad}` : null,
+    }))
+    setIdxSustituyendo(null)
   }
 
   function actualizarCardio(idx, campo, valor) {
@@ -282,8 +296,40 @@ export default function FormularioEntrenamiento({
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
               <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
               <span style={{ flex: 1, fontWeight: '600', color: 'var(--color-texto)', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ej.nombre}</span>
+              {/* Botón sustituir */}
+              <button
+                type="button"
+                onClick={() => setIdxSustituyendo(i => i === idx ? null : idx)}
+                style={{ ...estiloX, color: idxSustituyendo === idx ? '#f97316' : 'var(--color-texto-secundario)' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 5h10M9 2l3 3-3 3" />
+                  <path d="M14 11H4M7 8l-3 3 3 3" />
+                </svg>
+              </button>
               <button onClick={() => setEjerciciosDia(p => p.filter((_, i) => i !== idx))} style={estiloX}>×</button>
             </div>
+            {/* Panel de sustitutos */}
+            {idxSustituyendo === idx && (
+              <div style={{ marginBottom: '10px', backgroundColor: 'var(--color-fondo)', border: '1px solid var(--color-borde)', borderRadius: '8px', overflow: 'hidden' }}>
+                {!(ej.sustitutos || []).length
+                  ? <p style={{ margin: 0, padding: '12px', fontSize: '12px', color: 'var(--color-texto-secundario)', textAlign: 'center' }}>Sin sustitutos definidos para este ejercicio</p>
+                  : (ej.sustitutos || []).map(susId => {
+                      const sus = mapaEjercicios[susId]
+                      if (!sus) return null
+                      const u = ultimosPesos[susId]
+                      return (
+                        <button key={susId} type="button" onClick={() => sustituirEjercicio(idx, susId)}
+                          style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', padding: '10px 12px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--color-borde)', cursor: 'pointer', textAlign: 'left' }}>
+                          <IconoEjercicio grupos={sus.gruposMuscular} grupoPrincipal={sus.grupoPrincipal} size={16} />
+                          <span style={{ flex: 1, fontSize: '13px', color: 'var(--color-texto)' }}>{sus.nombre}</span>
+                          {u && <span style={{ fontSize: '11px', color: '#f97316', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
+                        </button>
+                      )
+                    })
+                }
+              </div>
+            )}
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
               <input type="number" inputMode="decimal" placeholder={item._sugerenciaPeso || '0'}
                 value={item.peso} onChange={e => actualizarFuerza(idx, 'peso', e.target.value)}

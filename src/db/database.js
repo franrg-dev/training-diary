@@ -49,6 +49,27 @@ db.version(3).stores({
   registro:   '@id, ejercicioId, fecha',
 })
 
+// v4: garantiza relaciones bidireccionales en sustitutos para datos existentes.
+// Si A tiene B como sustituto pero B no tiene A, lo añade automáticamente.
+db.version(4).stores({
+  ejercicios: '@id, nombre, *gruposMuscular',
+  sesiones:   '@id, nombre',
+  diario:     '@id, fecha, sesionId',
+  registro:   '@id, ejercicioId, fecha',
+}).upgrade(async tx => {
+  const todos = await tx.ejercicios.toArray()
+  for (const ej of todos) {
+    for (const susId of (ej.sustitutos || [])) {
+      const sus = todos.find(e => e.id === susId)
+      if (sus && !(sus.sustitutos || []).includes(ej.id)) {
+        await tx.ejercicios.update(susId, {
+          sustitutos: [...(sus.sustitutos || []), ej.id],
+        })
+      }
+    }
+  }
+})
+
 // Configuración del cloud (se activa solo cuando el usuario inicia sesión)
 // La URL se inyecta como variable de entorno en build (VITE_DEXIE_URL)
 db.cloud.configure({

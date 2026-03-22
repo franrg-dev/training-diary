@@ -98,8 +98,12 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
     }
   }
 
-  // Ejercicios disponibles como sustitutos (todos excepto el que se está editando)
-  const candidatosSustitutos = todosEjercicios.filter(ej => ej.id !== ejercicio?.id)
+  // Ejercicios disponibles como sustitutos: mismos grupos musculares, excluye el actual
+  const candidatosSustitutos = todosEjercicios.filter(ej => {
+    if (ej.id === ejercicio?.id) return false
+    if (campos.gruposMuscular.length === 0) return false
+    return (ej.gruposMuscular || []).some(g => campos.gruposMuscular.includes(g))
+  })
 
   // Filtrados por búsqueda dentro del selector
   const candidatosFiltrados = candidatosSustitutos.filter(ej =>

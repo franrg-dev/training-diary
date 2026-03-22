@@ -87,7 +87,7 @@ export default function PaginaDiario() {
     }
     if (entradaActiva?.id) {
       await actualizar(entradaActiva.id, fusion)
-      setEntradaActiva(prev => ({ ...prev, ...nuevosDatos }))
+      setEntradaActiva({ ...fusion })
     } else {
       const id = await crear(fusion)
       setEntradaActiva({ id, ...fusion })

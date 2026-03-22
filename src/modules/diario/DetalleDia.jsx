@@ -81,10 +81,91 @@ function Grid3({ children }) {
   )
 }
 
-function Grid4({ children }) {
+
+// ─── Indicador circular KCal ──────────────────────────────────────────────
+
+const ROJO    = '#f87171'
+const NARANJA = '#f97316'
+const VERDE   = '#4ade80'
+
+function calcularEstadoKcal(dif, objetivo) {
+  if (objetivo < 0) {
+    if (dif > 0)           return { color: ROJO,    progreso: 1 }
+    if (dif <= objetivo)   return { color: VERDE,   progreso: 1 }
+    return { color: NARANJA, progreso: dif / objetivo } // ambos neg → 0..1
+  }
+  if (objetivo === 0) {
+    const abs = Math.abs(dif)
+    const color = abs <= 100 ? VERDE : abs <= 300 ? NARANJA : ROJO
+    return { color, progreso: Math.min(abs / 300, 1) }
+  }
+  // objetivo > 0
+  if (dif < 0)             return { color: ROJO,    progreso: 1 }
+  if (dif >= objetivo)     return { color: VERDE,   progreso: 1 }
+  return { color: NARANJA, progreso: dif / objetivo }
+}
+
+function IndicadorKcal({ difKcal, objetivo }) {
+  const tieneObjetivo = objetivo !== 0 && objetivo != null
+  const tieneDatos    = difKcal !== '' && difKcal != null
+
+  let arcColor = null
+  let progreso = 0
+  let valColor = 'var(--color-texto-inactivo)'
+
+  if (tieneDatos) {
+    valColor = 'var(--color-texto)'
+    if (tieneObjetivo) {
+      const estado = calcularEstadoKcal(Number(difKcal), Number(objetivo))
+      arcColor = estado.color
+      progreso = Math.max(0, Math.min(1, estado.progreso))
+      valColor = estado.color
+    }
+  }
+
+  const signo = tieneDatos && Number(difKcal) > 0 ? '+' : ''
+  const texto = tieneDatos ? `${signo}${difKcal}` : '—'
+
+  // conic-gradient: empieza desde arriba (-90deg), rellena en sentido horario
+  const PISTA = 'rgba(120,120,128,0.2)'
+  const grados = progreso * 360
+  const gradiente = arcColor && progreso > 0
+    ? `conic-gradient(from -90deg, ${arcColor} ${grados}deg, ${PISTA} ${grados}deg)`
+    : PISTA
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-      {children}
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: '14px',
+      backgroundColor: 'var(--color-superficie-2)',
+      border: '1px solid var(--color-borde)',
+      borderRadius: '12px', padding: '12px 14px', marginBottom: '8px',
+    }}>
+      {/* Anillo — conic-gradient exterior + hueco interior del mismo color que la tarjeta */}
+      <div style={{
+        width: 54, height: 54, borderRadius: '50%',
+        background: gradiente,
+        flexShrink: 0, position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute', top: 6, left: 6, right: 6, bottom: 6,
+          borderRadius: '50%',
+          backgroundColor: 'var(--color-superficie-2)',
+        }} />
+      </div>
+
+      <div style={{ flex: 1 }}>
+        <p style={{ margin: '0 0 2px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Dif. KCal
+        </p>
+        <p style={{ margin: 0, fontSize: '22px', fontWeight: '700', color: valColor, lineHeight: 1 }}>
+          {texto}{tieneDatos && <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--color-texto-secundario)' }}> kcal</span>}
+        </p>
+        {tieneObjetivo && tieneDatos && (
+          <p style={{ margin: '3px 0 0', fontSize: '11px', color: 'var(--color-texto-secundario)' }}>
+            Objetivo: {Number(objetivo) > 0 ? `+${objetivo}` : objetivo} kcal
+          </p>
+        )}
+      </div>
     </div>
   )
 }
@@ -206,13 +287,15 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
         <Campo label="KCal Consumidas" valor={e.kcalConsumidas} sufijo="kcal" />
       </Grid2>
 
-      {/* Fila 4: Dif.KCal | Pr | Ch | Gr */}
-      <Grid4>
-        <Campo label="Dif.KCal" valor={difKcal} sufijo="kcal" naranja={difKcal !== '' && difKcal > 0} />
+      {/* Indicador circular Dif.KCal */}
+      <IndicadorKcal difKcal={difKcal} objetivo={objetivos.kcalDiferencia} />
+
+      {/* Fila 4: Pr | Ch | Gr */}
+      <Grid3>
         <Campo label="Pr" valor={e.proteinas} sufijo="g" />
         <Campo label="Ch" valor={e.carbohidratos} sufijo="g" />
         <Campo label="Gr" valor={e.grasas} sufijo="g" />
-      </Grid4>
+      </Grid3>
 
       {/* Fila 5: Movilidad | Core + barras de pasos y agua */}
       <Grid2>

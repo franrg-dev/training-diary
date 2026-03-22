@@ -1,6 +1,27 @@
 import { useMemo, useState } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
 import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
+import { getObjetivos } from '../ajustes/useObjetivos'
+
+const ROJO    = '#f87171'
+const NARANJA = '#f97316'
+const VERDE   = '#4ade80'
+
+function calcularEstadoKcal(dif, objetivo) {
+  if (objetivo < 0) {
+    if (dif > 0)         return { color: ROJO,    progreso: 1 }
+    if (dif <= objetivo) return { color: VERDE,   progreso: 1 }
+    return { color: NARANJA, progreso: dif / objetivo }
+  }
+  if (objetivo === 0) {
+    const abs = Math.abs(dif)
+    const color = abs <= 100 ? VERDE : abs <= 300 ? NARANJA : ROJO
+    return { color, progreso: Math.min(abs / 300, 1) }
+  }
+  if (dif < 0)           return { color: ROJO,    progreso: 1 }
+  if (dif >= objetivo)   return { color: VERDE,   progreso: 1 }
+  return { color: NARANJA, progreso: dif / objetivo }
+}
 
 const DIAS_CORTOS  = ['DOM', 'LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB']
 const MESES_CORTOS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -28,30 +49,42 @@ function ValorLateral({ valor, label, color }) {
 
 // ─── Anillo central (diferencia) ─────────────────────────────────────────
 
-function AnilloCentro({ valor }) {
+function AnilloCentro({ valor, objetivo }) {
   const r    = 44
   const circ = 2 * Math.PI * r
-  const arc  = circ * 0.82
-  const esPos = valor !== null && valor > 0
-  const esNeg = valor !== null && valor < 0
-  const color = esPos ? '#f97316' : esNeg ? '#3b82f6' : 'var(--color-texto-inactivo)'
-  const glow  = valor !== null ? `drop-shadow(0 0 8px ${color}70)` : 'none'
+
+  const tieneDatos    = valor !== null
+  const tieneObjetivo = objetivo !== 0 && objetivo != null
+
+  let arcColor = 'var(--color-texto-inactivo)'
+  let progreso = 0
+
+  if (tieneDatos && tieneObjetivo) {
+    const estado = calcularEstadoKcal(valor, Number(objetivo))
+    arcColor = estado.color
+    progreso = Math.max(0, Math.min(1, estado.progreso))
+  }
+
   const texto = valor === null ? '—' : valor > 0 ? `+${valor}` : String(valor)
+  const colorTexto = tieneDatos && tieneObjetivo ? arcColor : 'var(--color-texto-inactivo)'
 
   return (
     <div style={{ position: 'relative', width: '106px', height: '106px', flexShrink: 0 }}>
       <svg width="106" height="106" viewBox="0 0 106 106" style={{ display: 'block' }}>
-        <circle cx="53" cy="53" r={r} fill="none" stroke="var(--color-superficie)" strokeWidth="8" />
-        <circle cx="53" cy="53" r={r} fill="none" stroke={color} strokeWidth="8"
-          strokeLinecap="round"
-          strokeDasharray={`${arc} ${circ - arc}`}
-          strokeDashoffset={circ * 0.09}
-          transform="rotate(-90 53 53)"
-          style={{ filter: glow }}
-        />
+        {/* Pista */}
+        <circle cx="53" cy="53" r={r} fill="none" stroke="rgba(150,150,150,0.15)" strokeWidth="8" />
+        {/* Arco de progreso — dinámico según objetivo */}
+        {progreso > 0 && (
+          <circle cx="53" cy="53" r={r} fill="none"
+            stroke={arcColor} strokeWidth="8"
+            strokeDasharray={`${progreso * circ} ${(1 - progreso) * circ}`}
+            strokeDashoffset="0"
+            transform="rotate(-90 53 53)"
+          />
+        )}
       </svg>
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ margin: 0, fontSize: texto.length > 4 ? '17px' : '21px', fontWeight: '800', color: valor !== null ? color : 'var(--color-texto-inactivo)', lineHeight: 1 }}>
+        <p style={{ margin: 0, fontSize: texto.length > 4 ? '17px' : '21px', fontWeight: '800', color: colorTexto, lineHeight: 1 }}>
           {texto}
         </p>
         <p style={{ margin: '2px 0 0', fontSize: '9px', color: 'var(--color-texto-secundario)' }}>kcal</p>
@@ -62,8 +95,12 @@ function AnilloCentro({ valor }) {
 
 // ─── Pill de macro ────────────────────────────────────────────────────────
 
-function PillMacro({ label, valor, color }) {
-  const vacio = !valor || Number(valor) === 0
+function PillMacro({ label, valor, color, objetivo }) {
+  const vacio        = !valor || Number(valor) === 0
+  const tieneObjetivo = objetivo > 0
+  const pct          = tieneObjetivo ? Math.min((Number(valor) / objetivo) * 100, 100) : 0
+  const sobre        = tieneObjetivo && Number(valor) > objetivo
+
   return (
     <div style={{
       flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px',
@@ -75,7 +112,22 @@ function PillMacro({ label, valor, color }) {
       <p style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : 'var(--color-texto)' }}>
         {vacio ? '—' : `${valor}g`}
       </p>
-      <div style={{ width: '28px', height: '4px', borderRadius: '2px', backgroundColor: vacio ? 'var(--color-borde)' : color }} />
+      {/* Barra de progreso */}
+      <div style={{ width: 'calc(100% - 12px)', display: 'flex', alignItems: 'center', gap: '3px' }}>
+        <div style={{ flex: 1, height: '4px', backgroundColor: 'var(--color-borde)', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{
+            height: '100%',
+            width: tieneObjetivo ? `${pct}%` : vacio ? '0%' : '100%',
+            backgroundColor: color,
+            borderRadius: '2px',
+          }} />
+        </div>
+        {sobre && (
+          <svg width="8" height="8" viewBox="0 0 8 8" style={{ flexShrink: 0 }}>
+            <path d="M4 0.5 L7.5 7.5 L0.5 7.5 Z" fill={color} />
+          </svg>
+        )}
+      </div>
     </div>
   )
 }
@@ -286,6 +338,7 @@ export default function DetalleEntrenamiento({
   const ejerciciosDia    = entrada?.ejerciciosDia    || []
   const ejerciciosCardio = entrada?.ejerciciosCardio || []
 
+  const objetivos = getObjetivos()
   const c = Number(e.kcalConsumidas)   || 0
   const q = Number(e.kcalQuemadas)     || 0
   const b = Number(e.metabolismoBasal) || 0
@@ -367,7 +420,7 @@ export default function DetalleEntrenamiento({
                 <p style={{ margin: 0, fontSize: '20px', fontWeight: '700', color: e.suenoCalidad > 0 ? '#f97316' : 'var(--color-texto-inactivo)' }}>
                   {e.suenoCalidad > 0 ? e.suenoCalidad : '—'}
                 </p>
-                {e.suenoCalidad > 0 && <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>/10</span>}
+                {e.suenoCalidad > 0 && <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>/100</span>}
               </div>
             </div>
           </div>
@@ -392,15 +445,15 @@ export default function DetalleEntrenamiento({
         {/* Tres anillos: Quemadas | Diferencia | Consumidas */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
           <ValorLateral valor={e.kcalQuemadas  || 0} label="Quemadas"   color="#ef4444" />
-          <AnilloCentro valor={difKcal} />
+          <AnilloCentro valor={difKcal} objetivo={objetivos.kcalDiferencia} />
           <ValorLateral valor={e.kcalConsumidas || 0} label="Consumidas" color="#3b82f6" />
         </div>
 
         {/* Macros */}
         <div style={{ display: 'flex', gap: '8px' }}>
-          <PillMacro label="Proteínas" valor={e.proteinas}     color="#f97316" />
-          <PillMacro label="Carbos"    valor={e.carbohidratos} color="#3b82f6" />
-          <PillMacro label="Grasas"    valor={e.grasas}        color="#a855f7" />
+          <PillMacro label="Proteínas" valor={e.proteinas}     color="#f97316" objetivo={objetivos.proteinas}     />
+          <PillMacro label="Carbos"    valor={e.carbohidratos} color="#3b82f6" objetivo={objetivos.carbohidratos} />
+          <PillMacro label="Grasas"    valor={e.grasas}        color="#a855f7" objetivo={objetivos.grasas}        />
         </div>
       </div>
 
