@@ -249,7 +249,7 @@ export default function FormularioEntrenamiento({
       <div style={estiloCardEjercicio}>
         <p style={{ ...estiloLabel, marginBottom: '10px' }}>General</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-          <div>
+          <div style={{ minWidth: 0 }}>
             <label style={estiloLabelPequeno}>Hora inicio</label>
             <InputHora value={fuerzaHoraInicio} onChange={setFuerzaHoraInicio} />
           </div>
@@ -386,7 +386,7 @@ export default function FormularioEntrenamiento({
       <div style={{ ...estiloCardEjercicio, marginTop: '4px' }}>
         <p style={{ ...estiloLabel, marginBottom: '10px' }}>General</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
-          <div>
+          <div style={{ minWidth: 0 }}>
             <label style={estiloLabelPequeno}>Hora inicio</label>
             <InputHora value={cardioHoraInicio} onChange={setCardioHoraInicio} />
           </div>
@@ -516,7 +516,7 @@ export default function FormularioEntrenamiento({
 function InputHora({ value, onChange }) {
   return (
     <input type="time" value={value || ''} onChange={e => onChange(e.target.value)}
-      style={{ ...estiloInputBase, textAlign: 'center' }} />
+      style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
   )
 }
 
