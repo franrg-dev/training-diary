@@ -8,7 +8,7 @@ import HistorialEjercicio from './HistorialEjercicio'
  * Módulo Registro — Controlador de navegación interna.
  * Flujo: Lista → Historial del ejercicio seleccionado
  */
-export default function PaginaRegistro() {
+export default function PaginaRegistro({ embebido = false, tituloDropdown = null }) {
   const { ejercicios } = useEjercicios()
   const { registros, registrosPorEjercicio, crear, eliminar } = useRegistro()
 
@@ -29,13 +29,14 @@ export default function PaginaRegistro() {
     ? registrosPorEjercicio(ejercicioActivo.id)
     : []
 
-  return (
-    <div className="contenido-principal">
+  const contenido = (
+    <>
       {pantalla === 'lista' && (
         <ListaRegistro
           ejercicios={ejercicios}
           registros={registros}
           onSeleccionar={irAHistorial}
+          tituloDropdown={tituloDropdown}
         />
       )}
 
@@ -48,6 +49,8 @@ export default function PaginaRegistro() {
           onCrearRegistro={crear}
         />
       )}
-    </div>
+    </>
   )
+
+  return embebido ? contenido : <div className="contenido-principal">{contenido}</div>
 }

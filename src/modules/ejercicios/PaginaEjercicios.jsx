@@ -15,7 +15,7 @@ import FormularioEjercicio from './FormularioEjercicio'
  *   Lista ──→ [botón +]       ──→ Formulario (nuevo)
  *   Formulario / Detalle ──→ [cancelar/volver] ──→ Lista
  */
-export default function PaginaEjercicios() {
+export default function PaginaEjercicios({ embebido = false, tituloDropdown = null }) {
   const { ejercicios, cargando, crear, actualizar, eliminar } = useEjercicios()
 
   // pantalla: 'lista' | 'detalle' | 'formulario'
@@ -70,14 +70,15 @@ export default function PaginaEjercicios() {
     ? ejercicios.filter(ej => (ejercicioActivo.sustitutos || []).includes(ej.id))
     : []
 
-  return (
-    <div className="contenido-principal">
+  const contenido = (
+    <>
       {pantalla === 'lista' && (
         <ListaEjercicios
           ejercicios={ejercicios}
           cargando={cargando}
           onSeleccionar={irADetalle}
           onNuevo={irAFormularioNuevo}
+          tituloDropdown={tituloDropdown}
         />
       )}
 
@@ -99,6 +100,8 @@ export default function PaginaEjercicios() {
           onCancelar={modoFormulario === 'editar' ? () => setPantalla('detalle') : irALista}
         />
       )}
-    </div>
+    </>
   )
+
+  return embebido ? contenido : <div className="contenido-principal">{contenido}</div>
 }

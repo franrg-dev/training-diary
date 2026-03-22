@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
  * Vista de lista del módulo Sesiones.
  * Búsqueda por nombre, tarjeta con badge de nº de ejercicios.
  */
-export default function ListaSesiones({ sesiones, cargando, ejercicios, onSeleccionar, onNuevo }) {
+export default function ListaSesiones({ sesiones, cargando, ejercicios, onSeleccionar, onNuevo, tituloDropdown = null }) {
   const [busqueda, setBusqueda] = useState('')
 
   const mapaEjercicios = useMemo(
@@ -22,9 +22,11 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
       {/* — Cabecera — */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 16px 0' }}>
         <div>
-          <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>
-            Sesiones
-          </h1>
+          {tituloDropdown ?? (
+            <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>
+              Sesiones
+            </h1>
+          )}
           <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
             {sesiones.length} plantilla{sesiones.length !== 1 ? 's' : ''}
           </p>

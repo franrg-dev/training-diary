@@ -9,7 +9,7 @@ import FormularioSesion   from './FormularioSesion'
  * Módulo Sesiones — Controlador de navegación interna.
  * Flujo: Lista → Detalle → Formulario (editar) | Lista → Formulario (nuevo)
  */
-export default function PaginaSesiones() {
+export default function PaginaSesiones({ embebido = false, tituloDropdown = null }) {
   const { sesiones, cargando, crear, actualizar, eliminar } = useSesiones()
   const { ejercicios } = useEjercicios()
 
@@ -37,8 +37,8 @@ export default function PaginaSesiones() {
     irALista()
   }
 
-  return (
-    <div className="contenido-principal">
+  const contenido = (
+    <>
       {pantalla === 'lista' && (
         <ListaSesiones
           sesiones={sesiones}
@@ -46,6 +46,7 @@ export default function PaginaSesiones() {
           ejercicios={ejercicios}
           onSeleccionar={irADetalle}
           onNuevo={irAFormularioNuevo}
+          tituloDropdown={tituloDropdown}
         />
       )}
 
@@ -67,6 +68,8 @@ export default function PaginaSesiones() {
           onCancelar={modoFormulario === 'editar' ? () => setPantalla('detalle') : irALista}
         />
       )}
-    </div>
+    </>
   )
+
+  return embebido ? contenido : <div className="contenido-principal">{contenido}</div>
 }

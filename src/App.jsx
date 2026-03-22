@@ -1,9 +1,11 @@
 import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import NavBar from './components/NavBar'
-import PaginaEjercicios from './modules/ejercicios/PaginaEjercicios'
-import PaginaSesiones from './modules/sesiones/PaginaSesiones'
-import PaginaDiario from './modules/diario/PaginaDiario'
-import PaginaRegistro from './modules/registro/PaginaRegistro'
+import NavBar            from './components/NavBar'
+import PaginaHubEjercicios from './modules/ejercicios/PaginaHubEjercicios'
+import PaginaSesiones    from './modules/sesiones/PaginaSesiones'
+import PaginaDiario      from './modules/diario/PaginaDiario'
+import PaginaRegistro    from './modules/registro/PaginaRegistro'
+import PaginaNutricion   from './modules/nutricion/PaginaNutricion'
+import PaginaSuplementos from './modules/suplementos/PaginaSuplementos'
 
 /**
  * Componente raíz de la app.
@@ -19,10 +21,12 @@ export default function App() {
         <Route path="/" element={<Navigate to="/diario" replace />} />
 
         {/* Secciones principales */}
-        <Route path="/ejercicios" element={<PaginaEjercicios />} />
-        <Route path="/sesiones" element={<PaginaSesiones />} />
-        <Route path="/diario" element={<PaginaDiario />} />
-        <Route path="/registro" element={<PaginaRegistro />} />
+        <Route path="/ejercicios" element={<PaginaHubEjercicios />} />
+        <Route path="/sesiones"   element={<PaginaSesiones />} />
+        <Route path="/registro"   element={<PaginaRegistro />} />
+        <Route path="/diario"     element={<PaginaDiario />} />
+        <Route path="/nutricion"  element={<PaginaNutricion />} />
+        <Route path="/suplementos" element={<PaginaSuplementos />} />
 
         {/* Cualquier ruta desconocida vuelve al diario */}
         <Route path="*" element={<Navigate to="/diario" replace />} />

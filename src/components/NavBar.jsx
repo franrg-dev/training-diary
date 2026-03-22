@@ -7,11 +7,10 @@ import db from '../db/database'
  * Incluye las 4 secciones principales + botón de sincronización con Dexie Cloud.
  */
 
-const secciones = [
-  { ruta: '/diario',    etiqueta: 'Diario',     icono: IconoDiario    },
-  { ruta: '/ejercicios', etiqueta: 'Ejercicios', icono: IconoEjercicios },
-  { ruta: '/sesiones',  etiqueta: 'Sesiones',   icono: IconoSesiones  },
-  { ruta: '/registro',  etiqueta: 'Registro',   icono: IconoRegistro  },
+const seccionesLateral = [
+  { ruta: '/suplementos', icono: IconoSuplemento },
+  { ruta: '/ejercicios',  icono: IconoMancuerna  },
+  { ruta: '/nutricion',   icono: IconoNutricion  },
 ]
 
 export default function NavBar() {
@@ -19,36 +18,81 @@ export default function NavBar() {
     <>
       <nav
         style={{
-          position: 'fixed', bottom: 0, left: 0, right: 0,
-          paddingBottom: 'env(safe-area-inset-bottom)',
-          backgroundColor: '#111111',
-          borderTop: '1px solid #2e2e2e',
+          position: 'fixed',
+          bottom: 'calc(env(safe-area-inset-bottom) + 12px)',
+          left: '16px',
+          right: '16px',
+          height: '64px',
+          backgroundColor: '#1a1a1a',
+          borderRadius: '40px',
+          border: '1px solid #2e2e2e',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
           display: 'flex',
+          alignItems: 'center',
           zIndex: 100,
         }}
       >
-        {secciones.map(({ ruta, etiqueta, icono: Icono }) => (
+        {/* Ejercicios + Sesiones */}
+        {seccionesLateral.slice(0, 2).map(({ ruta, icono: Icono }) => (
           <NavLink
             key={ruta}
             to={ruta}
             style={({ isActive }) => ({
               flex: 1,
-              display: 'flex', flexDirection: 'column',
+              display: 'flex',
               alignItems: 'center', justifyContent: 'center',
-              gap: '3px', padding: '10px 4px',
+              padding: '10px',
               textDecoration: 'none',
               color: isActive ? '#f97316' : '#6b7280',
               transition: 'color 0.15s',
             })}
           >
-            {({ isActive }) => (
-              <>
-                <Icono activo={isActive} />
-                <span style={{ fontSize: '10px', fontWeight: isActive ? '600' : '400', letterSpacing: '0.01em' }}>
-                  {etiqueta}
-                </span>
-              </>
-            )}
+            <Icono />
+          </NavLink>
+        ))}
+
+        {/* Diario — botón central destacado */}
+        <NavLink
+          to="/diario"
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            padding: '8px',
+            textDecoration: 'none',
+          }}
+        >
+          {({ isActive }) => (
+            <div style={{
+              width: '48px', height: '48px',
+              borderRadius: '50%',
+              backgroundColor: isActive ? '#ea6c10' : '#f97316',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'white',
+              boxShadow: '0 2px 14px rgba(249,115,22,0.5)',
+              transition: 'background-color 0.15s',
+            }}>
+              <IconoDiario activo={isActive} />
+            </div>
+          )}
+        </NavLink>
+
+        {/* Registro */}
+        {seccionesLateral.slice(2).map(({ ruta, icono: Icono }) => (
+          <NavLink
+            key={ruta}
+            to={ruta}
+            style={({ isActive }) => ({
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center', justifyContent: 'center',
+              padding: '10px',
+              textDecoration: 'none',
+              color: isActive ? '#f97316' : '#6b7280',
+              transition: 'color 0.15s',
+            })}
+          >
+            <Icono />
           </NavLink>
         ))}
 
@@ -119,18 +163,15 @@ function BotonSync() {
         onClick={() => setAbierto(o => !o)}
         style={{
           flex: 1,
-          display: 'flex', flexDirection: 'column',
+          display: 'flex',
           alignItems: 'center', justifyContent: 'center',
-          gap: '3px', padding: '10px 4px',
+          padding: '10px',
           background: 'none', border: 'none',
           color: abierto ? '#f97316' : colorNube,
           cursor: 'pointer', transition: 'color 0.15s',
         }}
       >
         <IconoCloud sincronizando={sincronizando} />
-        <span style={{ fontSize: '10px', fontWeight: abierto ? '600' : '400', letterSpacing: '0.01em' }}>
-          Sync
-        </span>
       </button>
 
       {/* Overlay + panel */}
@@ -247,6 +288,30 @@ function BotonSync() {
 
 // — Iconos SVG —
 
+function IconoMancuerna() {
+  return (
+    <svg width="24" height="24" viewBox="0 -960 960 960" fill="currentColor">
+      <path d="m826-585-56-56 30-31-128-128-31 30-57-57 30-31q23-23 57-22.5t57 23.5l129 129q23 23 23 56.5T857-615l-31 30ZM346-104q-23 23-56.5 23T233-104L104-233q-23-23-23-56.5t23-56.5l30-30 57 57-31 30 129 129 30-31 57 57-30 30Zm397-336 57-57-303-303-57 57 303 303ZM463-160l57-58-302-302-58 57 303 303Zm-6-234 110-109-64-64-109 110 63 63Zm63 290q-23 23-57 23t-57-23L104-406q-23-23-23-57t23-57l57-57q23-23 56.5-23t56.5 23l63 63 110-110-63-62q-23-23-23-57t23-57l57-57q23-23 56.5-23t56.5 23l303 303q23 23 23 56.5T857-441l-57 57q-23 23-57 23t-57-23l-62-63-110 110 63 63q23 23 23 56.5T577-161l-57 57Z"/>
+    </svg>
+  )
+}
+
+function IconoNutricion() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
+    </svg>
+  )
+}
+
+function IconoSuplemento() {
+  return (
+    <svg width="24" height="24" viewBox="0 -960 960 960" fill="currentColor">
+      <path d="M345-120q-94 0-159.5-65.5T120-345q0-45 17-86t49-73l270-270q32-32 73-49t86-17q94 0 159.5 65.5T840-615q0 45-17 86t-49 73L504-186q-32 32-73 49t-86 17Zm266-286 107-106q20-20 31-47t11-56q0-60-42.5-102.5T615-760q-29 0-56 11t-47 31L406-611l205 205ZM345-200q29 0 56-11t47-31l106-107-205-205-107 106q-20 20-31 47t-11 56q0 60 42.5 102.5T345-200Z"/>
+    </svg>
+  )
+}
+
 function IconoCloud({ sincronizando }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -254,26 +319,6 @@ function IconoCloud({ sincronizando }) {
         ? <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
         : <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
       }
-    </svg>
-  )
-}
-
-function IconoEjercicios({ activo }) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activo ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 4v16" />
-      <path d="M18 4v16" />
-      <path d="M3 8h3M18 8h3M3 16h3M18 16h3" />
-      <line x1="6" y1="12" x2="18" y2="12" />
-    </svg>
-  )
-}
-
-function IconoSesiones({ activo }) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activo ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="3" />
-      <path d="M7 8h10M7 12h10M7 16h6" />
     </svg>
   )
 }
@@ -292,16 +337,6 @@ function IconoDiario({ activo }) {
   )
 }
 
-function IconoRegistro({ activo }) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activo ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-      <line x1="3" y1="20" x2="21" y2="20" />
-      <rect x="4" y="13" width="4" height="7" rx="1" />
-      <rect x="10" y="8" width="4" height="12" rx="1" />
-      <rect x="16" y="4" width="4" height="16" rx="1" />
-    </svg>
-  )
-}
 
 const estiloInput = {
   width: '100%', padding: '12px',
