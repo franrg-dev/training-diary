@@ -95,11 +95,12 @@ function AnilloCentro({ valor, objetivo }) {
 
 // ─── Pill de macro ────────────────────────────────────────────────────────
 
-function PillMacro({ label, valor, color, objetivo }) {
+function PillMacro({ label, valor, color, objetivo, display }) {
   const vacio        = !valor || Number(valor) === 0
   const tieneObjetivo = objetivo > 0
   const pct          = tieneObjetivo ? Math.min((Number(valor) / objetivo) * 100, 100) : 0
   const sobre        = tieneObjetivo && Number(valor) > objetivo
+  const textoValor   = display ? display(Number(valor), vacio) : vacio ? '—' : `${valor}g`
 
   return (
     <div style={{
@@ -110,7 +111,7 @@ function PillMacro({ label, valor, color, objetivo }) {
         {label}
       </p>
       <p style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : 'var(--color-texto)' }}>
-        {vacio ? '—' : `${valor}g`}
+        {textoValor}
       </p>
       {/* Barra de progreso */}
       <div style={{ width: 'calc(100% - 12px)', display: 'flex', alignItems: 'center', gap: '3px' }}>
@@ -461,9 +462,20 @@ export default function DetalleEntrenamiento({
           ACTIVIDAD Y HÁBITOS
       ══════════════════════════════════════════════ */}
       <div style={{ backgroundColor: 'var(--color-superficie)', borderRadius: '20px', padding: '20px', marginBottom: '12px' }}>
+        {/* Pasos y Agua con barra de progreso */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+          <PillMacro
+            label="Pasos" valor={e.pasos || 0} color="#22c55e"
+            objetivo={objetivos.pasos}
+            display={(v, vacio) => vacio ? '—' : v.toLocaleString('es')}
+          />
+          <PillMacro
+            label="Agua" valor={e.agua || 0} color="#38bdf8"
+            objetivo={objetivos.agua}
+            display={(v, vacio) => vacio ? '—' : `${Number(v).toFixed(1)} L`}
+          />
+        </div>
         <div style={{ margin: '0 -4px' }}>
-          <StatFila icono="👟" label="Pasos"              valor={e.pasos > 0 ? e.pasos.toLocaleString('es') : null} />
-          <StatFila icono="💧" label="Agua"               valor={e.agua > 0 ? e.agua : null}        sufijo="L" />
           <StatFila icono="💥" label="Esfuerzo percibido" valor={e.esfuerzo > 0 ? e.esfuerzo : null} sufijo="%" naranja={e.esfuerzo > 0} />
         </div>
         <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>

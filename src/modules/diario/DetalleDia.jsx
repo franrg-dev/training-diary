@@ -323,9 +323,9 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
             valor={Number(e.agua) || 0}
             objetivo={objetivos.agua}
             formato={v => `${v.toFixed(1)} L`}
-            objetivoFormato={v => `${v} L`}
+            objetivoFormato={v => `${Number(v).toFixed(1)} L`}
           />
-        : <div style={{ marginBottom: '8px' }}><Campo label="Agua" valor={e.agua} sufijo="L" /></div>
+        : <div style={{ marginBottom: '8px' }}><Campo label="Agua" valor={e.agua ? Number(e.agua).toFixed(1) : e.agua} sufijo="L" /></div>
       }
 
       {/* ── Valores Corporales ── */}
