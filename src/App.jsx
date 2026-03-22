@@ -30,22 +30,19 @@ export default function App() {
   return (
     <NavResetContext.Provider value={{ resetSeccion }}>
       <BrowserRouter>
-        {/* Área de scroll — ocupa toda la pantalla; el navbar flota encima */}
-        <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', minHeight: 0 }}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/diario" replace />} />
+        <Routes>
+          <Route path="/" element={<Navigate to="/diario" replace />} />
 
-            <Route path="/ejercicios"  element={<PaginaHubEjercicios key={k('/ejercicios')}  />} />
-            <Route path="/sesiones"    element={<PaginaSesiones      key={k('/sesiones')}    />} />
-            <Route path="/registro"    element={<PaginaRegistro      key={k('/registro')}    />} />
-            <Route path="/diario"      element={<PaginaDiario        key={k('/diario')}      />} />
-            <Route path="/nutricion"   element={<PaginaNutricion     key={k('/nutricion')}   />} />
-            <Route path="/suplementos" element={<PaginaSuplementos   key={k('/suplementos')} />} />
-            <Route path="/ajustes"     element={<PaginaAjustes       key={k('/ajustes')}     />} />
+          <Route path="/ejercicios"  element={<PaginaHubEjercicios key={k('/ejercicios')}  />} />
+          <Route path="/sesiones"    element={<PaginaSesiones      key={k('/sesiones')}    />} />
+          <Route path="/registro"    element={<PaginaRegistro      key={k('/registro')}    />} />
+          <Route path="/diario"      element={<PaginaDiario        key={k('/diario')}      />} />
+          <Route path="/nutricion"   element={<PaginaNutricion     key={k('/nutricion')}   />} />
+          <Route path="/suplementos" element={<PaginaSuplementos   key={k('/suplementos')} />} />
+          <Route path="/ajustes"     element={<PaginaAjustes       key={k('/ajustes')}     />} />
 
-            <Route path="*" element={<Navigate to="/diario" replace />} />
-          </Routes>
-        </div>
+          <Route path="*" element={<Navigate to="/diario" replace />} />
+        </Routes>
 
         <NavBar />
       </BrowserRouter>
