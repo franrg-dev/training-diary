@@ -19,7 +19,7 @@
   /* Safe area para iPhone (home indicator y notch) */
   --safe-area-top: env(safe-area-inset-top);
   --safe-area-bottom: env(safe-area-inset-bottom);
-  --altura-navbar: 84px;
+  --altura-navbar: 76px;
 }
 
 /* Modo claro — paleta iOS Light, sin blancos ni negros puros */
