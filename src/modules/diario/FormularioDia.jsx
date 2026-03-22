@@ -346,16 +346,17 @@ export default function FormularioDia({
           SECCIÓN 1 — DATOS GENERALES (sin título)
       ══════════════════════════════════════════════ */}
 
-      {/* Fila 1: Sueño horas | Acostarse | Puntuación */}
-      <Grid3>
+      {/* Fila 1: Sueño horas | Puntuación */}
+      <Grid2>
         <InputNum label="Sueño" placeholder="7.5" value={suenoHoras} onChange={setSuenoHoras} sufijo="h" />
-        <div>
-          <label style={estiloLabelPequeno}>Acostarse</label>
-          <input type="time" value={suenoHoraAcostarse} onChange={e => setSuenoHoraAcostarse(e.target.value)}
-            style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
-        </div>
-        <InputNum label="Puntuación" placeholder="8" value={suenoCalidad} onChange={setSuenoCalidad} />
-      </Grid3>
+        <InputNum label="Puntuación" placeholder="80" value={suenoCalidad} onChange={setSuenoCalidad} />
+      </Grid2>
+      {/* Acostarse — fila sola */}
+      <div style={{ marginBottom: '8px', maxWidth: '180px' }}>
+        <label style={estiloLabelPequeno}>Acostarse</label>
+        <input type="time" value={suenoHoraAcostarse} onChange={e => setSuenoHoraAcostarse(e.target.value)}
+          style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
+      </div>
 
       {/* Fila 2: %Esfuerzo | KCal Quemadas */}
       <Grid2>
@@ -389,23 +390,22 @@ export default function FormularioDia({
       {/* ── Valores Corporales ── */}
       <SubSeccion titulo="Valores Corporales" />
 
-      {/* Fila 6: Hora pesaje | Báscula */}
-      <Grid2>
-        <div>
-          <label style={estiloLabelPequeno}>Hora pesaje</label>
-          <input type="time" value={horaPesaje} onChange={e => setHoraPesaje(e.target.value)}
-            style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
-        </div>
-        <div>
-          <label style={estiloLabelPequeno}>Báscula</label>
-          <select value={bascula} onChange={e => setBascula(e.target.value)}
-            style={{ ...estiloInputBase, color: bascula ? 'var(--color-texto)' : 'var(--color-texto-inactivo)' }}>
-            <option value="">—</option>
-            <option value="B.Valencia">B.Valencia</option>
-            <option value="B.Jumilla">B.Jumilla</option>
-          </select>
-        </div>
-      </Grid2>
+      {/* Fila 6: Hora pesaje — fila sola */}
+      <div style={{ marginBottom: '8px', maxWidth: '180px' }}>
+        <label style={estiloLabelPequeno}>Hora pesaje</label>
+        <input type="time" value={horaPesaje} onChange={e => setHoraPesaje(e.target.value)}
+          style={{ ...estiloInputBase, textAlign: 'center', colorScheme: 'dark' }} />
+      </div>
+      {/* Báscula */}
+      <div style={{ marginBottom: '8px' }}>
+        <label style={estiloLabelPequeno}>Báscula</label>
+        <select value={bascula} onChange={e => setBascula(e.target.value)}
+          style={{ ...estiloInputBase, color: bascula ? 'var(--color-texto)' : 'var(--color-texto-inactivo)' }}>
+          <option value="">—</option>
+          <option value="B.Valencia">B.Valencia</option>
+          <option value="B.Jumilla">B.Jumilla</option>
+        </select>
+      </div>
 
       {/* Fila 7: Peso | %Grasa | Músculo */}
       <Grid3>

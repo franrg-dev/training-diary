@@ -248,11 +248,13 @@ export default function FormularioEntrenamiento({
       {/* — Parámetros generales Fuerza — */}
       <div style={estiloCardEjercicio}>
         <p style={{ ...estiloLabel, marginBottom: '10px' }}>General</p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-          <div style={{ minWidth: 0 }}>
-            <label style={estiloLabelPequeno}>Hora inicio</label>
-            <InputHora value={fuerzaHoraInicio} onChange={setFuerzaHoraInicio} />
-          </div>
+        {/* Hora inicio — fila sola */}
+        <div style={{ marginBottom: '8px', maxWidth: '180px' }}>
+          <label style={estiloLabelPequeno}>Hora inicio</label>
+          <InputHora value={fuerzaHoraInicio} onChange={setFuerzaHoraInicio} />
+        </div>
+        {/* Duración | KCal | FC */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '8px' }}>
           <div style={{ position: 'relative' }}>
             <label style={estiloLabelPequeno}>Duración</label>
             <input type="number" inputMode="numeric" placeholder="60" min="0" value={fuerzaDuracion}
@@ -260,8 +262,6 @@ export default function FormularioEntrenamiento({
               style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '32px' }} />
             <span style={estiloSufijo}>min</span>
           </div>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
           <div style={{ position: 'relative' }}>
             <label style={estiloLabelPequeno}>KCal quemadas</label>
             <input type="number" inputMode="numeric" placeholder="0" min="0" value={fuerzaKcalQuemadas}
@@ -385,11 +385,13 @@ export default function FormularioEntrenamiento({
       {/* — Parámetros generales Cardio — */}
       <div style={{ ...estiloCardEjercicio, marginTop: '4px' }}>
         <p style={{ ...estiloLabel, marginBottom: '10px' }}>General</p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
-          <div style={{ minWidth: 0 }}>
-            <label style={estiloLabelPequeno}>Hora inicio</label>
-            <InputHora value={cardioHoraInicio} onChange={setCardioHoraInicio} />
-          </div>
+        {/* Hora inicio — fila sola */}
+        <div style={{ marginBottom: '8px', maxWidth: '180px' }}>
+          <label style={estiloLabelPequeno}>Hora inicio</label>
+          <InputHora value={cardioHoraInicio} onChange={setCardioHoraInicio} />
+        </div>
+        {/* KCal | FC */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
           <div style={{ position: 'relative' }}>
             <label style={estiloLabelPequeno}>KCal</label>
             <input type="number" inputMode="numeric" placeholder="0" min="0" value={cardioKcalQuemadas}

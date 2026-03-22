@@ -315,22 +315,21 @@ export default function FormularioDatosGenerales({
       {/* ── Valores Corporales ── */}
       <SubSeccion titulo="Valores Corporales" />
 
-      {/* Fila 6: Hora pesaje | Báscula */}
-      <Grid2>
-        <div>
-          <label style={estiloLabelPequeno}>Hora pesaje</label>
-          <InputHora value={horaPesaje} onChange={setHoraPesaje} />
-        </div>
-        <div>
-          <label style={estiloLabelPequeno}>Báscula</label>
-          <select value={bascula} onChange={e => setBascula(e.target.value)}
-            style={{ ...estiloInputBase, color: bascula ? 'var(--color-texto)' : 'var(--color-texto-inactivo)' }}>
-            <option value="">—</option>
-            <option value="B.Valencia">B.Valencia</option>
-            <option value="B.Jumilla">B.Jumilla</option>
-          </select>
-        </div>
-      </Grid2>
+      {/* Fila 6: Hora pesaje — fila sola */}
+      <div style={{ marginBottom: '8px', maxWidth: '180px' }}>
+        <label style={estiloLabelPequeno}>Hora pesaje</label>
+        <InputHora value={horaPesaje} onChange={setHoraPesaje} />
+      </div>
+      {/* Báscula */}
+      <div style={{ marginBottom: '8px' }}>
+        <label style={estiloLabelPequeno}>Báscula</label>
+        <select value={bascula} onChange={e => setBascula(e.target.value)}
+          style={{ ...estiloInputBase, color: bascula ? 'var(--color-texto)' : 'var(--color-texto-inactivo)' }}>
+          <option value="">—</option>
+          <option value="B.Valencia">B.Valencia</option>
+          <option value="B.Jumilla">B.Jumilla</option>
+        </select>
+      </div>
 
       {/* Fila 7: Peso | %Grasa | Músculo */}
       <Grid3>
