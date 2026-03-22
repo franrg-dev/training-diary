@@ -75,8 +75,7 @@ html, body {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  position: relative; /* ancla el navbar absoluto */
+  position: relative;
 }
 
 /* Área de contenido principal — el scroll lo gestiona el wrapper en App.jsx */
