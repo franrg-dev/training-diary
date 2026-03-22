@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
+import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 
 const MESES_CORTOS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
@@ -12,7 +13,7 @@ function formatearFechaCorta(fechaStr) {
  * Lista de ejercicios del catálogo con su último peso registrado.
  * Ejercicios con datos aparecen primero ordenados por fecha desc.
  */
-export default function ListaRegistro({ ejercicios, registros, onSeleccionar }) {
+export default function ListaRegistro({ ejercicios, registros, onSeleccionar, tituloDropdown = null }) {
   const [busqueda, setBusqueda] = useState('')
 
   // Último registro por ejercicioId
@@ -48,7 +49,9 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar }) 
     <div>
       {/* — Cabecera — */}
       <div style={{ padding: '20px 16px 0' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>Registro</h1>
+        {tituloDropdown ?? (
+          <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: '#f5f5f5' }}>Registro</h1>
+        )}
         <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>Historial de progreso por ejercicio</p>
       </div>
 
@@ -93,14 +96,15 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar }) 
           ejerciciosOrdenados.map(ej => {
             const ultimo  = ultimosPorEjercicio[ej.id]
             const colores = COLORES_GRUPO[ej.grupoPrincipal || (ej.gruposMuscular || [])[0]] || COLORES_GRUPO.core
+            const esCardio = (ej.gruposMuscular || []).includes('cardio')
             return (
               <button
                 key={ej.id}
                 onClick={() => onSeleccionar(ej)}
                 style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '14px', marginBottom: '8px', backgroundColor: '#1a1a1a', border: '1px solid #2e2e2e', borderRadius: '12px', cursor: 'pointer', textAlign: 'left' }}
               >
-                <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '18px' }}>
-                  {colores.emoji}
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={20} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ margin: '0 0 3px', fontWeight: '600', color: '#f5f5f5', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -108,8 +112,19 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar }) 
                   </p>
                   {ultimo ? (
                     <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
-                      <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.peso} {ultimo.unidad}</span>
-                      {' · '}{formatearFechaCorta(ultimo.fecha)}
+                      {esCardio ? (
+                        <>
+                          {ultimo.duracion && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.duracion} min </span>}
+                          {ultimo.ritmo    && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.ritmo} {ultimo.modo === 'veces' ? 'Rp/m' : 'Km/h'} </span>}
+                          {ultimo.volumen  && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.volumen} {ultimo.modo === 'veces' ? 'Rp' : 'Km'} </span>}
+                          · {formatearFechaCorta(ultimo.fecha)}
+                        </>
+                      ) : (
+                        <>
+                          <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.peso} {ultimo.unidad}</span>
+                          {' · '}{formatearFechaCorta(ultimo.fecha)}
+                        </>
+                      )}
                     </p>
                   ) : (
                     <p style={{ margin: 0, fontSize: '13px', color: '#4b5563' }}>Sin datos</p>

@@ -35,13 +35,23 @@ export function useRegistro() {
   }, [registros])
 
   const crear = useCallback(async (datos) => {
-    const id = await db.registro.add({
+    const entry = {
+      id:          crypto.randomUUID(),
       ejercicioId: datos.ejercicioId,
       fecha:       datos.fecha,
-      peso:        Number(datos.peso) || 0,
-      unidad:      datos.unidad || 'kg',
       notas:       datos.notas?.trim() || '',
-    })
+    }
+    // Cardio: duracion / ritmo / volumen / modo
+    if (datos.duracion !== undefined || datos.ritmo !== undefined || datos.volumen !== undefined) {
+      entry.duracion = datos.duracion || ''
+      entry.ritmo    = datos.ritmo    || ''
+      entry.volumen  = datos.volumen  || ''
+      entry.modo     = datos.modo     || 'km'
+    } else {
+      entry.peso   = Number(datos.peso) || 0
+      entry.unidad = datos.unidad || 'kg'
+    }
+    const id = await db.registro.add(entry)
     await cargar()
     return id
   }, [cargar])
@@ -55,7 +65,7 @@ export function useRegistro() {
     if (existente) {
       await db.registro.update(existente.id, { peso: Number(peso), unidad })
     } else {
-      await db.registro.add({ ejercicioId, fecha, peso: Number(peso), unidad, notas: '' })
+      await db.registro.add({ id: crypto.randomUUID(), ejercicioId, fecha, peso: Number(peso), unidad, notas: '' })
     }
     await cargar()
   }, [cargar])
