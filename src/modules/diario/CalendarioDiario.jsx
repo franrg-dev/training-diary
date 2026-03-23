@@ -280,7 +280,7 @@ function TarjetasResumenMes({ entradasDelMes }) {
     <div style={{ padding: '12px 16px 0' }}>
       {/* Fila 1: Sueño | Pasos */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-        <MiniCard label="Sueño" valor={stats.promedioSueno !== null ? `${stats.promedioSueno.toFixed(1)} h` : '—'} />
+        <MiniCard label="Sueño" valor={stats.promedioSueno !== null ? `${Math.floor(Math.round(stats.promedioSueno * 60) / 60)}:${String(Math.round(stats.promedioSueno * 60) % 60).padStart(2, '0')} h` : '—'} />
         <MiniCard label="Pasos" valor={stats.promedioPasos !== null ? stats.promedioPasos.toLocaleString('es') : '—'} colorPunto={colorPasos} />
       </div>
       {/* Fila 2: Primero | Dif | Último */}

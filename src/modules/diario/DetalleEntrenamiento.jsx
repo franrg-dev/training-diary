@@ -3,6 +3,13 @@ import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
 import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 import { getObjetivos } from '../ajustes/useObjetivos'
 
+function formatearSueno(decimal) {
+  const totalMin = Math.round(parseFloat(decimal) * 60)
+  const h = Math.floor(totalMin / 60)
+  const m = totalMin % 60
+  return `${h}:${String(m).padStart(2, '0')}`
+}
+
 const ROJO    = '#f87171'
 const NARANJA = '#f97316'
 const VERDE   = '#4ade80'
@@ -345,8 +352,6 @@ export default function DetalleEntrenamiento({
   const b = Number(e.metabolismoBasal) || 0
   const difKcal = (c || q || b) ? c - q - b : null
 
-  const tieneNutricion = e.kcalConsumidas || e.proteinas || e.carbohidratos || e.grasas
-
   return (
     <div style={{ padding: '0 16px 40px' }}>
 
@@ -402,7 +407,7 @@ export default function DetalleEntrenamiento({
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-fondo)', borderRadius: '16px', padding: '16px 20px', minWidth: '100px' }}>
             <span style={{ fontSize: '28px', lineHeight: 1, marginBottom: '4px' }}>🌙</span>
             <p style={{ margin: '4px 0 2px', fontSize: '30px', fontWeight: '800', color: e.suenoHoras > 0 ? 'var(--color-texto)' : 'var(--color-texto-inactivo)', lineHeight: 1 }}>
-              {e.suenoHoras > 0 ? e.suenoHoras : '—'}
+              {e.suenoHoras > 0 ? formatearSueno(e.suenoHoras) : '—'}
             </p>
             <p style={{ margin: 0, fontSize: '11px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>horas</p>
           </div>
