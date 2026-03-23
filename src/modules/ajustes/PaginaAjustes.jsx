@@ -41,7 +41,7 @@ function SeccionApariencia() {
     <section style={estiloSeccion}>
       <h2 style={estiloTituloSeccion}>Apariencia</h2>
       <div style={{ display: 'flex', gap: '8px' }}>
-        {OPCIONES_TEMA.map(({ valor, etiqueta, icono: Icono }) => {
+        {OPCIONES_TEMA.map(({ valor, etiqueta, icono: Icono }) => { // eslint-disable-line no-unused-vars
           const activo = temaActual === valor
           return (
             <button

@@ -49,9 +49,7 @@ export default function CalendarioDiario({
   }, [entradasDelMes])
 
   // Fecha de hoy en YYYY-MM-DD
-  const hoyStr = useMemo(() => {
-    return `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
-  }, [])
+  const hoyStr = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
 
   // Todas las entradas con entrenamiento divididas en próximas e historial
   const { proximas, historial } = useMemo(() => {
