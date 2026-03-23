@@ -61,7 +61,7 @@ function InputHora({ value, onChange }) {
       type="time"
       value={value || ''}
       onChange={e => onChange(e.target.value)}
-      style={{ ...estiloInputBase, textAlign: 'center' }}
+      style={{ ...estiloInputBase, textAlign: 'center', minWidth: 0 }}
     />
   )
 }
@@ -245,7 +245,7 @@ export default function FormularioDatosGenerales({
   }
 
   return (
-    <div style={{ padding: '0 16px 40px' }}>
+    <div style={{ padding: '0 16px 40px', maxWidth: '100%', overflowX: 'hidden' }}>
 
       {/* ─ Cabecera ─ */}
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 20px', gap: '8px' }}>
@@ -278,7 +278,7 @@ export default function FormularioDatosGenerales({
       </Grid2>
 
       {/* Fila 2: Acostarse */}
-      <div style={{ marginBottom: '8px' }}>
+      <div style={{ marginBottom: '8px', maxWidth: '180px' }}>
         <label style={estiloLabelPequeno}>Acostarse</label>
         <InputHora value={suenoHoraAcostarse} onChange={setSuenoHoraAcostarse} />
       </div>
