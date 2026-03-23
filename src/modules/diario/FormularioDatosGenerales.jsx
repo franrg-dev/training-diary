@@ -29,22 +29,38 @@ function InputHorasMin({ value, onChange }) {
     onChange(String(Math.round((h + m / 60) * 100) / 100))
   }
 
+  function handleHoras(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 2)
+    const num = parseInt(v, 10)
+    if (v !== '' && num > 99) v = '99'
+    setHh(v)
+    emitir(v, mm)
+  }
+
+  function handleMinutos(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 2)
+    const num = parseInt(v, 10)
+    if (v !== '' && num > 59) v = '59'
+    setMm(v)
+    emitir(hh, v)
+  }
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
       <div style={{ position: 'relative', flex: 1 }}>
         <input
-          type="number" inputMode="numeric" placeholder="0" min="0" max="23"
+          type="text" inputMode="numeric" placeholder="0" maxLength={2}
           value={hh}
-          onChange={e => { setHh(e.target.value); emitir(e.target.value, mm) }}
+          onChange={handleHoras}
           style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '18px' }}
         />
         <span style={{ ...estiloSufijo }}>h</span>
       </div>
       <div style={{ position: 'relative', flex: 1 }}>
         <input
-          type="number" inputMode="numeric" placeholder="00" min="0" max="59"
+          type="text" inputMode="numeric" placeholder="00" maxLength={2}
           value={mm}
-          onChange={e => { setMm(e.target.value); emitir(hh, e.target.value) }}
+          onChange={handleMinutos}
           style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '22px' }}
         />
         <span style={{ ...estiloSufijo }}>min</span>
@@ -81,7 +97,16 @@ function SubSeccion({ titulo }) {
 
 // ─── Input numérico compacto ──────────────────────────────────────────────
 
-function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly = false, highlight = false, min }) {
+function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly = false, highlight = false, min, maxDecimals }) {
+  function handleChange(e) {
+    if (!onChange) return
+    const raw = e.target.value
+    if (maxDecimals != null && raw.includes('.')) {
+      const [entero, dec] = raw.split('.')
+      if (dec.length > maxDecimals) { onChange(`${entero}.${dec.slice(0, maxDecimals)}`); return }
+    }
+    onChange(raw)
+  }
   return (
     <div>
       <label style={estiloLabelPequeno}>{label}</label>
@@ -92,7 +117,7 @@ function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly 
           placeholder={placeholder}
           value={value}
           min={min}
-          onChange={e => onChange && onChange(e.target.value)}
+          onChange={handleChange}
           readOnly={readOnly}
           style={{
             ...estiloInputBase,
@@ -333,7 +358,7 @@ export default function FormularioDatosGenerales({
 
       {/* Fila 7: Peso | %Grasa | Músculo */}
       <Grid3>
-        <InputNum label="Peso" placeholder="70.0" value={peso} onChange={setPeso} sufijo="kg" highlight={!!peso} min={0} />
+        <InputNum label="Peso" placeholder="70.00" value={peso} onChange={setPeso} sufijo="kg" highlight={!!peso} min={0} maxDecimals={2} />
         <InputNum label="% Grasa" placeholder="15.0" value={grasaPorcentaje} onChange={setGrasaPorcentaje} sufijo="%" min={0} />
         <InputNum label="Músculo" placeholder="55.0" value={musculo} onChange={setMusculo} sufijo="kg" min={0} />
       </Grid3>
@@ -378,10 +403,6 @@ export default function FormularioDatosGenerales({
 }
 
 // ─── Estilos ─────────────────────────────────────────────────────────────
-
-function estiloAccion(dis) {
-  return { background: 'none', border: 'none', color: dis ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
-}
 
 const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
 const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }

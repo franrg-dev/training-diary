@@ -285,9 +285,9 @@ function TarjetasResumenMes({ entradasDelMes }) {
       </div>
       {/* Fila 2: Primero | Dif | Último */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
-        <MiniCard label="Primero" valor={stats.primerPeso !== null ? `${stats.primerPeso.toFixed(1)}` : '—'} sufijo="kg" />
-        <MiniCard label="Dif" valor={stats.difPeso !== null ? `${stats.difPeso > 0 ? '+' : ''}${stats.difPeso.toFixed(1)}` : '—'} sufijo={stats.difPeso !== null ? 'kg' : undefined} colorPunto={colorDifPeso()} />
-        <MiniCard label="Último" valor={stats.ultimoPeso !== null ? `${stats.ultimoPeso.toFixed(1)}` : '—'} sufijo="kg" />
+        <MiniCard label="Primero" valor={stats.primerPeso !== null ? `${stats.primerPeso.toFixed(2)}` : '—'} sufijo="kg" />
+        <MiniCard label="Dif" valor={stats.difPeso !== null ? `${stats.difPeso > 0 ? '+' : ''}${stats.difPeso.toFixed(2)}` : '—'} sufijo={stats.difPeso !== null ? 'kg' : undefined} colorPunto={colorDifPeso()} />
+        <MiniCard label="Último" valor={stats.ultimoPeso !== null ? `${stats.ultimoPeso.toFixed(2)}` : '—'} sufijo="kg" />
       </div>
     </div>
   )
