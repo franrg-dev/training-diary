@@ -8,13 +8,21 @@ const DEFAULTS = {
   pasos:           0,      // pasos/día
   agua:            0,      // litros/día
   pesoObjetivo:    '',     // kg
-  pesoObjetivoTipo: 'perder', // 'perder' | 'ganar'
+  pesoObjetivoTipo: 'deficit', // 'deficit' | 'volumen' | 'mantenimiento'
 }
+
+// Migración de valores antiguos
+const MIGRACION_TIPO = { perder: 'deficit', ganar: 'volumen' }
 
 export function getObjetivos() {
   try {
     const raw = localStorage.getItem(CLAVE_LS)
-    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS }
+    const obj = raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS }
+    if (MIGRACION_TIPO[obj.pesoObjetivoTipo]) {
+      obj.pesoObjetivoTipo = MIGRACION_TIPO[obj.pesoObjetivoTipo]
+      localStorage.setItem(CLAVE_LS, JSON.stringify(obj))
+    }
+    return obj
   } catch {
     return { ...DEFAULTS }
   }

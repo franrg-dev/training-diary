@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { getObjetivos } from '../ajustes/useObjetivos'
 
 const DIAS_SEMANA  = ['L', 'M', 'X', 'J', 'V', 'S', 'D']
 const NOMBRES_MES  = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -158,6 +159,9 @@ export default function CalendarioDiario({
         </div>
       </div>
 
+      {/* — Tarjetas resumen del mes — */}
+      <TarjetasResumenMes entradasDelMes={entradasDelMes} />
+
       {/* — Próximas sesiones (hoy + futuras) — */}
       <div style={{ padding: '20px 16px 0' }}>
         <p style={estiloSeccion}>
@@ -224,6 +228,96 @@ export default function CalendarioDiario({
           )}
         </div>
       )}
+    </div>
+  )
+}
+
+function TarjetasResumenMes({ entradasDelMes }) {
+  const objetivos = useMemo(() => getObjetivos(), [])
+
+  const stats = useMemo(() => {
+    const entradas = entradasDelMes || []
+
+    // Sueño: promedio de días con dato
+    const conSueno = entradas.filter(e => e.suenoHoras > 0)
+    const promedioSueno = conSueno.length > 0
+      ? conSueno.reduce((s, e) => s + Number(e.suenoHoras), 0) / conSueno.length
+      : null
+
+    // Pasos: promedio de días con dato
+    const conPasos = entradas.filter(e => e.pasos > 0)
+    const promedioPasos = conPasos.length > 0
+      ? Math.round(conPasos.reduce((s, e) => s + Number(e.pasos), 0) / conPasos.length)
+      : null
+
+    // Pesos: ordenados por fecha
+    const conPeso = entradas.filter(e => e.peso > 0).sort((a, b) => a.fecha.localeCompare(b.fecha))
+    const primerPeso = conPeso.length > 0 ? Number(conPeso[0].peso) : null
+    const ultimoPeso = conPeso.length > 1 ? Number(conPeso[conPeso.length - 1].peso) : null
+    const difPeso = primerPeso !== null && ultimoPeso !== null ? ultimoPeso - primerPeso : null
+
+    return { promedioSueno, promedioPasos, primerPeso, ultimoPeso, difPeso }
+  }, [entradasDelMes])
+
+  // Color del punto de Pasos
+  const colorPasos = stats.promedioPasos !== null && objetivos.pasos > 0
+    ? (stats.promedioPasos >= objetivos.pasos ? '#22c55e' : '#ef4444')
+    : null
+
+  // Color del punto de Dif según dirección
+  function colorDifPeso() {
+    if (stats.difPeso === null) return null
+    const dif = stats.difPeso
+    const tipo = objetivos.pesoObjetivoTipo
+    if (tipo === 'deficit') return dif < 0 ? '#22c55e' : '#ef4444'
+    if (tipo === 'volumen') return dif > 0 ? '#22c55e' : '#ef4444'
+    // mantenimiento
+    const abs = Math.abs(dif)
+    if (abs <= 1) return '#22c55e'
+    if (abs <= 2) return '#eab308'
+    return '#ef4444'
+  }
+
+  return (
+    <div style={{ padding: '12px 16px 0' }}>
+      {/* Fila 1: Sueño | Pasos */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+        <MiniCard label="Sueño" valor={stats.promedioSueno !== null ? `${stats.promedioSueno.toFixed(1)} h` : '—'} />
+        <MiniCard label="Pasos" valor={stats.promedioPasos !== null ? stats.promedioPasos.toLocaleString('es') : '—'} colorPunto={colorPasos} />
+      </div>
+      {/* Fila 2: Primero | Dif | Último */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+        <MiniCard label="Primero" valor={stats.primerPeso !== null ? `${stats.primerPeso.toFixed(1)}` : '—'} sufijo="kg" />
+        <MiniCard label="Dif" valor={stats.difPeso !== null ? `${stats.difPeso > 0 ? '+' : ''}${stats.difPeso.toFixed(1)}` : '—'} sufijo={stats.difPeso !== null ? 'kg' : undefined} colorPunto={colorDifPeso()} />
+        <MiniCard label="Último" valor={stats.ultimoPeso !== null ? `${stats.ultimoPeso.toFixed(1)}` : '—'} sufijo="kg" />
+      </div>
+    </div>
+  )
+}
+
+function MiniCard({ label, valor, sufijo, colorPunto }) {
+  return (
+    <div style={{
+      backgroundColor: 'var(--color-superficie)',
+      border: '1px solid var(--color-borde)',
+      borderRadius: '12px',
+      padding: '12px',
+      textAlign: 'center',
+    }}>
+      <p style={{ margin: '0 0 4px', fontSize: '11px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        {label}
+      </p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+        <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--color-texto)' }}>
+          {valor}
+        </span>
+        {sufijo && valor !== '—' && (
+          <span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', fontWeight: '500' }}>{sufijo}</span>
+        )}
+        {colorPunto && (
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colorPunto, marginLeft: '2px', flexShrink: 0 }} />
+        )}
+      </div>
     </div>
   )
 }

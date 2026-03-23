@@ -76,6 +76,8 @@ function SeccionApariencia() {
 
 // — Objetivos —
 
+const LABELS_DIRECCION = { deficit: 'Déficit', volumen: 'Volumen', mantenimiento: 'Mantenimiento' }
+
 function SeccionObjetivos() {
   const [obj, setObj] = useState(getObjetivos)
 
@@ -85,21 +87,106 @@ function SeccionObjetivos() {
     setObjetivos(nuevo)
   }
 
+  function cambiarDireccion(tipo) {
+    const cambios = { pesoObjetivoTipo: tipo }
+    if (tipo === 'mantenimiento') {
+      cambios.kcalDiferencia = 0
+    } else if (tipo === 'deficit' && obj.kcalDiferencia > 0) {
+      cambios.kcalDiferencia = -obj.kcalDiferencia
+    } else if (tipo === 'volumen' && obj.kcalDiferencia < 0) {
+      cambios.kcalDiferencia = -obj.kcalDiferencia
+    }
+    const nuevo = { ...obj, ...cambios }
+    setObj(nuevo)
+    setObjetivos(nuevo)
+  }
+
+  const esDeficit      = obj.pesoObjetivoTipo === 'deficit'
+  const esMantenimiento = obj.pesoObjetivoTipo === 'mantenimiento'
+
   return (
     <section style={estiloSeccion}>
       <h2 style={estiloTituloSeccion}>Objetivos diarios</h2>
 
-      {/* — Nutrición — */}
-      <p style={estiloSubtitulo}>Nutrición</p>
+      {/* — Peso a largo plazo (arriba del todo) — */}
+      <p style={estiloSubtitulo}>Peso a largo plazo</p>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
         <InputObjetivo
-          label="Dif. KCal"
-          sufijo="kcal"
-          value={obj.kcalDiferencia}
-          onChange={v => actualizar('kcalDiferencia', v)}
-          placeholder="−500"
-          allowNegative
+          label="Peso objetivo"
+          sufijo="kg"
+          value={obj.pesoObjetivo}
+          onChange={v => actualizar('pesoObjetivo', v)}
+          placeholder="70"
+          decimal
         />
+        <div>
+          <p style={estiloLabelInput}>Dirección</p>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            {['deficit', 'volumen', 'mantenimiento'].map(tipo => (
+              <button
+                key={tipo}
+                onClick={() => cambiarDireccion(tipo)}
+                style={{
+                  flex: 1,
+                  padding: '10px 4px',
+                  backgroundColor: obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-superficie-2)',
+                  border: `1px solid ${obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+                  borderRadius: '8px',
+                  color: obj.pesoObjetivoTipo === tipo ? '#fff' : 'var(--color-texto-secundario)',
+                  fontSize: '11px',
+                  fontWeight: obj.pesoObjetivoTipo === tipo ? '600' : '400',
+                  cursor: 'pointer',
+                }}
+              >
+                {LABELS_DIRECCION[tipo]}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* — Nutrición — */}
+      <p style={{ ...estiloSubtitulo, marginTop: '16px' }}>Nutrición</p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+        <div>
+          <p style={estiloLabelInput}>Dif. KCal</p>
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            {esDeficit && (
+              <span style={{
+                position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
+                fontSize: '14px', color: 'var(--color-texto-secundario)', pointerEvents: 'none', zIndex: 1,
+              }}>−</span>
+            )}
+            <input
+              type="number"
+              inputMode="numeric"
+              placeholder={esDeficit ? '500' : '300'}
+              disabled={esMantenimiento}
+              value={esMantenimiento ? 0 : (obj.kcalDiferencia ? Math.abs(obj.kcalDiferencia) : '')}
+              min={0}
+              step="1"
+              onChange={e => {
+                const raw = e.target.value
+                if (raw === '') { actualizar('kcalDiferencia', 0); return }
+                const num = parseInt(raw, 10)
+                if (!isNaN(num)) actualizar('kcalDiferencia', esDeficit ? -Math.abs(num) : Math.abs(num))
+              }}
+              style={{
+                width: '100%', padding: esDeficit ? '10px 36px 10px 22px' : '10px 36px 10px 10px',
+                backgroundColor: esMantenimiento ? 'var(--color-superficie)' : 'var(--color-superficie-2)',
+                border: '1px solid var(--color-borde)',
+                borderRadius: '8px', color: esMantenimiento ? 'var(--color-texto-secundario)' : 'var(--color-texto)',
+                fontSize: '14px', outline: 'none', fontFamily: 'inherit',
+                boxSizing: 'border-box',
+                opacity: esMantenimiento ? 0.5 : 1,
+              }}
+            />
+            <span style={{
+              position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
+              fontSize: '10px', color: 'var(--color-texto-secundario)', pointerEvents: 'none',
+            }}>kcal</span>
+          </div>
+        </div>
         <InputObjetivo
           label="Proteína"
           sufijo="g"
@@ -144,52 +231,11 @@ function SeccionObjetivos() {
           decimal
         />
       </div>
-
-      {/* — Peso a largo plazo — */}
-      <p style={estiloSubtitulo}>Peso a largo plazo</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-        <InputObjetivo
-          label="Peso objetivo"
-          sufijo="kg"
-          value={obj.pesoObjetivo}
-          onChange={v => actualizar('pesoObjetivo', v)}
-          placeholder="70"
-          decimal
-        />
-        <div>
-          <p style={estiloLabelInput}>Dirección</p>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            {['perder', 'ganar'].map(tipo => (
-              <button
-                key={tipo}
-                onClick={() => actualizar('pesoObjetivoTipo', tipo)}
-                style={{
-                  flex: 1,
-                  padding: '10px 4px',
-                  backgroundColor: obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-superficie-2)',
-                  border: `1px solid ${obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-borde)'}`,
-                  borderRadius: '8px',
-                  color: obj.pesoObjetivoTipo === tipo ? '#fff' : 'var(--color-texto-secundario)',
-                  fontSize: '13px',
-                  fontWeight: obj.pesoObjetivoTipo === tipo ? '600' : '400',
-                  cursor: 'pointer',
-                  textTransform: 'capitalize',
-                }}
-              >
-                {tipo}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
-        El objetivo de peso es orientativo y no afecta al resto de la app por ahora.
-      </p>
     </section>
   )
 }
 
-function InputObjetivo({ label, sufijo, value, onChange, placeholder, allowNegative = false, decimal = false }) {
+function InputObjetivo({ label, sufijo, value, onChange, placeholder, decimal = false }) {
   return (
     <div>
       <p style={estiloLabelInput}>{label}</p>
@@ -199,11 +245,11 @@ function InputObjetivo({ label, sufijo, value, onChange, placeholder, allowNegat
           inputMode={decimal ? 'decimal' : 'numeric'}
           placeholder={placeholder}
           value={value === 0 ? '' : value}
-          min={allowNegative ? undefined : 0}
+          min={0}
           step={decimal ? '0.1' : '1'}
           onChange={e => {
             const raw = e.target.value
-            if (raw === '' || raw === '-') { onChange(raw === '-' ? '-' : 0); return }
+            if (raw === '') { onChange(0); return }
             const num = decimal ? parseFloat(raw) : parseInt(raw, 10)
             if (!isNaN(num)) onChange(num)
           }}
