@@ -236,10 +236,10 @@ function TarjetasResumenMes({ entradasDelMes }) {
   const stats = useMemo(() => {
     const entradas = entradasDelMes || []
 
-    // Sueño: promedio de días con dato
-    const conSueno = entradas.filter(e => e.suenoHoras > 0)
-    const promedioSueno = conSueno.length > 0
-      ? conSueno.reduce((s, e) => s + Number(e.suenoHoras), 0) / conSueno.length
+    // Sueño: promedio en minutos de días con dato
+    const conSueno = entradas.filter(e => e.suenoMinutos > 0)
+    const promedioSuenoMin = conSueno.length > 0
+      ? Math.round(conSueno.reduce((s, e) => s + Number(e.suenoMinutos), 0) / conSueno.length)
       : null
 
     // Pasos: promedio de días con dato
@@ -254,7 +254,7 @@ function TarjetasResumenMes({ entradasDelMes }) {
     const ultimoPeso = conPeso.length > 1 ? Number(conPeso[conPeso.length - 1].peso) : null
     const difPeso = primerPeso !== null && ultimoPeso !== null ? ultimoPeso - primerPeso : null
 
-    return { promedioSueno, promedioPasos, primerPeso, ultimoPeso, difPeso }
+    return { promedioSuenoMin, promedioPasos, primerPeso, ultimoPeso, difPeso }
   }, [entradasDelMes])
 
   // Color del punto de Pasos
@@ -280,7 +280,7 @@ function TarjetasResumenMes({ entradasDelMes }) {
     <div style={{ padding: '12px 16px 0' }}>
       {/* Fila 1: Sueño | Pasos */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-        <MiniCard label="Sueño" valor={stats.promedioSueno !== null ? `${Math.floor(Math.round(stats.promedioSueno * 60) / 60)}:${String(Math.round(stats.promedioSueno * 60) % 60).padStart(2, '0')} h` : '—'} />
+        <MiniCard label="Sueño" valor={stats.promedioSuenoMin !== null ? `${Math.floor(stats.promedioSuenoMin / 60)}:${String(stats.promedioSuenoMin % 60).padStart(2, '0')} h` : '—'} />
         <MiniCard label="Pasos" valor={stats.promedioPasos !== null ? stats.promedioPasos.toLocaleString('es') : '—'} colorPunto={colorPasos} />
       </div>
       {/* Fila 2: Primero | Dif | Último */}

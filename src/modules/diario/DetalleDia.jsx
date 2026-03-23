@@ -4,11 +4,9 @@ const DIAS_LARGO  = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Vier
 const MESES_LARGO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
                      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 
-function formatearSueno(decimal) {
-  const totalMin = Math.round(parseFloat(decimal) * 60)
-  const h = Math.floor(totalMin / 60)
-  const m = totalMin % 60
-  return `${h}:${String(m).padStart(2, '0')}`
+function formatearSueno(minutos) {
+  const m = parseInt(minutos, 10) || 0
+  return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`
 }
 
 function formatearFechaLarga(fechaStr) {
@@ -277,7 +275,7 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
 
       {/* Fila 1: Sueño | Acostarse | Puntuación */}
       <Grid3>
-        <Campo label="Sueño" valor={e.suenoHoras > 0 ? formatearSueno(e.suenoHoras) : e.suenoHoras} sufijo="h" />
+        <Campo label="Sueño" valor={e.suenoMinutos > 0 ? formatearSueno(e.suenoMinutos) : e.suenoMinutos} sufijo="h" />
         <Campo label="Acostarse" valor={e.suenoHoraAcostarse} />
         <Campo label="Puntuación" valor={e.suenoCalidad} />
       </Grid3>

@@ -5,6 +5,47 @@ const DIAS_LARGO  = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Vier
 const MESES_LARGO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
                      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 
+function InputHorasMinLocal({ value, onChange }) {
+  const total = parseInt(value, 10) || 0
+  const [hh, setHh] = useState(value ? String(Math.floor(total / 60)) : '')
+  const [mm, setMm] = useState(value ? String(total % 60).padStart(2, '0') : '')
+
+  function emitir(h, m) {
+    const hNum = parseInt(h, 10) || 0
+    const mNum = parseInt(m, 10) || 0
+    if (h === '' && m === '') { onChange(''); return }
+    onChange(hNum * 60 + mNum)
+  }
+  function handleH(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 2)
+    if (v !== '' && parseInt(v, 10) > 99) v = '99'
+    setHh(v); emitir(v, mm)
+  }
+  function handleM(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 2)
+    if (v !== '' && parseInt(v, 10) > 59) v = '59'
+    setMm(v); emitir(hh, v)
+  }
+  return (
+    <div>
+      <label style={estiloLabel}>Sueño</label>
+      <div style={{ display: 'flex', gap: '4px' }}>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <input type="text" inputMode="numeric" placeholder="0" maxLength={2} value={hh} onChange={handleH}
+            style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '18px' }} />
+          <span style={estiloSufijoAbs}>h</span>
+        </div>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <input type="text" inputMode="numeric" placeholder="00" maxLength={2} value={mm} onChange={handleM}
+            style={{ ...estiloInputBase, textAlign: 'center', paddingRight: '22px' }} />
+          <span style={estiloSufijoAbs}>min</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+const estiloSufijoAbs = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-inactivo)', pointerEvents: 'none' }
+
 function formatearFechaLarga(fechaStr) {
   const [anio, mes, dia] = fechaStr.split('-').map(Number)
   const d = new Date(anio, mes - 1, dia)
@@ -167,7 +208,7 @@ export default function FormularioDia({
   const [agua, setAgua]           = useState(entrada?.agua      || '')
 
   // — Sueño —
-  const [suenoHoras, setSuenoHoras]                   = useState(entrada?.suenoHoras         || '')
+  const [suenoMinutos, setSuenoMinutos]               = useState(entrada?.suenoMinutos       || '')
   const [suenoHoraAcostarse, setSuenoHoraAcostarse]   = useState(entrada?.suenoHoraAcostarse || '')
   const [suenoCalidad, setSuenoCalidad]               = useState(entrada?.suenoCalidad       || '')
 
@@ -275,7 +316,7 @@ export default function FormularioDia({
       await onGuardar({
         fecha,
         sesionId,
-        ejerciciosDia: ejerciciosDia.map(({ _sugerenciaPeso, ...r }) => ({
+        ejerciciosDia: ejerciciosDia.map(({ _sugerenciaPeso, ...r }) => ({ // eslint-disable-line no-unused-vars
           ...r,
           peso:         Number(r.peso) || 0,
           series:       String(r.series),
@@ -290,7 +331,7 @@ export default function FormularioDia({
         kcalConsumidas, proteinas, carbohidratos, grasas,
         kcalQuemadas, metabolismoBasal, pasos,
         movilidad, core, agua,
-        suenoHoras, suenoHoraAcostarse, suenoCalidad,
+        suenoMinutos, suenoHoraAcostarse, suenoCalidad,
         esfuerzo,
         horaPesaje, bascula,
         peso, imc, grasaPorcentaje, grasaVisceral, musculo, masaOsea, edadCorporal,
@@ -346,9 +387,9 @@ export default function FormularioDia({
           SECCIÓN 1 — DATOS GENERALES (sin título)
       ══════════════════════════════════════════════ */}
 
-      {/* Fila 1: Sueño horas | Puntuación */}
+      {/* Fila 1: Sueño horas+min | Puntuación */}
       <Grid2>
-        <InputNum label="Sueño" placeholder="7.5" value={suenoHoras} onChange={setSuenoHoras} sufijo="h" />
+        <InputHorasMinLocal value={suenoMinutos} onChange={setSuenoMinutos} />
         <InputNum label="Puntuación" placeholder="80" value={suenoCalidad} onChange={setSuenoCalidad} />
       </Grid2>
       {/* Acostarse — fila sola */}

@@ -107,7 +107,7 @@ export function useDiario() {
       core:                 datos.core                    ?? false,
       agua:                 Number(datos.agua)            || 0,
       // Sueño
-      suenoHoras:           Number(datos.suenoHoras)       || 0,
+      suenoMinutos:         Number(datos.suenoMinutos)     || 0,
       suenoHoraAcostarse:   datos.suenoHoraAcostarse      || '',
       suenoCalidad:         Number(datos.suenoCalidad)     || 0,
       // Esfuerzo

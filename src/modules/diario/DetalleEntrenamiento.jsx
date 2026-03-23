@@ -3,11 +3,9 @@ import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
 import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 import { getObjetivos } from '../ajustes/useObjetivos'
 
-function formatearSueno(decimal) {
-  const totalMin = Math.round(parseFloat(decimal) * 60)
-  const h = Math.floor(totalMin / 60)
-  const m = totalMin % 60
-  return `${h}:${String(m).padStart(2, '0')}`
+function formatearSueno(minutos) {
+  const m = parseInt(minutos, 10) || 0
+  return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`
 }
 
 const ROJO    = '#f87171'
@@ -406,8 +404,8 @@ export default function DetalleEntrenamiento({
           {/* Dato principal: horas de sueño */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-fondo)', borderRadius: '16px', padding: '16px 20px', minWidth: '100px' }}>
             <span style={{ fontSize: '28px', lineHeight: 1, marginBottom: '4px' }}>🌙</span>
-            <p style={{ margin: '4px 0 2px', fontSize: '30px', fontWeight: '800', color: e.suenoHoras > 0 ? 'var(--color-texto)' : 'var(--color-texto-inactivo)', lineHeight: 1 }}>
-              {e.suenoHoras > 0 ? formatearSueno(e.suenoHoras) : '—'}
+            <p style={{ margin: '4px 0 2px', fontSize: '30px', fontWeight: '800', color: e.suenoMinutos > 0 ? 'var(--color-texto)' : 'var(--color-texto-inactivo)', lineHeight: 1 }}>
+              {e.suenoMinutos > 0 ? formatearSueno(e.suenoMinutos) : '—'}
             </p>
             <p style={{ margin: 0, fontSize: '11px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>horas</p>
           </div>

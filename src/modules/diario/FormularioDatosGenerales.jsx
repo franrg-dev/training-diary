@@ -14,10 +14,10 @@ function formatearFechaLarga(fechaStr) {
 // Almacena como "7.5" (horas decimales) para compatibilidad con el resto
 
 function InputHorasMin({ value, onChange }) {
-  // Convertir valor decimal a hh/mm internos
-  const totalMin = Math.round((parseFloat(value) || 0) * 60)
-  const hhInicial = value ? String(Math.floor(totalMin / 60)) : ''
-  const mmInicial = value ? String(totalMin % 60).padStart(2, '0') : ''
+  // value = minutos totales (entero). Ej: 390 = 6h 30min
+  const total = parseInt(value, 10) || 0
+  const hhInicial = value ? String(Math.floor(total / 60)) : ''
+  const mmInicial = value ? String(total % 60).padStart(2, '0') : ''
 
   const [hh, setHh] = useState(hhInicial)
   const [mm, setMm] = useState(mmInicial)
@@ -26,7 +26,7 @@ function InputHorasMin({ value, onChange }) {
     const h = parseInt(nuevaHh, 10) || 0
     const m = parseInt(nuevaMm,  10) || 0
     if (nuevaHh === '' && nuevaMm === '') { onChange(''); return }
-    onChange(String(Math.round((h + m / 60) * 100) / 100))
+    onChange(h * 60 + m)
   }
 
   function handleHoras(e) {
@@ -219,7 +219,7 @@ export default function FormularioDatosGenerales({
   const [agua, setAgua]           = useState(entrada?.agua      || '')
 
   // — Sueño —
-  const [suenoHoras, setSuenoHoras]                 = useState(entrada?.suenoHoras         || '')
+  const [suenoMinutos, setSuenoHoras]                 = useState(entrada?.suenoMinutos         || '')
   const [suenoHoraAcostarse, setSuenoHoraAcostarse] = useState(entrada?.suenoHoraAcostarse || '')
   const [suenoCalidad, setSuenoCalidad]             = useState(entrada?.suenoCalidad       || '')
 
@@ -256,7 +256,7 @@ export default function FormularioDatosGenerales({
         kcalConsumidas, proteinas, carbohidratos, grasas,
         kcalQuemadas, metabolismoBasal, pasos,
         movilidad, core, agua,
-        suenoHoras, suenoHoraAcostarse, suenoCalidad,
+        suenoMinutos, suenoHoraAcostarse, suenoCalidad,
         esfuerzo,
         horaPesaje, bascula,
         peso, imc, grasaPorcentaje, grasaVisceral, musculo, masaOsea, edadCorporal,
@@ -297,7 +297,7 @@ export default function FormularioDatosGenerales({
       <Grid2>
         <div>
           <label style={estiloLabelPequeno}>Sueño</label>
-          <InputHorasMin value={suenoHoras} onChange={setSuenoHoras} />
+          <InputHorasMin value={suenoMinutos} onChange={setSuenoHoras} />
         </div>
         <InputNum label="Puntuación" placeholder="8" value={suenoCalidad} onChange={setSuenoCalidad} />
       </Grid2>
