@@ -26,7 +26,6 @@ export function useSesiones() {
 
   const crear = useCallback(async (datos) => {
     const id = await db.sesiones.add({
-      id:          crypto.randomUUID(),
       nombre:      datos.nombre.trim(),
       descripcion: datos.descripcion?.trim() || '',
       ejercicios:  datos.ejercicios || [],

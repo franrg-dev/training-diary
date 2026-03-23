@@ -36,7 +36,6 @@ export function useRegistro() {
 
   const crear = useCallback(async (datos) => {
     const entry = {
-      id:          crypto.randomUUID(),
       ejercicioId: datos.ejercicioId,
       fecha:       datos.fecha,
       notas:       datos.notas?.trim() || '',
@@ -65,7 +64,7 @@ export function useRegistro() {
     if (existente) {
       await db.registro.update(existente.id, { peso: Number(peso), unidad })
     } else {
-      await db.registro.add({ id: crypto.randomUUID(), ejercicioId, fecha, peso: Number(peso), unidad, notas: '' })
+      await db.registro.add({ ejercicioId, fecha, peso: Number(peso), unidad, notas: '' })
     }
     await cargar()
   }, [cargar])

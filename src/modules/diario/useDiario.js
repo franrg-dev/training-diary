@@ -49,7 +49,6 @@ export function useDiario() {
           await db.registro.update(existente.id, { peso: Number(ej.peso), unidad: ej.unidad || 'kg' })
         } else {
           await db.registro.add({
-            id:          crypto.randomUUID(),
             ejercicioId: ej.ejercicioId,
             fecha,
             peso:        Number(ej.peso),
@@ -76,7 +75,6 @@ export function useDiario() {
           await db.registro.update(existente.id, campos)
         } else {
           await db.registro.add({
-            id:          crypto.randomUUID(),
             ejercicioId: ej.ejercicioId,
             fecha,
             notas:       '',
@@ -139,7 +137,7 @@ export function useDiario() {
   }
 
   const crear = useCallback(async (datos) => {
-    const id = await db.diario.add({ id: crypto.randomUUID(), ...normalizarDatos(datos) })
+    const id = await db.diario.add(normalizarDatos(datos))
     await syncRegistro(datos.ejerciciosDia, datos.ejerciciosCardio, datos.fecha)
     await cargar()
     return id

@@ -44,12 +44,11 @@ export function useEjercicios() {
   // Crea un nuevo ejercicio y devuelve su id generado
   const crear = useCallback(async (datos) => {
     const grupos = datos.gruposMuscular || []
-    const nuevoId = crypto.randomUUID()
     const sustitutos = datos.sustitutos || []
+    let nuevoId
 
     await db.transaction('rw', db.ejercicios, async () => {
-      await db.ejercicios.add({
-        id:              nuevoId,
+      nuevoId = await db.ejercicios.add({
         nombre:          datos.nombre.trim(),
         gruposMuscular:  grupos,
         grupoPrincipal:  datos.grupoPrincipal || grupos[0] || '',
