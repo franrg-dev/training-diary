@@ -70,11 +70,11 @@ db.version(4).stores({
   }
 })
 
-// v5: nuevas tablas para el módulo de Hábitos (++id, no @id — tablas nuevas usan autoincremento local)
+// v5: nuevas tablas para el módulo de Hábitos (@id = UUID para compatibilidad con dexie-cloud-addon)
 db.version(5).stores({
-  habitos:           '++id, titulo, tipo, *etiquetas, fechaInicio',
-  etiquetasHabito:   '++id, nombre',
-  completadosHabito: '++id, habitoId, fecha',
+  habitos:           '@id, titulo, tipo, *etiquetas, fechaInicio',
+  etiquetasHabito:   '@id, nombre',
+  completadosHabito: '@id, habitoId, fecha',
 })
 
 // Configuración del cloud (se activa solo cuando el usuario inicia sesión)
