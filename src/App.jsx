@@ -6,7 +6,7 @@ import PaginaSesiones     from './modules/sesiones/PaginaSesiones'
 import PaginaDiario       from './modules/diario/PaginaDiario'
 import PaginaRegistro     from './modules/registro/PaginaRegistro'
 import PaginaNutricion    from './modules/nutricion/PaginaNutricion'
-import PaginaSuplementos  from './modules/suplementos/PaginaSuplementos'
+import PaginaHabitos      from './modules/habitos/PaginaHabitos'
 import PaginaAjustes      from './modules/ajustes/PaginaAjustes'
 import { NavResetContext } from './context/NavResetContext'
 
@@ -38,7 +38,7 @@ export default function App() {
           <Route path="/registro"    element={<PaginaRegistro      key={k('/registro')}    />} />
           <Route path="/diario"      element={<PaginaDiario        key={k('/diario')}      />} />
           <Route path="/nutricion"   element={<PaginaNutricion     key={k('/nutricion')}   />} />
-          <Route path="/suplementos" element={<PaginaSuplementos   key={k('/suplementos')} />} />
+          <Route path="/habitos"     element={<PaginaHabitos       key={k('/habitos')}     />} />
           <Route path="/ajustes"     element={<PaginaAjustes       key={k('/ajustes')}     />} />
 
           <Route path="*" element={<Navigate to="/diario" replace />} />

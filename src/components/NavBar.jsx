@@ -8,10 +8,10 @@ import { useNavReset } from '../context/NavResetContext'
  */
 
 const seccionesLateral = [
-  { ruta: '/suplementos', icono: IconoSuplemento },
-  { ruta: '/ejercicios',  icono: IconoMancuerna  },
-  { ruta: '/nutricion',   icono: IconoNutricion  },
-  { ruta: '/ajustes',     icono: IconoAjustes    },
+  { ruta: '/habitos',    icono: IconoHabitos   },
+  { ruta: '/ejercicios', icono: IconoMancuerna },
+  { ruta: '/nutricion',  icono: IconoNutricion },
+  { ruta: '/ajustes',    icono: IconoAjustes   },
 ]
 
 export default function NavBar() {
@@ -52,7 +52,7 @@ export default function NavBar() {
           pointerEvents: 'auto',
         }}
       >
-        {/* Suplementos + Ejercicios */}
+        {/* Hábitos + Ejercicios */}
         {seccionesLateral.slice(0, 2).map(({ ruta, icono: Icono }) => (
           <NavLink
             key={ruta}
@@ -142,10 +142,10 @@ function IconoNutricion() {
   )
 }
 
-function IconoSuplemento() {
+function IconoHabitos() {
   return (
     <svg width="24" height="24" viewBox="0 -960 960 960" fill="currentColor">
-      <path d="M345-120q-94 0-159.5-65.5T120-345q0-45 17-86t49-73l270-270q32-32 73-49t86-17q94 0 159.5 65.5T840-615q0 45-17 86t-49 73L504-186q-32 32-73 49t-86 17Zm266-286 107-106q20-20 31-47t11-56q0-60-42.5-102.5T615-760q-29 0-56 11t-47 31L406-611l205 205ZM345-200q29 0 56-11t47-31l106-107-205-205-107 106q-20 20-31 47t-11 56q0 60 42.5 102.5T345-200Z"/>
+      <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
     </svg>
   )
 }
