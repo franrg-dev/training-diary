@@ -70,21 +70,31 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
   const mesInicioModal  = useMemo(() => parseInt(fechaInicio.split('-')[1], 10) - 1, [fechaInicio, modalFechaInicio]) // eslint-disable-line
   const anioInicioModal = useMemo(() => parseInt(fechaInicio.split('-')[0], 10),     [fechaInicio, modalFechaInicio]) // eslint-disable-line
 
+  const [guardando, setGuardando] = useState(false)
+  const [errorGuardar, setErrorGuardar] = useState(null)
+
   const valido = titulo.trim().length > 0 && titulo.trim().length <= 50 &&
     (repeticionTipo !== 'semanal' || diasSemana.length > 0) &&
     (repeticionTipo !== 'mensual' || diasMes.length > 0)
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    if (!valido) return
-    onGuardar({
-      tipo,
-      titulo:      titulo.trim(),
-      descripcion: descripcion.trim(),
-      etiquetas:   etiquetasSel,
-      fechaInicio,
-      repeticion,
-    })
+    if (!valido || guardando) return
+    setGuardando(true)
+    setErrorGuardar(null)
+    try {
+      await onGuardar({
+        tipo,
+        titulo:      titulo.trim(),
+        descripcion: descripcion.trim(),
+        etiquetas:   etiquetasSel,
+        fechaInicio,
+        repeticion,
+      })
+    } catch (err) {
+      setErrorGuardar(err?.message || 'Error al guardar el hábito')
+      setGuardando(false)
+    }
   }
 
   return (
@@ -366,18 +376,24 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
         </button>
 
         {/* Guardar */}
+        {errorGuardar && (
+          <p style={{ margin: '0 0 12px', fontSize: '13px', color: '#ef4444', textAlign: 'center' }}>
+            {errorGuardar}
+          </p>
+        )}
+
         <button
           type="submit"
-          disabled={!valido}
+          disabled={!valido || guardando}
           style={{
             width: '100%', padding: '14px', borderRadius: '14px',
-            backgroundColor: valido ? '#f97316' : 'var(--color-superficie)',
-            border: valido ? 'none' : '1px solid var(--color-borde)',
-            color: valido ? '#fff' : 'var(--color-texto-secundario)',
-            fontSize: '16px', fontWeight: '600', cursor: valido ? 'pointer' : 'default',
+            backgroundColor: (valido && !guardando) ? '#f97316' : 'var(--color-superficie)',
+            border: (valido && !guardando) ? 'none' : '1px solid var(--color-borde)',
+            color: (valido && !guardando) ? '#fff' : 'var(--color-texto-secundario)',
+            fontSize: '16px', fontWeight: '600', cursor: (valido && !guardando) ? 'pointer' : 'default',
           }}
         >
-          {habito ? 'Guardar cambios' : 'Crear hábito'}
+          {guardando ? 'Guardando…' : (habito ? 'Guardar cambios' : 'Crear hábito')}
         </button>
       </form>
 
