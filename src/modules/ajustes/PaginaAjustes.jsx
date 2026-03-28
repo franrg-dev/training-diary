@@ -442,6 +442,20 @@ function SeccionSincronizacion() {
     setMensajeSync(null)
     try {
       await db.cloud.sync()
+      setMensajeSync('Sincronización completada')
+    } catch (e) {
+      setMensajeSync(`Error: ${e?.message || 'fallo al sincronizar'}`)
+    } finally {
+      setForzandoSync(false)
+      setTimeout(() => setMensajeSync(null), 6000)
+    }
+  }
+
+  async function handleHardRefresh() {
+    setForzandoSync(true)
+    setMensajeSync(null)
+    try {
+      await db.cloud.sync()
       window.location.reload()
     } catch (e) {
       setMensajeSync(`Error: ${e?.message || 'fallo al sincronizar'}`)
@@ -454,13 +468,35 @@ function SeccionSincronizacion() {
     <section style={estiloSeccion}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
         <IconoCloud sincronizando={sincronizando} color={colorEstado} />
-        <h2 style={estiloTituloSeccion}>Sincronización</h2>
-        <div style={{
-          marginLeft: 'auto',
-          width: '8px', height: '8px',
-          borderRadius: '50%',
-          backgroundColor: colorEstado,
-        }} />
+        <h2 style={{ ...estiloTituloSeccion, margin: 0 }}>Sincronización</h2>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {estaLogueado && (
+            <>
+              <button
+                onClick={handleForzarSync}
+                disabled={forzandoSync || sincronizando}
+                title="Forzar sincronización"
+                style={estiloBotonIcono(forzandoSync || sincronizando)}
+              >
+                <svg width="18" height="18" viewBox="0 -960 960 960" fill="currentColor"
+                  style={forzandoSync ? { animation: 'spin 1s linear infinite' } : {}}>
+                  <path d="M160-160v-80h109q-51-44-80-106t-29-134q0-112 68-197.5T400-790v84q-70 25-115 86.5T240-480q0 54 21.5 99.5T320-302v-98h80v240H160Zm440 0q-50 0-85-35t-35-85q0-48 33-82.5t81-36.5q17-36 50.5-58.5T720-480q53 0 91.5 34.5T858-360q42 0 72 29t30 70q0 42-29 71.5T860-160H600Zm116-360q-7-41-27-76t-49-62v98h-80v-240h240v80H691q43 38 70.5 89T797-520h-81ZM600-240h260q8 0 14-6t6-14q0-8-6-14t-14-6h-70v-50q0-29-20.5-49.5T720-400q-29 0-49.5 20.5T650-330v10h-50q-17 0-28.5 11.5T560-280q0 17 11.5 28.5T600-240Zm120-80Z"/>
+                </svg>
+              </button>
+              <button
+                onClick={handleHardRefresh}
+                disabled={forzandoSync || sincronizando}
+                title="Sincronizar y recargar"
+                style={estiloBotonIcono(forzandoSync || sincronizando)}
+              >
+                <svg width="18" height="18" viewBox="0 -960 960 960" fill="currentColor">
+                  <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v280h-80v-200H160v400h320v80H160ZM760 0q-73 0-127.5-45.5T564-160h62q13 44 49.5 72T760-60q58 0 99-41t41-99q0-58-41-99t-99-41q-29 0-54 10.5T662-300h58v60H560v-160h60v57q27-26 63-41.5t77-15.5q83 0 141.5 58.5T960-200q0 83-58.5 141.5T760 0Z"/>
+                </svg>
+              </button>
+            </>
+          )}
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colorEstado }} />
+        </div>
       </div>
 
       {estaLogueado ? (
@@ -484,28 +520,6 @@ function SeccionSincronizacion() {
           <p style={{ margin: '0 0 12px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
             Los datos se sincronizan automáticamente entre todos tus dispositivos.
           </p>
-          <button
-            onClick={handleForzarSync}
-            disabled={forzandoSync || sincronizando}
-            style={{
-              ...estiloBotonPrimario,
-              marginBottom: '8px',
-              backgroundColor: 'var(--color-superficie-2)',
-              border: '1px solid var(--color-borde)',
-              color: 'var(--color-texto)',
-              fontWeight: '500',
-              opacity: (forzandoSync || sincronizando) ? 0.6 : 1,
-              cursor: (forzandoSync || sincronizando) ? 'default' : 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-            }}
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              style={forzandoSync ? { animation: 'spin 1s linear infinite' } : {}}>
-              <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-            </svg>
-            {forzandoSync ? 'Sincronizando…' : 'Forzar sincronización'}
-          </button>
           {mensajeSync && (
             <p style={{ margin: '0 0 10px', fontSize: '12px', textAlign: 'center', color: mensajeSync.includes('Error') ? '#f87171' : '#22c55e' }}>
               {mensajeSync}
@@ -656,6 +670,19 @@ const estiloBotonPrimario = {
   backgroundColor: 'var(--color-acento)', border: 'none',
   borderRadius: '10px', color: '#fff',
   fontSize: '15px', fontWeight: '600', cursor: 'pointer',
+}
+
+function estiloBotonIcono(deshabilitado) {
+  return {
+    width: '30px', height: '30px', borderRadius: '8px', padding: 0,
+    backgroundColor: 'var(--color-superficie-2)',
+    border: '1px solid var(--color-borde)',
+    color: 'var(--color-texto-secundario)',
+    cursor: deshabilitado ? 'default' : 'pointer',
+    opacity: deshabilitado ? 0.4 : 1,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0,
+  }
 }
 
 const estiloBotonDestructivo = {
