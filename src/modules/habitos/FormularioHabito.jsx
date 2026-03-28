@@ -26,6 +26,8 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
   const [finFecha,           setFinFecha]           = useState(habito?.repeticion?.finFecha  || '')
   const [finVeces,           setFinVeces]           = useState(habito?.repeticion?.finVeces  || 1)
   const [fechaInicio,        setFechaInicio]        = useState(habito?.fechaInicio           || hoyISO())
+  const [subhabitos,         setSubhabitos]         = useState(habito?.subhabitos || [])
+  const [inputSubhabito,     setInputSubhabito]     = useState('')
   const [modalFechaInicio,   setModalFechaInicio]   = useState(false)
   const [modalFinFecha,      setModalFinFecha]      = useState(false)
 
@@ -63,6 +65,21 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
     )
   }
 
+  function agregarSubhabito() {
+    const texto = inputSubhabito.trim()
+    if (!texto) return
+    setSubhabitos(prev => [...prev, { id: crypto.randomUUID(), texto, obligatorio: false }])
+    setInputSubhabito('')
+  }
+
+  function toggleObligatorio(id) {
+    setSubhabitos(prev => prev.map(s => s.id === id ? { ...s, obligatorio: !s.obligatorio } : s))
+  }
+
+  function eliminarSubhabito(id) {
+    setSubhabitos(prev => prev.filter(s => s.id !== id))
+  }
+
   function esDiaValido(fechaISO) {
     return esDiaValidoRepeticion(repeticion, fechaISO)
   }
@@ -70,6 +87,7 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
   const mesInicioModal  = useMemo(() => parseInt(fechaInicio.split('-')[1], 10) - 1, [fechaInicio, modalFechaInicio]) // eslint-disable-line
   const anioInicioModal = useMemo(() => parseInt(fechaInicio.split('-')[0], 10),     [fechaInicio, modalFechaInicio]) // eslint-disable-line
 
+  const [subhabitosMinimo, setSubhabitosMinimo] = useState(habito?.subhabitosMinimo || 0)
   const [guardando, setGuardando] = useState(false)
   const [errorGuardar, setErrorGuardar] = useState(null)
 
@@ -85,11 +103,13 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
     try {
       await onGuardar({
         tipo,
-        titulo:      titulo.trim(),
-        descripcion: descripcion.trim(),
-        etiquetas:   etiquetasSel,
+        titulo:            titulo.trim(),
+        descripcion:       descripcion.trim(),
+        etiquetas:         etiquetasSel,
         fechaInicio,
         repeticion,
+        subhabitos,
+        subhabitosMinimo:  subhabitos.length > 0 ? subhabitosMinimo : 0,
       })
     } catch (err) {
       setErrorGuardar(err?.message || 'Error al guardar el hábito')
@@ -374,6 +394,107 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
             </span>
           )}
         </button>
+
+        {/* 8 — SUBHÁBITOS */}
+        <SeccionLabel>Subhábitos (opcional)</SeccionLabel>
+        <div style={{ marginBottom: '24px' }}>
+          {/* Input para añadir */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: subhabitos.length > 0 ? '10px' : '0' }}>
+            <input
+              type="text"
+              value={inputSubhabito}
+              onChange={e => setInputSubhabito(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); agregarSubhabito() } }}
+              placeholder="Nombre del subhábito…"
+              maxLength={60}
+              style={{ ...estiloInput, flex: 1, fontSize: '14px', padding: '10px 12px' }}
+            />
+            <button
+              type="button"
+              onClick={agregarSubhabito}
+              disabled={!inputSubhabito.trim()}
+              style={{
+                padding: '10px 16px', borderRadius: '12px',
+                backgroundColor: inputSubhabito.trim() ? '#f97316' : 'var(--color-superficie)',
+                border: inputSubhabito.trim() ? 'none' : '1px solid var(--color-borde)',
+                color: inputSubhabito.trim() ? '#fff' : 'var(--color-texto-secundario)',
+                fontSize: '14px', fontWeight: '600',
+                cursor: inputSubhabito.trim() ? 'pointer' : 'default',
+                flexShrink: 0,
+              }}
+            >
+              Añadir
+            </button>
+          </div>
+
+          {/* Lista de subhábitos */}
+          {subhabitos.map(s => (
+            <div key={s.id} style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '10px 12px', marginBottom: '6px',
+              backgroundColor: 'var(--color-superficie)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: '10px',
+            }}>
+              <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {s.texto}
+              </span>
+              {/* Toggle obligatorio */}
+              <button
+                type="button"
+                onClick={() => toggleObligatorio(s.id)}
+                style={{
+                  padding: '4px 10px', borderRadius: '20px', flexShrink: 0,
+                  border: `1px solid ${s.obligatorio ? '#f97316' : 'var(--color-borde)'}`,
+                  backgroundColor: s.obligatorio ? '#f9731622' : 'transparent',
+                  color: s.obligatorio ? '#f97316' : 'var(--color-texto-secundario)',
+                  fontSize: '12px', fontWeight: s.obligatorio ? '600' : '400',
+                  cursor: 'pointer',
+                }}
+              >
+                {s.obligatorio ? 'Obligatorio' : 'Opcional'}
+              </button>
+              {/* Eliminar */}
+              <button
+                type="button"
+                onClick={() => eliminarSubhabito(s.id)}
+                style={{
+                  width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
+                  background: 'none', border: 'none',
+                  color: 'var(--color-texto-secundario)',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: 0,
+                }}
+                aria-label="Eliminar subhábito"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          ))}
+
+          {/* Mínimo para completar (solo si hay ≥2 subhábitos sin todos obligatorios) */}
+          {subhabitos.length >= 2 && subhabitos.some(s => !s.obligatorio) && (
+            <div style={{
+              marginTop: '12px', padding: '12px',
+              backgroundColor: 'var(--color-superficie)',
+              border: '1px solid var(--color-borde)',
+              borderRadius: '10px',
+            }}>
+              <p style={{ margin: '0 0 10px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Mínimo para completar
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button type="button" onClick={() => setSubhabitosMinimo(v => Math.max(0, v - 1))} style={estiloStepBtn}>−</button>
+                <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--color-texto)', minWidth: '80px', textAlign: 'center' }}>
+                  {subhabitosMinimo === 0 ? 'Sin mínimo' : `${subhabitosMinimo} de ${subhabitos.length}`}
+                </span>
+                <button type="button" onClick={() => setSubhabitosMinimo(v => Math.min(subhabitos.length, v + 1))} style={estiloStepBtn}>+</button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Guardar */}
         {errorGuardar && (
