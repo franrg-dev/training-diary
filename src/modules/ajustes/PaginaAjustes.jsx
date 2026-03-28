@@ -393,11 +393,13 @@ function SeccionSincronizacion() {
     return () => { subUser.unsubscribe(); subSync.unsubscribe() }
   }, [])
 
-  // Sync automático al volver a primer plano (PWA desde background)
+  // Sync automático al volver a primer plano + recarga para reflejar datos nuevos
   useEffect(() => {
     function handleVisibility() {
       if (document.visibilityState === 'visible') {
-        db.cloud.sync().catch(() => {})
+        db.cloud.sync()
+          .then(() => window.location.reload())
+          .catch(() => {})
       }
     }
     document.addEventListener('visibilitychange', handleVisibility)
@@ -440,10 +442,9 @@ function SeccionSincronizacion() {
     setMensajeSync(null)
     try {
       await db.cloud.sync()
-      setMensajeSync('Sincronización completada')
+      window.location.reload()
     } catch (e) {
       setMensajeSync(`Error: ${e?.message || 'fallo al sincronizar'}`)
-    } finally {
       setForzandoSync(false)
       setTimeout(() => setMensajeSync(null), 6000)
     }
