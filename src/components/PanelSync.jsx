@@ -12,26 +12,13 @@ export default function PanelSync() {
   const [email, setEmail]         = useState('')
   const [otp, setOtp]             = useState('')
   const [paso, setPaso]           = useState('email') // 'email' | 'otp'
-  const [enviando, setEnviando]         = useState(false)
-  const [error, setError]               = useState(null)
-  const [forzandoSync, setForzandoSync] = useState(false)
-  const [mensajeSync, setMensajeSync]   = useState(null)
+  const [enviando, setEnviando]   = useState(false)
+  const [error, setError]         = useState(null)
 
   useEffect(() => {
     const subUser = db.cloud.currentUser.subscribe(u => setUsuario(u))
     const subSync = db.cloud.syncState.subscribe(s => setSyncState(s))
     return () => { subUser.unsubscribe(); subSync.unsubscribe() }
-  }, [])
-
-  // Sync automático al volver a primer plano (PWA desde background)
-  useEffect(() => {
-    function handleVisibility() {
-      if (document.visibilityState === 'visible') {
-        db.cloud.sync().catch(() => {})
-      }
-    }
-    document.addEventListener('visibilitychange', handleVisibility)
-    return () => document.removeEventListener('visibilitychange', handleVisibility)
   }, [])
 
   const estaLogueado  = usuario && !usuario.isLoggedIn === false && usuario.userId !== 'unauthorized'
@@ -71,20 +58,6 @@ export default function PanelSync() {
   async function handleLogout() {
     await db.cloud.logout()
     setAbierto(false)
-  }
-
-  async function handleForzarSync() {
-    setForzandoSync(true)
-    setMensajeSync(null)
-    try {
-      await db.cloud.sync()
-      setMensajeSync('Sincronización completada')
-    } catch (e) {
-      setMensajeSync('Error al sincronizar')
-    } finally {
-      setForzandoSync(false)
-      setTimeout(() => setMensajeSync(null), 3000)
-    }
   }
 
   // Icono y color del indicador según estado
@@ -163,34 +136,9 @@ export default function PanelSync() {
                     </p>
                   </div>
                 </div>
-                <p style={{ margin: '0 0 12px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
+                <p style={{ margin: '0 0 16px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
                   Los datos se sincronizan automáticamente entre todos tus dispositivos.
                 </p>
-                <button
-                  onClick={handleForzarSync}
-                  disabled={forzandoSync || sincronizando}
-                  style={{
-                    width: '100%', padding: '11px', marginBottom: '8px',
-                    backgroundColor: 'var(--color-superficie-2)',
-                    border: '1px solid var(--color-borde)',
-                    borderRadius: '10px', color: 'var(--color-texto)',
-                    fontSize: '14px', fontWeight: '500', cursor: (forzandoSync || sincronizando) ? 'default' : 'pointer',
-                    opacity: (forzandoSync || sincronizando) ? 0.6 : 1,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                  }}
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                    style={forzandoSync ? { animation: 'spin 1s linear infinite' } : {}}>
-                    <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
-                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                  </svg>
-                  {forzandoSync ? 'Sincronizando…' : 'Forzar sincronización'}
-                </button>
-                {mensajeSync && (
-                  <p style={{ margin: '0 0 10px', fontSize: '12px', textAlign: 'center', color: mensajeSync.includes('Error') ? '#f87171' : '#22c55e' }}>
-                    {mensajeSync}
-                  </p>
-                )}
                 <button
                   onClick={handleLogout}
                   style={{ width: '100%', padding: '11px', backgroundColor: 'transparent', border: '1px solid #dc262644', borderRadius: '10px', color: '#f87171', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}
