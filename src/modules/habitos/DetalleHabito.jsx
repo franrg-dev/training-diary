@@ -124,6 +124,40 @@ export default function DetalleHabito({ habito, etiquetas, onEditar, onEliminar,
             </div>
           </div>
         )}
+
+        {/* Subhábitos */}
+        {(habito.subhabitos || []).length > 0 && (
+          <div style={{ borderTop: '1px solid var(--color-borde)' }}>
+            <div style={{ padding: '12px 16px 6px' }}>
+              <p style={{ margin: '0 0 4px', fontSize: '11px', color: 'var(--color-texto-secundario)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Subhábitos
+              </p>
+              {habito.subhabitosMinimo > 0 && (
+                <p style={{ margin: '0 0 8px', fontSize: '12px', color: '#f97316' }}>
+                  Mínimo {habito.subhabitosMinimo} de {habito.subhabitos.length} para completar
+                </p>
+              )}
+            </div>
+            {habito.subhabitos.map((s, idx) => (
+              <div key={s.id} style={{
+                display: 'flex', alignItems: 'center', gap: '10px',
+                padding: '10px 16px',
+                borderTop: idx > 0 ? '1px solid var(--color-borde)' : 'none',
+              }}>
+                <div style={{
+                  width: '6px', height: '6px', borderRadius: '50%',
+                  backgroundColor: s.obligatorio ? '#f97316' : 'var(--color-borde)',
+                  flexShrink: 0,
+                }} />
+                <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)' }}>{s.texto}</span>
+                {s.obligatorio && (
+                  <span style={{ fontSize: '11px', color: '#f97316', fontWeight: '600' }}>Obligatorio</span>
+                )}
+              </div>
+            ))}
+            <div style={{ height: '8px' }} />
+          </div>
+        )}
       </div>
 
       {/* Eliminar */}

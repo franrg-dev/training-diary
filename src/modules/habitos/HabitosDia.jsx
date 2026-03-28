@@ -15,6 +15,9 @@ import ModalCalendario from './ModalCalendario'
  *   tituloDropdown: ReactNode (SelectorSeccion)
  *   toggleCompletado(habitoId, fecha): callback
  *   estaCompletado(habitoId): boolean
+ *   subhabitosCompletadosDeHabito(habitoId): string[]
+ *   onToggleSubhabito(habitoId, subhabitoId, fecha, habito): callback
+ *   puedeMarcarsePrincipal(habito, subCompletados): boolean
  */
 export default function HabitosDia({
   habitos,
@@ -24,6 +27,9 @@ export default function HabitosDia({
   tituloDropdown,
   toggleCompletado,
   estaCompletado,
+  subhabitosCompletadosDeHabito,
+  onToggleSubhabito,
+  puedeMarcarsePrincipal,
 }) {
   const [modalCalendario, setModalCalendario] = useState(false)
   const [filtroTipo,      setFiltroTipo]      = useState(null)
@@ -210,15 +216,21 @@ export default function HabitosDia({
             </p>
           </div>
         ) : (
-          habitosFiltrados.map(habito => (
-            <TarjetaHabitoDia
-              key={habito.id}
-              habito={habito}
-              completado={estaCompletado(habito.id)}
-              onToggle={() => toggleCompletado(habito.id, fecha)}
-              mapaEtiquetas={mapaEtiquetas}
-            />
-          ))
+          habitosFiltrados.map(habito => {
+            const subCompletados = subhabitosCompletadosDeHabito(habito.id)
+            return (
+              <TarjetaHabitoDia
+                key={habito.id}
+                habito={habito}
+                completado={estaCompletado(habito.id)}
+                puedeMarcarse={puedeMarcarsePrincipal(habito, subCompletados)}
+                subCompletados={subCompletados}
+                onToggle={() => toggleCompletado(habito.id, fecha)}
+                onToggleSubhabito={(subId) => onToggleSubhabito(habito.id, subId, fecha, habito)}
+                mapaEtiquetas={mapaEtiquetas}
+              />
+            )
+          })
         )}
       </div>
 
@@ -240,80 +252,192 @@ export default function HabitosDia({
   )
 }
 
-function TarjetaHabitoDia({ habito, completado, onToggle, mapaEtiquetas }) {
+function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, onToggle, onToggleSubhabito, mapaEtiquetas }) {
+  const [expandido, setExpandido] = useState(false)
   const tipo = TIPOS_HABITO.find(t => t.id === habito.tipo) ?? TIPOS_HABITO[TIPOS_HABITO.length - 1]
-  const etiquetasHabito = (habito.etiquetas || [])
-    .map(id => mapaEtiquetas[id])
-    .filter(Boolean)
+  const etiquetasHabito = (habito.etiquetas || []).map(id => mapaEtiquetas[id]).filter(Boolean)
+  const subhabitos = habito.subhabitos || []
+  const tieneSubhabitos = subhabitos.length > 0
+
+  // Descripción de requisitos para el tooltip/hint de bloqueo
+  const obligatorios = subhabitos.filter(s => s.obligatorio)
+  const minimo = habito.subhabitosMinimo || 0
+  const bloqueado = !puedeMarcarse && !completado
 
   return (
-    <div
-      style={{
-        display: 'flex', alignItems: 'center', gap: '14px',
-        padding: '14px', marginBottom: '8px',
-        backgroundColor: 'var(--color-superficie)',
-        border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
-        borderRadius: '12px',
-        opacity: completado ? 0.7 : 1,
-        transition: 'opacity 0.2s, border-color 0.2s',
-      }}
-    >
-      {/* Checkbox */}
-      <button
-        onClick={onToggle}
+    <div style={{ marginBottom: '8px' }}>
+      {/* Fila principal */}
+      <div
         style={{
-          width: '26px', height: '26px', borderRadius: '8px',
-          backgroundColor: completado ? '#22c55e' : 'transparent',
-          border: `2px solid ${completado ? '#22c55e' : 'var(--color-borde)'}`,
-          cursor: 'pointer', flexShrink: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: 0, transition: 'background-color 0.2s, border-color 0.2s',
+          display: 'flex', alignItems: 'center', gap: '12px',
+          padding: '14px',
+          backgroundColor: 'var(--color-superficie)',
+          border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
+          borderRadius: tieneSubhabitos && expandido ? '12px 12px 0 0' : '12px',
+          opacity: completado ? 0.7 : 1,
+          transition: 'opacity 0.2s, border-color 0.2s',
         }}
-        aria-label={completado ? 'Marcar como pendiente' : 'Marcar como completado'}
       >
-        {completado && (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-        )}
-      </button>
+        {/* Checkbox principal */}
+        <button
+          onClick={puedeMarcarse || completado ? onToggle : undefined}
+          style={{
+            width: '26px', height: '26px', borderRadius: '8px',
+            backgroundColor: completado ? '#22c55e' : bloqueado ? 'var(--color-superficie)' : 'transparent',
+            border: `2px solid ${completado ? '#22c55e' : bloqueado ? 'var(--color-borde)' : 'var(--color-borde)'}`,
+            cursor: (puedeMarcarse || completado) ? 'pointer' : 'not-allowed',
+            flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 0, transition: 'background-color 0.2s, border-color 0.2s',
+            opacity: bloqueado ? 0.4 : 1,
+          }}
+          aria-label={completado ? 'Marcar como pendiente' : 'Marcar como completado'}
+        >
+          {completado && (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+          {bloqueado && (
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-texto-secundario)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          )}
+        </button>
 
-      {/* Icono tipo */}
-      <div style={{
-        width: '38px', height: '38px', borderRadius: '10px',
-        backgroundColor: tipo.color + '22',
-        border: `1px solid ${tipo.color}44`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <IconoTipo tipo={habito.tipo} size={18} />
-      </div>
-
-      {/* Texto */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{
-          margin: '0 0 3px', fontWeight: '600', fontSize: '15px',
-          color: 'var(--color-texto)',
-          textDecoration: completado ? 'line-through' : 'none',
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        {/* Icono tipo */}
+        <div style={{
+          width: '36px', height: '36px', borderRadius: '10px',
+          backgroundColor: tipo.color + '22',
+          border: `1px solid ${tipo.color}44`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
         }}>
-          {habito.titulo}
-        </p>
-        {etiquetasHabito.length > 0 && (
-          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-            {etiquetasHabito.map(e => (
-              <span key={e.id} style={{
-                fontSize: '11px', padding: '1px 7px', borderRadius: '20px',
-                border: `1px solid ${e.color}`,
-                backgroundColor: e.color + '22',
-                color: e.color, fontWeight: '500',
-              }}>
-                {e.nombre}
-              </span>
-            ))}
-          </div>
+          <IconoTipo tipo={habito.tipo} size={17} />
+        </div>
+
+        {/* Texto */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{
+            margin: '0 0 3px', fontWeight: '600', fontSize: '15px',
+            color: 'var(--color-texto)',
+            textDecoration: completado ? 'line-through' : 'none',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>
+            {habito.titulo}
+          </p>
+          {/* Hint de progreso subhábitos */}
+          {tieneSubhabitos && (
+            <p style={{ margin: 0, fontSize: '11px', color: 'var(--color-texto-secundario)' }}>
+              {subCompletados.length}/{subhabitos.length} subhábitos
+              {(obligatorios.length > 0 || minimo > 0) && !puedeMarcarse && (
+                <span style={{ color: '#f97316' }}>
+                  {' · '}
+                  {obligatorios.length > 0 && minimo > 0
+                    ? `${minimo} requeridos + obligatorios`
+                    : obligatorios.length > 0
+                    ? `${obligatorios.length} obligatorio${obligatorios.length > 1 ? 's' : ''}`
+                    : `mín. ${minimo}`}
+                </span>
+              )}
+            </p>
+          )}
+          {etiquetasHabito.length > 0 && (
+            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '3px' }}>
+              {etiquetasHabito.map(e => (
+                <span key={e.id} style={{
+                  fontSize: '11px', padding: '1px 7px', borderRadius: '20px',
+                  border: `1px solid ${e.color}`, backgroundColor: e.color + '22',
+                  color: e.color, fontWeight: '500',
+                }}>
+                  {e.nombre}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Chevron expandir (solo si tiene subhábitos) */}
+        {tieneSubhabitos && (
+          <button
+            onClick={() => setExpandido(v => !v)}
+            style={{
+              background: 'none', border: 'none', padding: '4px',
+              color: 'var(--color-texto-secundario)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, transition: 'transform 0.2s',
+              transform: expandido ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+            aria-label={expandido ? 'Ocultar subhábitos' : 'Ver subhábitos'}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
         )}
       </div>
+
+      {/* Subhábitos expandidos */}
+      {tieneSubhabitos && expandido && (
+        <div style={{
+          backgroundColor: 'var(--color-superficie)',
+          border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
+          borderTop: '1px solid var(--color-borde)',
+          borderRadius: '0 0 12px 12px',
+          padding: '4px 0',
+        }}>
+          {subhabitos.map((s, idx) => {
+            const marcado = subCompletados.includes(s.id)
+            return (
+              <div
+                key={s.id}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '10px 14px 10px 54px',
+                  borderTop: idx > 0 ? '1px solid var(--color-borde)' : 'none',
+                }}
+              >
+                {/* Checkbox subhábito */}
+                <button
+                  onClick={() => onToggleSubhabito(s.id)}
+                  style={{
+                    width: '20px', height: '20px', borderRadius: '6px', flexShrink: 0,
+                    backgroundColor: marcado ? '#22c55e' : 'transparent',
+                    border: `2px solid ${marcado ? '#22c55e' : 'var(--color-borde)'}`,
+                    cursor: 'pointer', padding: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    transition: 'background-color 0.15s, border-color 0.15s',
+                  }}
+                  aria-label={marcado ? 'Desmarcar' : 'Marcar'}
+                >
+                  {marcado && (
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </button>
+
+                {/* Texto subhábito */}
+                <span style={{
+                  flex: 1, fontSize: '14px',
+                  color: marcado ? 'var(--color-texto-secundario)' : 'var(--color-texto)',
+                  textDecoration: marcado ? 'line-through' : 'none',
+                }}>
+                  {s.texto}
+                </span>
+
+                {/* Indicador obligatorio */}
+                {s.obligatorio && (
+                  <span style={{ fontSize: '10px', color: '#f97316', fontWeight: '600', flexShrink: 0 }}>
+                    OBL
+                  </span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

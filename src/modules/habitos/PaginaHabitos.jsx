@@ -25,7 +25,10 @@ export default function PaginaHabitos() {
   // — Hooks de datos —
   const { habitos,   cargando: cargandoH,  crear: crearH,  actualizar: actualizarH, eliminar: eliminarH  } = useHabitos()
   const { etiquetas, cargando: cargandoE,  crear: crearE,  actualizar: actualizarE, eliminar: eliminarE  } = useEtiquetasHabito()
-  const { cargarParaFecha, toggleCompletado, estaCompletado } = useCompletadosHabito()
+  const {
+    cargarParaFecha, toggleCompletado, toggleSubhabito,
+    estaCompletado, subhabitosCompletadosDeHabito, puedeMarcarsePrincipal,
+  } = useCompletadosHabito()
 
   // — Sección activa —
   const [seccion, setSeccion] = useState('hoy')
@@ -113,6 +116,9 @@ export default function PaginaHabitos() {
           tituloDropdown={selector}
           toggleCompletado={toggleCompletado}
           estaCompletado={estaCompletado}
+          subhabitosCompletadosDeHabito={subhabitosCompletadosDeHabito}
+          onToggleSubhabito={toggleSubhabito}
+          puedeMarcarsePrincipal={puedeMarcarsePrincipal}
         />
       </div>
     )
