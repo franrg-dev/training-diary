@@ -406,7 +406,8 @@ function SeccionSincronizacion() {
 
   const estaLogueado  = usuario?.isLoggedIn === true
   const sincronizando = syncState?.phase === 'pushing' || syncState?.phase === 'pulling'
-  const colorEstado   = sincronizando ? '#f97316' : estaLogueado ? '#22c55e' : 'var(--color-texto-secundario)'
+  const hayError      = syncState?.phase === 'error'
+  const colorEstado   = hayError ? '#ef4444' : sincronizando ? '#f97316' : estaLogueado ? '#22c55e' : 'var(--color-texto-secundario)'
 
   async function handleEnviarEmail() {
     if (!email.trim()) return
@@ -440,11 +441,11 @@ function SeccionSincronizacion() {
     try {
       await db.cloud.sync()
       setMensajeSync('Sincronización completada')
-    } catch {
-      setMensajeSync('Error al sincronizar')
+    } catch (e) {
+      setMensajeSync(`Error: ${e?.message || 'fallo al sincronizar'}`)
     } finally {
       setForzandoSync(false)
-      setTimeout(() => setMensajeSync(null), 3000)
+      setTimeout(() => setMensajeSync(null), 6000)
     }
   }
 
@@ -467,8 +468,16 @@ function SeccionSincronizacion() {
             <p style={{ margin: '0 0 2px', fontSize: '13px', color: 'var(--color-texto)', fontWeight: '600', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {usuario.email}
             </p>
-            <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
-              {sincronizando ? 'Sincronizando…' : 'Sincronizado'}
+            <p style={{ margin: 0, fontSize: '12px', color: hayError ? '#ef4444' : 'var(--color-texto-secundario)' }}>
+              {hayError
+                ? `Error: ${syncState?.error?.message || 'fallo de sincronización'}`
+                : sincronizando
+                ? 'Sincronizando…'
+                : syncState?.phase === 'offline'
+                ? 'Sin conexión'
+                : syncState?.phase
+                ? `Estado: ${syncState.phase}`
+                : 'Sincronizado'}
             </p>
           </div>
           <p style={{ margin: '0 0 12px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
