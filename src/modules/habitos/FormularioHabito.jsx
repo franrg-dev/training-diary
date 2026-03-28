@@ -73,7 +73,11 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
   }
 
   function toggleObligatorio(id) {
-    setSubhabitos(prev => prev.map(s => s.id === id ? { ...s, obligatorio: !s.obligatorio } : s))
+    setSubhabitos(prev => {
+      const nuevo = prev.map(s => s.id === id ? { ...s, obligatorio: !s.obligatorio } : s)
+      if (nuevo.some(s => s.obligatorio)) setSubhabitosMinimo(0)
+      return nuevo
+    })
   }
 
   function eliminarSubhabito(id) {
@@ -475,7 +479,7 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
           ))}
 
           {/* Mínimo para completar (solo si hay ≥2 subhábitos sin todos obligatorios) */}
-          {subhabitos.length >= 2 && subhabitos.some(s => !s.obligatorio) && (
+          {subhabitos.length >= 2 && subhabitos.every(s => !s.obligatorio) && (
             <div style={{
               marginTop: '12px', padding: '12px',
               backgroundColor: 'var(--color-superficie)',
