@@ -157,6 +157,7 @@ export default function PaginaDiario() {
           onEditarEntrenamiento={() => setPantallaDiario('editarEntrenamiento')}
           onCambiarDia={handleCambiarDia}
           onIrAFecha={handleIrAFecha}
+          onIrAMedidas={() => cambiarSeccion('medidas')}
         />
       )}
 

@@ -305,6 +305,7 @@ export default function DetalleEntrenamiento({
   tituloDropdown,
   onCambiarDia,
   onIrAFecha,
+  onIrAMedidas,
 }) {
   const mapaEjercicios = useMemo(
     () => Object.fromEntries((ejercicios || []).map(e => [e.id, e])),
@@ -316,6 +317,12 @@ export default function DetalleEntrenamiento({
     for (const s of (sesiones || [])) m[s.id] = s
     return m
   }, [sesiones])
+
+  const esDia1 = fecha.endsWith('-01')
+
+  const hoy = new Date()
+  const hoyStr = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
+  const esHoy = fecha === hoyStr
 
   // Precalcular tendencia para cada ejercicio de fuerza
   const tendencias = useMemo(() => {
@@ -384,6 +391,14 @@ export default function DetalleEntrenamiento({
           </button>
         </div>
 
+        {!esHoy && (
+          <button
+            onClick={() => onIrAFecha(hoyStr)}
+            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: '#f97316', cursor: 'pointer', padding: '6px 10px', fontSize: '13px', fontWeight: '700', flexShrink: 0 }}
+          >
+            Hoy
+          </button>
+        )}
         <button
           onClick={() => setModalCalendario(true)}
           style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', cursor: 'pointer', padding: '6px 8px', display: 'flex', alignItems: 'center', flexShrink: 0 }}
@@ -508,6 +523,35 @@ export default function DetalleEntrenamiento({
           <ChipHabito label="Core"      activo={!!e.core} />
         </div>
       </div>
+
+      {/* ══════════════════════════════════════════════
+          BOTÓN TOMAR MEDIDAS (solo el día 1 de cada mes)
+      ══════════════════════════════════════════════ */}
+      {esDia1 && onIrAMedidas && (
+        <button
+          onClick={onIrAMedidas}
+          style={{
+            width: '100%',
+            padding: '16px',
+            marginBottom: '12px',
+            backgroundColor: '#f97316',
+            border: 'none',
+            borderRadius: '18px',
+            color: '#fff',
+            fontSize: '16px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            boxShadow: '0 4px 16px rgba(249,115,22,0.4)',
+          }}
+        >
+          <span style={{ fontSize: '20px' }}>📏</span>
+          Tomar Medidas del Mes
+        </button>
+      )}
 
       {/* ══════════════════════════════════════════════
           COMPOSICIÓN CORPORAL

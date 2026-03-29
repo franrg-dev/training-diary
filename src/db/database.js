@@ -77,6 +77,11 @@ db.version(5).stores({
   completadosHabito: '@id, habitoId, fecha',
 })
 
+// v6: tabla de medidas corporales mensuales (fecha = YYYY-MM-01, siempre el día 1 del mes)
+db.version(6).stores({
+  medidas: '@id, fecha',
+})
+
 // Configuración del cloud (se activa solo cuando el usuario inicia sesión)
 // La URL se inyecta como variable de entorno en build (VITE_DEXIE_URL)
 db.cloud.configure({
