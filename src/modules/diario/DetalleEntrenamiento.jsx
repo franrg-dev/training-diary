@@ -298,6 +298,7 @@ export default function DetalleEntrenamiento({
   ejercicios,
   sesiones,
   registrosPorEjercicio,
+  mbEfectivo,
   onEditarDatos,
   onEditarEntrenamiento,
   onVolver,
@@ -347,7 +348,7 @@ export default function DetalleEntrenamiento({
   const objetivos = getObjetivos()
   const c = Number(e.kcalConsumidas)   || 0
   const q = Number(e.kcalQuemadas)     || 0
-  const b = Number(e.metabolismoBasal) || 0
+  const b = mbEfectivo || Number(e.metabolismoBasal) || 0
   const difKcal = (c || q || b) ? c - q - b : null
 
   return (
@@ -437,12 +438,12 @@ export default function DetalleEntrenamiento({
       <div style={{ backgroundColor: 'var(--color-superficie)', borderRadius: '20px', padding: '20px', marginBottom: '12px' }}>
 
         {/* MB centrado en texto pequeño */}
-        {e.metabolismoBasal > 0 && (
+        {b > 0 && (
           <p style={{ margin: '0 0 14px', textAlign: 'center', fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
-            MB: <span style={{ color: 'var(--color-texto-secundario)', fontWeight: '600' }}>{e.metabolismoBasal} kcal</span>
+            MB: <span style={{ color: 'var(--color-texto-secundario)', fontWeight: '600' }}>{b} kcal</span>
           </p>
         )}
-        {!e.metabolismoBasal && (
+        {!b && (
           <p style={{ margin: '0 0 14px', textAlign: 'center', fontSize: '12px', color: 'var(--color-texto-inactivo)' }}>MB: —</p>
         )}
 

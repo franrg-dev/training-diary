@@ -156,5 +156,12 @@ export function useDiario() {
     await cargar()
   }, [cargar])
 
-  return { entradas, cargando, entradasDelMes, entradaPorFecha, crear, actualizar, eliminar }
+  // Devuelve el MB más reciente registrado en o antes de la fecha dada (0 si ninguno)
+  const mbEfectivoPorFecha = useCallback((fecha) => {
+    // entradas está ordenado por fecha descendente
+    const encontrado = entradas.find(e => e.fecha <= fecha && e.metabolismoBasal > 0)
+    return encontrado?.metabolismoBasal || 0
+  }, [entradas])
+
+  return { entradas, cargando, entradasDelMes, entradaPorFecha, mbEfectivoPorFecha, crear, actualizar, eliminar }
 }

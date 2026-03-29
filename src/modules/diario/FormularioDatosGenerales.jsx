@@ -199,6 +199,7 @@ function Grid4({ children }) {
 export default function FormularioDatosGenerales({
   fecha,
   entrada,
+  mbHeredado,
   onGuardar,
   onCancelar,
 }) {
@@ -210,7 +211,7 @@ export default function FormularioDatosGenerales({
 
   // — Actividad —
   const [kcalQuemadas, setKcalQuemadas]         = useState(entrada?.kcalQuemadas    || '')
-  const [metabolismoBasal, setMetabolismoBasal] = useState(entrada?.metabolismoBasal || '')
+  const [metabolismoBasal, setMetabolismoBasal] = useState(entrada?.metabolismoBasal || mbHeredado || '')
   const [pasos, setPasos]                       = useState(entrada?.pasos           || '')
 
   // — Hábitos —

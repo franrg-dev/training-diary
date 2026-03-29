@@ -14,7 +14,7 @@ import FormularioEntrenamiento     from './FormularioEntrenamiento'
  * Máquina de estados: 'calendario' | 'verEntrenamiento' | 'verDia' | 'editarDatos' | 'editarEntrenamiento'
  */
 export default function PaginaDiario() {
-  const { cargando, entradas, entradasDelMes, entradaPorFecha, crear, actualizar } = useDiario()
+  const { cargando, entradas, entradasDelMes, entradaPorFecha, mbEfectivoPorFecha, crear, actualizar } = useDiario()
   const { ejercicios }         = useEjercicios()
   const { sesiones }           = useSesiones()
   const { ultimoPorEjercicio, registrosPorEjercicio } = useRegistro()
@@ -96,6 +96,7 @@ export default function PaginaDiario() {
   }
 
   const entradasMes = entradasDelMes(anioVisualizado, mesVisualizado)
+  const mbEfectivo  = fechaSeleccionada ? mbEfectivoPorFecha(fechaSeleccionada) : 0
 
   return (
     <div className="contenido-principal">
@@ -119,6 +120,7 @@ export default function PaginaDiario() {
           ejercicios={ejercicios}
           sesiones={sesiones}
           registrosPorEjercicio={registrosPorEjercicio}
+          mbEfectivo={mbEfectivo}
           onEditarDatos={() => setPantalla('editarDatos')}
           onEditarEntrenamiento={() => setPantalla('editarEntrenamiento')}
           onVolver={irACalendario}
@@ -130,6 +132,7 @@ export default function PaginaDiario() {
         <FormularioDatosGenerales
           fecha={fechaSeleccionada}
           entrada={entradaActiva}
+          mbHeredado={mbEfectivo}
           onGuardar={handleGuardarDatos}
           onCancelar={() => setPantalla('verEntrenamiento')}
         />
