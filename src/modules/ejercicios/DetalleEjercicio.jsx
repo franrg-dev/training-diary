@@ -34,7 +34,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
         <button
           onClick={onVolver}
           style={{
-            background: 'none', border: 'none', color: '#f97316',
+            background: 'none', border: 'none', color: 'var(--color-acento)',
             fontSize: '15px', cursor: 'pointer', padding: '0',
             display: 'flex', alignItems: 'center', gap: '4px',
           }}
@@ -90,7 +90,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
           <p style={{ margin: '0 0 8px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Unidad de medida
           </p>
-          <p style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: '#f97316' }}>
+          <p style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: 'var(--color-acento)' }}>
             {ejercicio.modo === 'veces' ? 'Rp/m · Rp' : 'Km/h · Km'}
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
             {ejercicio.series > 0 && (
               <div>
-                <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: '#f97316' }}>
+                <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: 'var(--color-acento)' }}>
                   {ejercicio.series}
                 </p>
                 <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>Series</p>
@@ -113,7 +113,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
             )}
             {ejercicio.repeticiones && (
               <div>
-                <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: '#f97316' }}>
+                <p style={{ margin: '0 0 2px', fontSize: '24px', fontWeight: '700', color: 'var(--color-acento)' }}>
                   {ejercicio.repeticiones}
                 </p>
                 <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-texto-secundario)' }}>Repeticiones</p>

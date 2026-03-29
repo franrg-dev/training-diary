@@ -101,7 +101,7 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 0 24px' }}>
         <button
           onClick={onCancelar}
-          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '15px', cursor: 'pointer', padding: 0 }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '15px', cursor: 'pointer', padding: 0 }}
         >
           Cancelar
         </button>
@@ -111,7 +111,7 @@ export default function FormularioSesion({ sesion, ejercicios, onGuardar, onCanc
         <button
           onClick={handleGuardar}
           disabled={guardando}
-          style={{ background: 'none', border: 'none', color: guardando ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '15px', fontWeight: '600', cursor: guardando ? 'default' : 'pointer', padding: 0 }}
+          style={{ background: 'none', border: 'none', color: guardando ? 'var(--color-texto-secundario)' : 'var(--color-acento)', fontSize: '15px', fontWeight: '600', cursor: guardando ? 'default' : 'pointer', padding: 0 }}
         >
           {guardando ? 'Guardando…' : 'Guardar'}
         </button>
@@ -247,7 +247,7 @@ function Campo({ etiqueta, error, requerido, children }) {
   return (
     <div style={{ marginBottom: '20px' }}>
       <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '500', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        {etiqueta}{requerido && <span style={{ color: '#f97316', marginLeft: '3px' }}>*</span>}
+        {etiqueta}{requerido && <span style={{ color: 'var(--color-acento)', marginLeft: '3px' }}>*</span>}
       </label>
       {children}
       {error && <p style={{ margin: '6px 0 0', color: '#f87171', fontSize: '13px' }}>{error}</p>}

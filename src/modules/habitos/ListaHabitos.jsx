@@ -55,7 +55,7 @@ export default function ListaHabitos({
             onClick={onNuevo}
             style={{
               width: '40px', height: '40px', borderRadius: '12px',
-              backgroundColor: '#f97316', border: 'none', color: '#fff',
+              backgroundColor: 'var(--color-acento)', border: 'none', color: '#fff',
               cursor: 'pointer', display: 'flex',
               alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               padding: 0,

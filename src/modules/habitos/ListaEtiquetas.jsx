@@ -38,7 +38,7 @@ export default function ListaEtiquetas({
             onClick={onNueva}
             style={{
               width: '40px', height: '40px', borderRadius: '12px',
-              backgroundColor: '#f97316', border: 'none', color: '#fff',
+              backgroundColor: 'var(--color-acento)', border: 'none', color: '#fff',
               cursor: 'pointer', display: 'flex',
               alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               padding: 0,
@@ -116,7 +116,7 @@ export default function ListaEtiquetas({
                         backgroundColor: 'transparent', border: 'none',
                         borderBottom: '1px solid var(--color-borde)',
                         cursor: 'pointer', textAlign: 'left',
-                        color: '#f97316', fontSize: '13px', fontWeight: '500',
+                        color: 'var(--color-acento)', fontSize: '13px', fontWeight: '500',
                       }}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

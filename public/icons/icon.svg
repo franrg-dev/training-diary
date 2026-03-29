@@ -1,6 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="80" fill="#0f0f0f"/>
-  <rect x="120" y="150" width="272" height="48" rx="8" fill="#f97316"/>
-  <rect x="120" y="232" width="200" height="48" rx="8" fill="#f97316"/>
-  <rect x="120" y="314" width="272" height="48" rx="8" fill="#f97316"/>
+  <defs>
+    <!-- Fondo: gradiente cian → verde-cian → lima, diagonal -->
+    <linearGradient id="bg" x1="5%" y1="0%" x2="95%" y2="100%">
+      <stop offset="0%"   stop-color="#20D8F0"/>
+      <stop offset="30%"  stop-color="#00B8D0"/>
+      <stop offset="65%"  stop-color="#00C8A4"/>
+      <stop offset="100%" stop-color="#7AE820"/>
+    </linearGradient>
+
+    <!-- Discos/pesas: gradiente púrpura → cian -->
+    <linearGradient id="disc" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#7040CC"/>
+      <stop offset="100%" stop-color="#00C0F0"/>
+    </linearGradient>
+
+    <!-- Brillo vidrioso en la parte superior -->
+    <radialGradient id="gloss" cx="50%" cy="5%" r="65%">
+      <stop offset="0%"   stop-color="rgba(255,255,255,0.42)"/>
+      <stop offset="55%"  stop-color="rgba(255,255,255,0.06)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+
+    <!-- Sombra suave para la figura -->
+    <filter id="figShadow" x="-25%" y="-15%" width="150%" height="145%">
+      <feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="rgba(0,40,80,0.28)"/>
+    </filter>
+  </defs>
+
+  <!-- Fondo full-bleed (Apple recorta al squircle automáticamente) -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+
+  <!-- Brillo vidrioso superior -->
+  <rect width="512" height="512" fill="url(#gloss)"/>
+
+  <!-- Disco izquierdo -->
+  <rect x="76" y="102" width="74" height="156" rx="24" fill="url(#disc)"/>
+  <!-- Disco derecho -->
+  <rect x="362" y="102" width="74" height="156" rx="24" fill="url(#disc)"/>
+  <!-- Barra central (crossbar) -->
+  <rect x="150" y="148" width="212" height="30" rx="11" fill="url(#disc)" opacity="0.80"/>
+
+  <!-- Figura humana blanca en V (levantando la barra) -->
+  <g filter="url(#figShadow)">
+    <!-- Cabeza -->
+    <circle cx="256" cy="200" r="30" fill="rgba(255,255,255,0.96)"/>
+    <!-- Brazo izquierdo (subiendo hacia el disco izq) -->
+    <line x1="238" y1="216" x2="160" y2="170"
+      stroke="rgba(255,255,255,0.94)" stroke-width="24" stroke-linecap="round"/>
+    <!-- Brazo derecho (subiendo hacia el disco der) -->
+    <line x1="274" y1="216" x2="352" y2="170"
+      stroke="rgba(255,255,255,0.94)" stroke-width="24" stroke-linecap="round"/>
+    <!-- Cuerpo en V apuntando hacia abajo -->
+    <path d="M 248 228 L 172 404 Q 256 430 340 404 L 264 228 Z"
+      fill="rgba(255,255,255,0.93)"/>
+  </g>
+
+  <!-- Reflejo especular en los discos (efecto premium) -->
+  <rect x="84"  y="112" width="28" height="56" rx="10" fill="rgba(255,255,255,0.22)"/>
+  <rect x="370" y="112" width="20" height="56" rx="8"  fill="rgba(255,255,255,0.18)"/>
 </svg>

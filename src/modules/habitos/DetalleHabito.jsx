@@ -53,7 +53,7 @@ export default function DetalleHabito({ habito, etiquetas, onEditar, onEliminar,
         <button
           onClick={onEditar}
           style={{
-            background: 'none', border: 'none', color: '#f97316',
+            background: 'none', border: 'none', color: 'var(--color-acento)',
             cursor: 'pointer', padding: '4px',
             fontSize: '14px', fontWeight: '500',
           }}
@@ -133,7 +133,7 @@ export default function DetalleHabito({ habito, etiquetas, onEditar, onEliminar,
                 Subhábitos
               </p>
               {habito.subhabitosMinimo > 0 && (
-                <p style={{ margin: '0 0 8px', fontSize: '12px', color: '#f97316' }}>
+                <p style={{ margin: '0 0 8px', fontSize: '12px', color: 'var(--color-acento)' }}>
                   Mínimo {habito.subhabitosMinimo} de {habito.subhabitos.length} para completar
                 </p>
               )}
@@ -146,12 +146,12 @@ export default function DetalleHabito({ habito, etiquetas, onEditar, onEliminar,
               }}>
                 <div style={{
                   width: '6px', height: '6px', borderRadius: '50%',
-                  backgroundColor: s.obligatorio ? '#f97316' : 'var(--color-borde)',
+                  backgroundColor: s.obligatorio ? 'var(--color-acento)' : 'var(--color-borde)',
                   flexShrink: 0,
                 }} />
                 <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)' }}>{s.texto}</span>
                 {s.obligatorio && (
-                  <span style={{ fontSize: '11px', color: '#f97316', fontWeight: '600' }}>Obligatorio</span>
+                  <span style={{ fontSize: '11px', color: 'var(--color-acento)', fontWeight: '600' }}>Obligatorio</span>
                 )}
               </div>
             ))}
@@ -222,7 +222,7 @@ function FilaDetalle({ label, valor }) {
 }
 
 const estiloBotonVolver = {
-  background: 'none', border: 'none', color: '#f97316',
+  background: 'none', border: 'none', color: 'var(--color-acento)',
   cursor: 'pointer', padding: '4px', display: 'flex',
   alignItems: 'center', justifyContent: 'center',
   flexShrink: 0,

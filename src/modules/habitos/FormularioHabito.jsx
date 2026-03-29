@@ -243,9 +243,9 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
               onClick={() => setRepeticionTipo(op.id)}
               style={{
                 padding: '10px 4px', borderRadius: '10px',
-                backgroundColor: repeticionTipo === op.id ? '#f9731622' : 'var(--color-superficie)',
-                border: `1px solid ${repeticionTipo === op.id ? '#f97316' : 'var(--color-borde)'}`,
-                color: repeticionTipo === op.id ? '#f97316' : 'var(--color-texto-secundario)',
+                backgroundColor: repeticionTipo === op.id ? 'rgba(0,191,255,0.13)' : 'var(--color-superficie)',
+                border: `1px solid ${repeticionTipo === op.id ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+                color: repeticionTipo === op.id ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
                 fontSize: '13px', fontWeight: repeticionTipo === op.id ? '700' : '400',
                 cursor: 'pointer',
               }}
@@ -266,8 +266,8 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
                   onClick={() => toggleDiaSemana(idx)}
                   style={{
                     padding: '8px 2px', borderRadius: '8px',
-                    backgroundColor: diasSemana.includes(idx) ? '#f97316' : 'var(--color-superficie)',
-                    border: `1px solid ${diasSemana.includes(idx) ? '#f97316' : 'var(--color-borde)'}`,
+                    backgroundColor: diasSemana.includes(idx) ? 'var(--color-acento)' : 'var(--color-superficie)',
+                    border: `1px solid ${diasSemana.includes(idx) ? 'var(--color-acento)' : 'var(--color-borde)'}`,
                     color: diasSemana.includes(idx) ? '#fff' : 'var(--color-texto-secundario)',
                     fontSize: '12px', fontWeight: '600', cursor: 'pointer',
                   }}
@@ -295,8 +295,8 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
                   onClick={() => toggleDiaMes(dia)}
                   style={{
                     padding: '8px 2px', borderRadius: '8px',
-                    backgroundColor: diasMes.includes(dia) ? '#f97316' : 'var(--color-superficie)',
-                    border: `1px solid ${diasMes.includes(dia) ? '#f97316' : 'var(--color-borde)'}`,
+                    backgroundColor: diasMes.includes(dia) ? 'var(--color-acento)' : 'var(--color-superficie)',
+                    border: `1px solid ${diasMes.includes(dia) ? 'var(--color-acento)' : 'var(--color-borde)'}`,
                     color: diasMes.includes(dia) ? '#fff' : 'var(--color-texto-secundario)',
                     fontSize: '12px', fontWeight: '600', cursor: 'pointer',
                   }}
@@ -329,9 +329,9 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
                   onClick={() => setFinTipo(op.id)}
                   style={{
                     padding: '10px 4px', borderRadius: '10px',
-                    backgroundColor: finTipo === op.id ? '#f9731622' : 'var(--color-superficie)',
-                    border: `1px solid ${finTipo === op.id ? '#f97316' : 'var(--color-borde)'}`,
-                    color: finTipo === op.id ? '#f97316' : 'var(--color-texto-secundario)',
+                    backgroundColor: finTipo === op.id ? 'rgba(0,191,255,0.13)' : 'var(--color-superficie)',
+                    border: `1px solid ${finTipo === op.id ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+                    color: finTipo === op.id ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
                     fontSize: '13px', fontWeight: finTipo === op.id ? '700' : '400',
                     cursor: 'pointer',
                   }}
@@ -419,7 +419,7 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
               disabled={!inputSubhabito.trim()}
               style={{
                 padding: '10px 16px', borderRadius: '12px',
-                backgroundColor: inputSubhabito.trim() ? '#f97316' : 'var(--color-superficie)',
+                backgroundColor: inputSubhabito.trim() ? 'var(--color-acento)' : 'var(--color-superficie)',
                 border: inputSubhabito.trim() ? 'none' : '1px solid var(--color-borde)',
                 color: inputSubhabito.trim() ? '#fff' : 'var(--color-texto-secundario)',
                 fontSize: '14px', fontWeight: '600',
@@ -449,9 +449,9 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
                 onClick={() => toggleObligatorio(s.id)}
                 style={{
                   padding: '4px 10px', borderRadius: '20px', flexShrink: 0,
-                  border: `1px solid ${s.obligatorio ? '#f97316' : 'var(--color-borde)'}`,
-                  backgroundColor: s.obligatorio ? '#f9731622' : 'transparent',
-                  color: s.obligatorio ? '#f97316' : 'var(--color-texto-secundario)',
+                  border: `1px solid ${s.obligatorio ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+                  backgroundColor: s.obligatorio ? 'rgba(0,191,255,0.13)' : 'transparent',
+                  color: s.obligatorio ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
                   fontSize: '12px', fontWeight: s.obligatorio ? '600' : '400',
                   cursor: 'pointer',
                 }}
@@ -512,7 +512,7 @@ export default function FormularioHabito({ habito = null, etiquetas, onGuardar, 
           disabled={!valido || guardando}
           style={{
             width: '100%', padding: '14px', borderRadius: '14px',
-            backgroundColor: (valido && !guardando) ? '#f97316' : 'var(--color-superficie)',
+            backgroundColor: (valido && !guardando) ? 'var(--color-acento)' : 'var(--color-superficie)',
             border: (valido && !guardando) ? 'none' : '1px solid var(--color-borde)',
             color: (valido && !guardando) ? '#fff' : 'var(--color-texto-secundario)',
             fontSize: '16px', fontWeight: '600', cursor: (valido && !guardando) ? 'pointer' : 'default',
@@ -570,7 +570,7 @@ function SeccionLabel({ children }) {
 }
 
 const estiloBotonVolver = {
-  background: 'none', border: 'none', color: '#f97316',
+  background: 'none', border: 'none', color: 'var(--color-acento)',
   cursor: 'pointer', padding: '4px', display: 'flex',
   alignItems: 'center', justifyContent: 'center', flexShrink: 0,
 }
@@ -604,7 +604,7 @@ const estiloStepBtn = {
   width: '36px', height: '36px', borderRadius: '10px',
   backgroundColor: 'var(--color-superficie)',
   border: '1px solid var(--color-borde)',
-  color: '#f97316', fontSize: '20px', fontWeight: '700',
+  color: 'var(--color-acento)', fontSize: '20px', fontWeight: '700',
   cursor: 'pointer', display: 'flex',
   alignItems: 'center', justifyContent: 'center', padding: 0,
 }

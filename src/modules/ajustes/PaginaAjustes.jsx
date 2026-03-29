@@ -409,7 +409,7 @@ function SeccionSincronizacion() {
   const estaLogueado  = usuario?.isLoggedIn === true
   const sincronizando = syncState?.phase === 'pushing' || syncState?.phase === 'pulling'
   const hayError      = syncState?.phase === 'error'
-  const colorEstado   = hayError ? '#ef4444' : sincronizando ? '#f97316' : estaLogueado ? '#22c55e' : 'var(--color-texto-secundario)'
+  const colorEstado   = hayError ? '#ef4444' : sincronizando ? 'var(--color-acento)' : estaLogueado ? 'var(--color-exito)' : 'var(--color-texto-secundario)'
 
   async function handleEnviarEmail() {
     if (!email.trim()) return
@@ -517,7 +517,7 @@ function SeccionSincronizacion() {
             Los datos se sincronizan automáticamente entre todos tus dispositivos.
           </p>
           {mensajeSync && (
-            <p style={{ margin: '0 0 10px', fontSize: '12px', textAlign: 'center', color: mensajeSync.includes('Error') ? '#f87171' : '#22c55e' }}>
+            <p style={{ margin: '0 0 10px', fontSize: '12px', textAlign: 'center', color: mensajeSync.includes('Error') ? '#f87171' : 'var(--color-exito)' }}>
               {mensajeSync}
             </p>
           )}

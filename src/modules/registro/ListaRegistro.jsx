@@ -114,14 +114,14 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
                     <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-texto-secundario)' }}>
                       {esCardio ? (
                         <>
-                          {ultimo.duracion && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.duracion} min </span>}
-                          {ultimo.ritmo    && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.ritmo} {ultimo.modo === 'veces' ? 'Rp/m' : 'Km/h'} </span>}
-                          {ultimo.volumen  && <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.volumen} {ultimo.modo === 'veces' ? 'Rp' : 'Km'} </span>}
+                          {ultimo.duracion && <span style={{ color: 'var(--color-acento)', fontWeight: '600' }}>{ultimo.duracion} min </span>}
+                          {ultimo.ritmo    && <span style={{ color: 'var(--color-acento)', fontWeight: '600' }}>{ultimo.ritmo} {ultimo.modo === 'veces' ? 'Rp/m' : 'Km/h'} </span>}
+                          {ultimo.volumen  && <span style={{ color: 'var(--color-acento)', fontWeight: '600' }}>{ultimo.volumen} {ultimo.modo === 'veces' ? 'Rp' : 'Km'} </span>}
                           · {formatearFechaCorta(ultimo.fecha)}
                         </>
                       ) : (
                         <>
-                          <span style={{ color: '#f97316', fontWeight: '600' }}>{ultimo.peso} {ultimo.unidad}</span>
+                          <span style={{ color: 'var(--color-acento)', fontWeight: '600' }}>{ultimo.peso} {ultimo.unidad}</span>
                           {' · '}{formatearFechaCorta(ultimo.fecha)}
                         </>
                       )}

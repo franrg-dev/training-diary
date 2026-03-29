@@ -122,7 +122,7 @@ function InputNum({ label, placeholder = '0', value, onChange, sufijo, readOnly 
           style={{
             ...estiloInputBase,
             textAlign: 'center',
-            color: readOnly ? 'var(--color-texto-inactivo)' : highlight ? '#f97316' : 'var(--color-texto)',
+            color: readOnly ? 'var(--color-texto-inactivo)' : highlight ? 'var(--color-acento)' : 'var(--color-texto)',
             backgroundColor: readOnly ? 'var(--color-fondo)' : 'var(--color-superficie)',
             paddingRight: sufijo ? '30px' : '10px',
             fontWeight: highlight ? '700' : '400',
@@ -144,17 +144,17 @@ function CheckCompact({ label, checked, onChange }) {
       style={{
         width: '100%', padding: '9px 4px',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px',
-        backgroundColor: checked ? '#f9731622' : 'var(--color-superficie)',
-        border: `1px solid ${checked ? '#f97316' : 'var(--color-borde)'}`,
+        backgroundColor: checked ? 'rgba(0,191,255,0.13)' : 'var(--color-superficie)',
+        border: `1px solid ${checked ? 'var(--color-acento)' : 'var(--color-borde)'}`,
         borderRadius: '8px', cursor: 'pointer',
-        color: checked ? '#f97316' : 'var(--color-texto-secundario)',
+        color: checked ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
         transition: 'all 0.15s',
       }}
     >
       <div style={{
         width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0,
-        backgroundColor: checked ? '#f97316' : 'transparent',
-        border: `2px solid ${checked ? '#f97316' : 'var(--color-texto-inactivo)'}`,
+        backgroundColor: checked ? 'var(--color-acento)' : 'transparent',
+        border: `2px solid ${checked ? 'var(--color-acento)' : 'var(--color-texto-inactivo)'}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {checked && (
@@ -277,7 +277,7 @@ export default function FormularioDatosGenerales({
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 20px', gap: '8px' }}>
         <button
           onClick={onCancelar}
-          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
@@ -391,7 +391,7 @@ export default function FormularioDatosGenerales({
         disabled={guardando}
         style={{
           width: '100%', padding: '14px',
-          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : '#f97316',
+          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : 'var(--color-acento)',
           color: '#fff', fontWeight: '700', fontSize: '16px',
           border: 'none', borderRadius: '12px', cursor: guardando ? 'default' : 'pointer',
         }}

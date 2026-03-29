@@ -118,7 +118,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <button
           onClick={irMesAnterior}
-          style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', padding: '8px', fontSize: '20px', lineHeight: 1 }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', cursor: 'pointer', padding: '8px', fontSize: '20px', lineHeight: 1 }}
         >
           ‹
         </button>
@@ -127,7 +127,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
         </p>
         <button
           onClick={irMesSiguiente}
-          style={{ background: 'none', border: 'none', color: esHoy ? 'var(--color-texto-inactivo)' : '#f97316', cursor: esHoy ? 'default' : 'pointer', padding: '8px', fontSize: '20px', lineHeight: 1 }}
+          style={{ background: 'none', border: 'none', color: esHoy ? 'var(--color-texto-inactivo)' : 'var(--color-acento)', cursor: esHoy ? 'default' : 'pointer', padding: '8px', fontSize: '20px', lineHeight: 1 }}
           disabled={esHoy}
         >
           ›
@@ -152,7 +152,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
           </p>
           <button
             onClick={() => setPantalla('formulario')}
-            style={{ padding: '14px 28px', backgroundColor: '#f97316', border: 'none', borderRadius: '14px', color: '#fff', fontSize: '15px', fontWeight: '700', cursor: 'pointer' }}
+            style={{ padding: '14px 28px', backgroundColor: 'var(--color-acento)', border: 'none', borderRadius: '14px', color: '#fff', fontSize: '15px', fontWeight: '700', cursor: 'pointer' }}
           >
             + Añadir medidas del mes
           </button>
@@ -170,7 +170,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
             </p>
             <button
               onClick={() => setPantalla('formulario')}
-              style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-acento)', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
               title="Editar"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -216,7 +216,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
                       {textoDiff(diff)}
                     </span>
                   )}
-                  <span style={{ fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : '#f97316', minWidth: '36px', textAlign: 'right' }}>
+                  <span style={{ fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : 'var(--color-acento)', minWidth: '36px', textAlign: 'right' }}>
                     {vacio ? '—' : valor}
                   </span>
                   {!vacio && (

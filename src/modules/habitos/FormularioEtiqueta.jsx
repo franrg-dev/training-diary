@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const PALETA = [
-  '#f97316', '#ef4444', '#eab308', '#22c55e',
+  'var(--color-acento)', '#ef4444', '#eab308', 'var(--color-exito)',
   '#06b6d4', '#3b82f6', '#a855f7', '#ec4899',
 ]
 
@@ -87,7 +87,7 @@ export default function FormularioEtiqueta({ etiqueta = null, onGuardar, onCance
           disabled={!nombre.trim()}
           style={{
             width: '100%', padding: '14px', borderRadius: '14px',
-            backgroundColor: nombre.trim() ? '#f97316' : 'var(--color-superficie)',
+            backgroundColor: nombre.trim() ? 'var(--color-acento)' : 'var(--color-superficie)',
             border: nombre.trim() ? 'none' : '1px solid var(--color-borde)',
             color: nombre.trim() ? '#fff' : 'var(--color-texto-secundario)',
             fontSize: '16px', fontWeight: '600', cursor: nombre.trim() ? 'pointer' : 'default',
@@ -123,7 +123,7 @@ const estiloInput = {
 }
 
 const estiloBotonVolver = {
-  background: 'none', border: 'none', color: '#f97316',
+  background: 'none', border: 'none', color: 'var(--color-acento)',
   cursor: 'pointer', padding: '4px', display: 'flex',
   alignItems: 'center', justifyContent: 'center',
   flexShrink: 0,

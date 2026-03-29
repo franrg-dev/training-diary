@@ -135,7 +135,7 @@ export default function CalendarioDiario({
                     alignItems: 'center', justifyContent: 'center', gap: '3px',
                     padding: '6px 2px', minHeight: '42px',
                     borderRadius: '10px', border: 'none',
-                    backgroundColor: esHoy ? '#f97316' : 'transparent',
+                    backgroundColor: esHoy ? 'var(--color-acento)' : 'transparent',
                     cursor: 'pointer',
                   }}
                 >
@@ -149,7 +149,7 @@ export default function CalendarioDiario({
                   </span>
                   <div style={{
                     width: '5px', height: '5px', borderRadius: '50%',
-                    backgroundColor: tieneEntrada && !esHoy ? '#f97316' : 'transparent',
+                    backgroundColor: tieneEntrada && !esHoy ? 'var(--color-acento)' : 'transparent',
                   }} />
                 </button>
               )
@@ -260,7 +260,7 @@ function TarjetasResumenMes({ entradasDelMes }) {
 
   // Color del punto de Pasos
   const colorPasos = stats.promedioPasos !== null && objetivos.pasos > 0
-    ? (stats.promedioPasos >= objetivos.pasos ? '#22c55e' : '#ef4444')
+    ? (stats.promedioPasos >= objetivos.pasos ? 'var(--color-exito)' : '#ef4444')
     : null
 
   // Color del punto de Dif según dirección
@@ -268,11 +268,11 @@ function TarjetasResumenMes({ entradasDelMes }) {
     if (stats.difPeso === null) return null
     const dif = stats.difPeso
     const tipo = objetivos.pesoObjetivoTipo
-    if (tipo === 'deficit') return dif < 0 ? '#22c55e' : '#ef4444'
-    if (tipo === 'volumen') return dif > 0 ? '#22c55e' : '#ef4444'
+    if (tipo === 'deficit') return dif < 0 ? 'var(--color-exito)' : '#ef4444'
+    if (tipo === 'volumen') return dif > 0 ? 'var(--color-exito)' : '#ef4444'
     // mantenimiento
     const abs = Math.abs(dif)
-    if (abs <= 1) return '#22c55e'
+    if (abs <= 1) return 'var(--color-exito)'
     if (abs <= 2) return '#eab308'
     return '#ef4444'
   }
@@ -334,15 +334,15 @@ function TarjetaEntrada({ entrada, hoyStr, mapaSesiones, onSeleccionar }) {
         display: 'flex', alignItems: 'center', gap: '12px',
         width: '100%', padding: '12px 14px', marginBottom: '8px',
         backgroundColor: 'var(--color-superficie)',
-        border: `1px solid ${esHoy ? '#f9731666' : 'var(--color-borde)'}`,
+        border: `1px solid ${esHoy ? 'rgba(0,191,255,0.40)' : 'var(--color-borde)'}`,
         borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
       }}
     >
       <div style={{
         width: '36px', height: '36px', borderRadius: '10px',
-        backgroundColor: '#f9731622', border: '1px solid #f9731644',
+        backgroundColor: 'rgba(0,191,255,0.13)', border: '1px solid #f9731644',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        flexShrink: 0, fontWeight: '700', fontSize: '15px', color: '#f97316',
+        flexShrink: 0, fontWeight: '700', fontSize: '15px', color: 'var(--color-acento)',
       }}>
         {parseInt(entrada.fecha.split('-')[2], 10)}
       </div>
@@ -351,7 +351,7 @@ function TarjetaEntrada({ entrada, hoyStr, mapaSesiones, onSeleccionar }) {
           {esHoy ? 'Hoy' : formatearFechaEntrada(entrada.fecha)}
         </p>
         <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '13px' }}>
-          {sesion ? <span style={{ color: '#f97316' }}>{sesion.nombre}</span> : null}
+          {sesion ? <span style={{ color: 'var(--color-acento)' }}>{sesion.nombre}</span> : null}
           {sesion && (numFuerza > 0 || numCardio > 0) ? ' · ' : null}
           {numFuerza > 0 ? `${numFuerza} fuerza` : null}
           {numFuerza > 0 && numCardio > 0 ? ' · ' : null}
@@ -373,7 +373,7 @@ function formatearFechaEntrada(fechaStr) {
 }
 
 const estiloNavMes = {
-  background: 'none', border: 'none', color: '#f97316',
+  background: 'none', border: 'none', color: 'var(--color-acento)',
   cursor: 'pointer', padding: '6px',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 }

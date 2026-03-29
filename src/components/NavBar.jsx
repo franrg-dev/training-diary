@@ -1,10 +1,9 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useNavReset } from '../context/NavResetContext'
 
 /**
- * Barra de navegación inferior fija estilo app nativa móvil.
- * Al pulsar cualquier icono: navega a la sección Y resetea su estado interno
- * (cancela ediciones en curso y vuelve a la vista por defecto).
+ * Barra de navegación inferior — pill flotante Liquid Glass iOS 26.
+ * Iconos originales sin modificar; colores actualizados a paleta cian/lima.
  */
 
 const seccionesLateral = [
@@ -15,35 +14,25 @@ const seccionesLateral = [
 ]
 
 export default function NavBar() {
-  const navigate = useNavigate()
   const { resetSeccion } = useNavReset()
 
-  function handleNav(ruta) {
-    resetSeccion(ruta)
-    navigate(ruta)
-  }
-
   return (
-    <>
-      {/* Wrapper fijado a bottom:0 (posición más fiable en iOS).
-          El padding crea el margen visual alrededor de la pill. */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: '0 16px 16px',
-          pointerEvents: 'none',
-          zIndex: 100,
-        }}
-      >
+    <div
+      style={{
+        position: 'fixed',
+        bottom: 0, left: 0, right: 0,
+        padding: '0 16px 16px',
+        paddingBottom: 'max(16px, calc(10px + env(safe-area-inset-bottom, 0px)))',
+        pointerEvents: 'none',
+        zIndex: 100,
+      }}
+    >
       <nav
         style={{
           height: '64px',
           backgroundColor: 'var(--navbar-bg)',
-          backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          backdropFilter: 'blur(40px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(200%)',
           borderRadius: '40px',
           border: '1px solid var(--navbar-borde)',
           boxShadow: 'var(--navbar-sombra)',
@@ -64,15 +53,18 @@ export default function NavBar() {
               alignItems: 'center', justifyContent: 'center',
               padding: '10px',
               textDecoration: 'none',
-              color: isActive ? '#f97316' : 'var(--color-texto-secundario)',
-              transition: 'color 0.15s',
+              color: isActive ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
+              transition: 'color 0.18s',
+              filter: isActive
+                ? 'drop-shadow(0 0 6px rgba(0, 255, 255, 0.50))'
+                : 'none',
             })}
           >
             <Icono />
           </NavLink>
         ))}
 
-        {/* Diario — botón central destacado */}
+        {/* Diario — botón central con gradiente de marca */}
         <NavLink
           to="/diario"
           onClick={() => resetSeccion('/diario')}
@@ -88,11 +80,14 @@ export default function NavBar() {
             <div style={{
               width: '48px', height: '48px',
               borderRadius: '50%',
-              backgroundColor: isActive ? '#ea6c10' : '#f97316',
+              background: isActive
+                ? 'linear-gradient(160deg, #00D8F0 0%, #00A8C8 100%)'
+                : 'linear-gradient(160deg, #00FFFF 0%, #00C0E0 100%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'white',
-              boxShadow: '0 2px 14px rgba(249,115,22,0.5)',
-              transition: 'background-color 0.15s',
+              color: '#0A1929',
+              boxShadow: '0 3px 18px rgba(0, 200, 220, 0.55)',
+              transition: 'box-shadow 0.18s, filter 0.18s',
+              filter: isActive ? 'brightness(0.92)' : 'none',
             }}>
               <IconoDiario activo={isActive} />
             </div>
@@ -111,20 +106,24 @@ export default function NavBar() {
               alignItems: 'center', justifyContent: 'center',
               padding: '10px',
               textDecoration: 'none',
-              color: isActive ? '#f97316' : 'var(--color-texto-secundario)',
-              transition: 'color 0.15s',
+              color: isActive ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
+              transition: 'color 0.18s',
+              filter: isActive
+                ? 'drop-shadow(0 0 6px rgba(0, 255, 255, 0.50))'
+                : 'none',
             })}
           >
             <Icono />
           </NavLink>
         ))}
       </nav>
-      </div>
-    </>
+    </div>
   )
 }
 
-// — Iconos SVG —
+/* ============================================================
+   ICONOS ORIGINALES — Solo se modifican color y filtros
+   ============================================================ */
 
 function IconoMancuerna() {
   return (
@@ -172,4 +171,3 @@ function IconoDiario({ activo }) {
     </svg>
   )
 }
-

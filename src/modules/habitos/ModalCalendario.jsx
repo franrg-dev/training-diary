@@ -133,7 +133,7 @@ export default function ModalCalendario({
                     alignItems: 'center', justifyContent: 'center', gap: '3px',
                     padding: '6px 2px', minHeight: '42px',
                     borderRadius: '10px', border: 'none',
-                    backgroundColor: esSeleccion ? '#f97316' : esHoy ? '#f9731622' : 'transparent',
+                    backgroundColor: esSeleccion ? 'var(--color-acento)' : esHoy ? 'rgba(0,191,255,0.13)' : 'transparent',
                     cursor: habilitado ? 'pointer' : 'default',
                     opacity: habilitado ? 1 : 0.25,
                   }}
@@ -141,7 +141,7 @@ export default function ModalCalendario({
                   <span style={{
                     fontSize: '15px',
                     fontWeight: esSeleccion || esHoy ? '700' : '400',
-                    color: esSeleccion ? '#fff' : esHoy ? '#f97316' : 'var(--color-texto)',
+                    color: esSeleccion ? '#fff' : esHoy ? 'var(--color-acento)' : 'var(--color-texto)',
                     lineHeight: 1,
                   }}>
                     {dia}
@@ -157,7 +157,7 @@ export default function ModalCalendario({
 }
 
 const estiloNavMes = {
-  background: 'none', border: 'none', color: '#f97316',
+  background: 'none', border: 'none', color: 'var(--color-acento)',
   cursor: 'pointer', padding: '6px',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 }

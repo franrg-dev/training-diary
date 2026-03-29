@@ -35,7 +35,7 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
           onClick={onNuevo}
           style={{
             width: '40px', height: '40px', borderRadius: '12px',
-            backgroundColor: '#f97316', border: 'none', color: '#fff',
+            backgroundColor: 'var(--color-acento)', border: 'none', color: '#fff',
             cursor: 'pointer', display: 'flex',
             alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 0,
           }}
@@ -120,8 +120,8 @@ function TarjetaSesion({ sesion, mapaEjercicios, onClick }) {
       </div>
       <span style={{
         flexShrink: 0, padding: '3px 10px',
-        backgroundColor: '#f9731622', border: '1px solid #f9731644',
-        borderRadius: '20px', color: '#f97316', fontSize: '12px', fontWeight: '600',
+        backgroundColor: 'rgba(0,191,255,0.13)', border: '1px solid #f9731644',
+        borderRadius: '20px', color: 'var(--color-acento)', fontSize: '12px', fontWeight: '600',
       }}>
         {numEjercicios}
       </span>

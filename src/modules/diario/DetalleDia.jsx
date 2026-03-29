@@ -37,7 +37,7 @@ function Campo({ label, valor, sufijo, naranja = false }) {
       <p style={{ margin: '0 0 3px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {label}
       </p>
-      <p style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : naranja ? '#f97316' : 'var(--color-texto)' }}>
+      <p style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : naranja ? 'var(--color-acento)' : 'var(--color-texto)' }}>
         {vacio ? '—' : `${valor}${sufijo ? `\u00a0${sufijo}` : ''}`}
       </p>
     </div>
@@ -54,8 +54,8 @@ function CampoCheck({ label, valor }) {
       </p>
       <div style={{
         width: '20px', height: '20px', borderRadius: '5px',
-        backgroundColor: valor ? '#f97316' : 'var(--color-superficie)',
-        border: `2px solid ${valor ? '#f97316' : 'var(--color-texto-inactivo)'}`,
+        backgroundColor: valor ? 'var(--color-acento)' : 'var(--color-superficie)',
+        border: `2px solid ${valor ? 'var(--color-acento)' : 'var(--color-texto-inactivo)'}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {valor && (
@@ -90,7 +90,7 @@ function Grid3({ children }) {
 // ─── Indicador circular KCal ──────────────────────────────────────────────
 
 const ROJO    = '#f87171'
-const NARANJA = '#f97316'
+const NARANJA = 'var(--color-acento)'
 const VERDE   = '#4ade80'
 
 function calcularEstadoKcal(dif, objetivo) {
@@ -186,7 +186,7 @@ function BarraProgreso({ icono, label, valor, objetivo, formato, objetivoFormato
   return (
     <div style={{
       backgroundColor: 'var(--color-superficie-2)',
-      border: `1px solid ${completo ? '#f9731666' : 'var(--color-borde)'}`,
+      border: `1px solid ${completo ? 'rgba(0,191,255,0.40)' : 'var(--color-borde)'}`,
       borderRadius: '12px',
       padding: '12px 14px',
       marginBottom: '8px',
@@ -199,7 +199,7 @@ function BarraProgreso({ icono, label, valor, objetivo, formato, objetivoFormato
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-          <span style={{ fontSize: '16px', fontWeight: '700', color: completo ? '#f97316' : 'var(--color-texto)' }}>
+          <span style={{ fontSize: '16px', fontWeight: '700', color: completo ? 'var(--color-acento)' : 'var(--color-texto)' }}>
             {fmtVal}
           </span>
           <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
@@ -212,7 +212,7 @@ function BarraProgreso({ icono, label, valor, objetivo, formato, objetivoFormato
         <div style={{
           height: '100%',
           width: `${pct}%`,
-          backgroundColor: completo ? '#f97316' : '#f9731688',
+          backgroundColor: completo ? 'var(--color-acento)' : 'rgba(0,191,255,0.53)',
           borderRadius: '3px',
           transition: 'width 0.3s ease',
         }} />
@@ -249,7 +249,7 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 6px', gap: '8px' }}>
         <button
           onClick={onVolver}
-          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
@@ -259,7 +259,7 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
         <div style={{ flex: 1 }} />
         <button
           onClick={onEditar}
-          style={{ background: 'none', border: '1px solid #f97316', color: '#f97316', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: '6px 14px', borderRadius: '8px' }}
+          style={{ background: 'none', border: '1px solid #f97316', color: 'var(--color-acento)', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: '6px 14px', borderRadius: '8px' }}
         >
           Editar
         </button>

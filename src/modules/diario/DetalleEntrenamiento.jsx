@@ -10,7 +10,7 @@ function formatearSueno(minutos) {
 }
 
 const ROJO    = '#f87171'
-const NARANJA = '#f97316'
+const NARANJA = 'var(--color-acento)'
 const VERDE   = '#4ade80'
 
 function calcularEstadoKcal(dif, objetivo) {
@@ -147,7 +147,7 @@ function StatFila({ icono, label, valor, sufijo, naranja = false }) {
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid var(--color-borde)' }}>
       <span style={{ fontSize: '20px', width: '28px', textAlign: 'center', flexShrink: 0 }}>{icono}</span>
       <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto-secundario)' }}>{label}</span>
-      <span style={{ fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : naranja ? '#f97316' : 'var(--color-texto)' }}>
+      <span style={{ fontSize: '16px', fontWeight: '700', color: vacio ? 'var(--color-texto-inactivo)' : naranja ? 'var(--color-acento)' : 'var(--color-texto)' }}>
         {vacio ? '—' : valor}{!vacio && sufijo ? <span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', marginLeft: '2px' }}>{sufijo}</span> : null}
       </span>
     </div>
@@ -161,11 +161,11 @@ function ChipHabito({ label, activo }) {
     <div style={{
       flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
       padding: '10px 12px', borderRadius: '12px',
-      backgroundColor: activo ? '#f9731622' : 'var(--color-fondo)',
-      border: `1px solid ${activo ? '#f9731666' : 'var(--color-borde)'}`,
+      backgroundColor: activo ? 'rgba(0,191,255,0.13)' : 'var(--color-fondo)',
+      border: `1px solid ${activo ? 'rgba(0,191,255,0.40)' : 'var(--color-borde)'}`,
     }}>
-      <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: activo ? '#f97316' : 'var(--color-texto-inactivo)', flexShrink: 0 }} />
-      <span style={{ fontSize: '12px', fontWeight: '600', color: activo ? '#f97316' : 'var(--color-texto-secundario)' }}>{label}</span>
+      <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: activo ? 'var(--color-acento)' : 'var(--color-texto-inactivo)', flexShrink: 0 }} />
+      <span style={{ fontSize: '12px', fontWeight: '600', color: activo ? 'var(--color-acento)' : 'var(--color-texto-secundario)' }}>{label}</span>
     </div>
   )
 }
@@ -244,7 +244,7 @@ function CeldaGeneral({ label, valor, sufijo, naranja = false }) {
           bottom: 'calc(100% + 7px)',
           left: '50%',
           transform: 'translateX(-50%)',
-          backgroundColor: '#f97316',
+          backgroundColor: 'var(--color-acento)',
           borderRadius: '6px',
           padding: '4px 9px',
           fontSize: '11px', fontWeight: '700',
@@ -264,7 +264,7 @@ function CeldaGeneral({ label, valor, sufijo, naranja = false }) {
       )}
       <p style={{
         margin: 0, fontSize: '13px', fontWeight: '700', lineHeight: 1,
-        color: vacio ? 'var(--color-texto-inactivo)' : naranja ? '#f97316' : 'var(--color-texto)',
+        color: vacio ? 'var(--color-texto-inactivo)' : naranja ? 'var(--color-acento)' : 'var(--color-texto)',
       }}>
         {vacio ? '—' : `${valor}${sufijo ? `\u00a0${sufijo}` : ''}`}
       </p>
@@ -280,7 +280,7 @@ function TituloSeccion({ titulo, botonLabel, onBoton }) {
       <p style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: 'var(--color-texto)' }}>{titulo}</p>
       <div style={{ flex: 1 }} />
       {onBoton && (
-        <button onClick={onBoton} style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>
+        <button onClick={onBoton} style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>
           {botonLabel}
         </button>
       )}
@@ -372,7 +372,7 @@ export default function DetalleEntrenamiento({
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
           <button
             onClick={() => onCambiarDia(-1)}
-            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: '#f97316', cursor: 'pointer', padding: '6px 8px', display: 'flex', alignItems: 'center' }}
+            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-acento)', cursor: 'pointer', padding: '6px 8px', display: 'flex', alignItems: 'center' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
@@ -383,7 +383,7 @@ export default function DetalleEntrenamiento({
           </p>
           <button
             onClick={() => onCambiarDia(1)}
-            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: '#f97316', cursor: 'pointer', padding: '6px 8px', display: 'flex', alignItems: 'center' }}
+            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-acento)', cursor: 'pointer', padding: '6px 8px', display: 'flex', alignItems: 'center' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
@@ -394,7 +394,7 @@ export default function DetalleEntrenamiento({
         {!esHoy && (
           <button
             onClick={() => onIrAFecha(hoyStr)}
-            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: '#f97316', cursor: 'pointer', padding: '6px 10px', fontSize: '13px', fontWeight: '700', flexShrink: 0 }}
+            style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-acento)', cursor: 'pointer', padding: '6px 10px', fontSize: '13px', fontWeight: '700', flexShrink: 0 }}
           >
             Hoy
           </button>
@@ -413,7 +413,7 @@ export default function DetalleEntrenamiento({
         </button>
         <button
           onClick={onEditarDatos}
-          style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', flexShrink: 0 }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', flexShrink: 0 }}
         >
           <IconoEditar />
         </button>
@@ -458,7 +458,7 @@ export default function DetalleEntrenamiento({
             <div>
               <p style={{ margin: '0 0 2px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Puntuación</p>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <p style={{ margin: 0, fontSize: '20px', fontWeight: '700', color: e.suenoCalidad > 0 ? '#f97316' : 'var(--color-texto-inactivo)' }}>
+                <p style={{ margin: 0, fontSize: '20px', fontWeight: '700', color: e.suenoCalidad > 0 ? 'var(--color-acento)' : 'var(--color-texto-inactivo)' }}>
                   {e.suenoCalidad > 0 ? e.suenoCalidad : '—'}
                 </p>
                 {e.suenoCalidad > 0 && <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>/100</span>}
@@ -534,7 +534,7 @@ export default function DetalleEntrenamiento({
             width: '100%',
             padding: '16px',
             marginBottom: '12px',
-            backgroundColor: '#f97316',
+            backgroundColor: 'var(--color-acento)',
             border: 'none',
             borderRadius: '18px',
             color: '#fff',
@@ -545,7 +545,7 @@ export default function DetalleEntrenamiento({
             alignItems: 'center',
             justifyContent: 'center',
             gap: '10px',
-            boxShadow: '0 4px 16px rgba(249,115,22,0.4)',
+            boxShadow: '0 4px 16px rgba(0, 191, 255,0.4)',
           }}
         >
           <span style={{ fontSize: '20px' }}>📏</span>
@@ -581,7 +581,7 @@ export default function DetalleEntrenamiento({
             padding: '12px 10px',
           }}>
             <p style={{ margin: 0, fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Peso</p>
-            <p style={{ margin: 0, fontSize: '44px', fontWeight: '800', color: e.peso > 0 ? '#f97316' : 'var(--color-texto-inactivo)', lineHeight: 1 }}>
+            <p style={{ margin: 0, fontSize: '44px', fontWeight: '800', color: e.peso > 0 ? 'var(--color-acento)' : 'var(--color-texto-inactivo)', lineHeight: 1 }}>
               {e.peso > 0 ? e.peso : '—'}
             </p>
             <p style={{ margin: 0, fontSize: '10px', color: e.peso > 0 ? 'var(--color-texto-secundario)' : 'transparent' }}>kg</p>
@@ -620,14 +620,14 @@ export default function DetalleEntrenamiento({
         {tieneEntrenamiento && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: sesion ? '10px' : '0' }}>
             {sesion && (
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: '#f9731611', border: '1px solid #f9731633', borderRadius: '12px' }}>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(0,191,255,0.07)', border: '1px solid #f9731633', borderRadius: '12px' }}>
                 <span style={{ fontSize: '16px' }}>📋</span>
-                <p style={{ margin: 0, fontWeight: '700', color: '#f97316', fontSize: '14px' }}>{sesion.nombre}</p>
+                <p style={{ margin: 0, fontWeight: '700', color: 'var(--color-acento)', fontSize: '14px' }}>{sesion.nombre}</p>
               </div>
             )}
             <button
               onClick={onEditarEntrenamiento}
-              style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', padding: 0, flexShrink: 0, display: 'flex', alignItems: 'center' }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-acento)', cursor: 'pointer', padding: 0, flexShrink: 0, display: 'flex', alignItems: 'center' }}
             >
               <IconoEditar />
             </button>
@@ -665,7 +665,7 @@ export default function DetalleEntrenamiento({
                       {ej.nombre}
                     </p>
                     {Number(item.peso) > 0 && (
-                      <p style={{ margin: 0, fontWeight: '800', color: '#f97316', fontSize: '17px', flexShrink: 0, lineHeight: 1 }}>
+                      <p style={{ margin: 0, fontWeight: '800', color: 'var(--color-acento)', fontSize: '17px', flexShrink: 0, lineHeight: 1 }}>
                         {item.peso}
                         <span style={{ fontSize: '10px', fontWeight: '500', color: 'var(--color-texto-secundario)', marginLeft: '2px' }}>{item.unidad || 'kg'}</span>
                       </p>
@@ -717,7 +717,7 @@ export default function DetalleEntrenamiento({
                       {ej.nombre}
                     </p>
                     {metricas.map((m, i) => (
-                      <p key={i} style={{ margin: 0, fontWeight: '800', color: '#f97316', fontSize: '15px', flexShrink: 0, lineHeight: 1 }}>
+                      <p key={i} style={{ margin: 0, fontWeight: '800', color: 'var(--color-acento)', fontSize: '15px', flexShrink: 0, lineHeight: 1 }}>
                         {m.valor}<span style={{ fontSize: '10px', fontWeight: '500', color: 'var(--color-texto-secundario)', marginLeft: '2px' }}>{m.unidad}</span>
                       </p>
                     ))}

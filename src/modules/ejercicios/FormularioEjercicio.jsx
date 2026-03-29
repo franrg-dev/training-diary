@@ -122,7 +122,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 0 24px' }}>
         <button
           onClick={onCancelar}
-          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '15px', cursor: 'pointer', padding: 0 }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '15px', cursor: 'pointer', padding: 0 }}
         >
           Cancelar
         </button>
@@ -134,7 +134,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
           disabled={guardando}
           style={{
             background: 'none', border: 'none',
-            color: guardando ? 'var(--color-texto-secundario)' : '#f97316',
+            color: guardando ? 'var(--color-texto-secundario)' : 'var(--color-acento)',
             fontSize: '15px', fontWeight: '600', cursor: guardando ? 'default' : 'pointer', padding: 0,
           }}
         >
@@ -280,10 +280,10 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                 onClick={() => actualizarCampo('modo', val)}
                 style={{
                   flex: 1, padding: '12px',
-                  backgroundColor: campos.modo === val ? '#f9731622' : 'transparent',
-                  border: `1px solid ${campos.modo === val ? '#f97316' : 'var(--color-borde)'}`,
+                  backgroundColor: campos.modo === val ? 'rgba(0,191,255,0.13)' : 'transparent',
+                  border: `1px solid ${campos.modo === val ? 'var(--color-acento)' : 'var(--color-borde)'}`,
                   borderRadius: '10px',
-                  color: campos.modo === val ? '#f97316' : 'var(--color-texto-secundario)',
+                  color: campos.modo === val ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
                   fontSize: '14px', fontWeight: '600', cursor: 'pointer',
                 }}
               >
@@ -393,7 +393,7 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                       style={{
                         display: 'flex', alignItems: 'center', gap: '12px',
                         width: '100%', padding: '12px 14px',
-                        backgroundColor: seleccionado ? '#f9731610' : 'transparent',
+                        backgroundColor: seleccionado ? 'rgba(0,191,255,0.06)' : 'transparent',
                         border: 'none', borderBottom: '1px solid var(--color-superficie)',
                         cursor: 'pointer', textAlign: 'left',
                       }}
@@ -408,8 +408,8 @@ export default function FormularioEjercicio({ ejercicio, todosEjercicios, onGuar
                       <div
                         style={{
                           width: '20px', height: '20px', borderRadius: '6px', flexShrink: 0,
-                          border: `2px solid ${seleccionado ? '#f97316' : 'var(--color-borde)'}`,
-                          backgroundColor: seleccionado ? '#f97316' : 'transparent',
+                          border: `2px solid ${seleccionado ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+                          backgroundColor: seleccionado ? 'var(--color-acento)' : 'transparent',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}
                       >
@@ -447,7 +447,7 @@ function Campo({ etiqueta, error, requerido, children, style }) {
         fontSize: '13px', fontWeight: '500', color: 'var(--color-texto-secundario)',
         textTransform: 'uppercase', letterSpacing: '0.05em',
       }}>
-        {etiqueta}{requerido && <span style={{ color: '#f97316', marginLeft: '3px' }}>*</span>}
+        {etiqueta}{requerido && <span style={{ color: 'var(--color-acento)', marginLeft: '3px' }}>*</span>}
       </label>
       {children}
       {error && <p style={{ margin: '6px 0 0', color: '#f87171', fontSize: '13px' }}>{error}</p>}

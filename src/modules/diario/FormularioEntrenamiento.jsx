@@ -201,7 +201,7 @@ export default function FormularioEntrenamiento({
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 20px', gap: '8px' }}>
         <button
           onClick={onCancelar}
-          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
@@ -300,7 +300,7 @@ export default function FormularioEntrenamiento({
               <button
                 type="button"
                 onClick={() => setIdxSustituyendo(i => i === idx ? null : idx)}
-                style={{ ...estiloX, color: idxSustituyendo === idx ? '#f97316' : 'var(--color-texto-secundario)' }}
+                style={{ ...estiloX, color: idxSustituyendo === idx ? 'var(--color-acento)' : 'var(--color-texto-secundario)' }}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2 5h10M9 2l3 3-3 3" />
@@ -323,7 +323,7 @@ export default function FormularioEntrenamiento({
                           style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', padding: '10px 12px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--color-borde)', cursor: 'pointer', textAlign: 'left' }}>
                           <IconoEjercicio grupos={sus.gruposMuscular} grupoPrincipal={sus.grupoPrincipal} size={16} />
                           <span style={{ flex: 1, fontSize: '13px', color: 'var(--color-texto)' }}>{sus.nombre}</span>
-                          {u && <span style={{ fontSize: '11px', color: '#f97316', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
+                          {u && <span style={{ fontSize: '11px', color: 'var(--color-acento)', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
                         </button>
                       )
                     })
@@ -333,7 +333,7 @@ export default function FormularioEntrenamiento({
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
               <input type="number" inputMode="decimal" placeholder={item._sugerenciaPeso || '0'}
                 value={item.peso} onChange={e => actualizarFuerza(idx, 'peso', e.target.value)}
-                style={{ ...estiloInputBase, flex: 1, textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#f97316' }} />
+                style={{ ...estiloInputBase, flex: 1, textAlign: 'center', fontSize: '20px', fontWeight: '700', color: 'var(--color-acento)' }} />
               <button type="button" onClick={() => actualizarFuerza(idx, 'unidad', item.unidad === 'kg' ? 'lb' : 'kg')}
                 style={{ padding: '10px 12px', backgroundColor: 'var(--color-superficie-2)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
                 {item.unidad || 'kg'}
@@ -356,7 +356,7 @@ export default function FormularioEntrenamiento({
             <div>
               <label style={{ ...estiloLabelPequeno, display: 'flex', justifyContent: 'space-between' }}>
                 <span>Sensaciones</span>
-                <span style={{ color: (item.sensaciones || '').length > 130 ? '#f97316' : 'var(--color-texto-inactivo)' }}>{(item.sensaciones || '').length}/150</span>
+                <span style={{ color: (item.sensaciones || '').length > 130 ? 'var(--color-acento)' : 'var(--color-texto-inactivo)' }}>{(item.sensaciones || '').length}/150</span>
               </label>
               <input type="text" placeholder="Cómo fue el ejercicio…" value={item.sensaciones || ''}
                 maxLength={150}
@@ -447,7 +447,7 @@ export default function FormularioEntrenamiento({
             <div style={{ marginTop: '8px' }}>
               <label style={{ ...estiloLabelPequeno, display: 'flex', justifyContent: 'space-between' }}>
                 <span>Sensaciones</span>
-                <span style={{ color: (item.sensaciones || '').length > 220 ? '#f97316' : 'var(--color-texto-inactivo)' }}>{(item.sensaciones || '').length}/250</span>
+                <span style={{ color: (item.sensaciones || '').length > 220 ? 'var(--color-acento)' : 'var(--color-texto-inactivo)' }}>{(item.sensaciones || '').length}/250</span>
               </label>
               <input type="text" placeholder="Cómo fue la actividad…" value={item.sensaciones || ''}
                 maxLength={250}
@@ -474,7 +474,7 @@ export default function FormularioEntrenamiento({
       <Seccion icono="💬" titulo="Sensaciones generales" />
       <div style={{ marginBottom: '8px' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
-          <span style={{ fontSize: '10px', color: notasEntrenamiento.length > 550 ? '#f97316' : 'var(--color-texto-inactivo)' }}>{notasEntrenamiento.length}/600</span>
+          <span style={{ fontSize: '10px', color: notasEntrenamiento.length > 550 ? 'var(--color-acento)' : 'var(--color-texto-inactivo)' }}>{notasEntrenamiento.length}/600</span>
         </div>
         <textarea
           placeholder="Sensaciones generales, observaciones del día…"
@@ -501,7 +501,7 @@ export default function FormularioEntrenamiento({
         disabled={guardando}
         style={{
           width: '100%', padding: '14px', marginTop: '16px',
-          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : '#f97316',
+          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : 'var(--color-acento)',
           color: '#fff', fontWeight: '700', fontSize: '16px',
           border: 'none', borderRadius: '12px', cursor: guardando ? 'default' : 'pointer',
         }}
@@ -540,7 +540,7 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
                 <button key={ej.id} type="button" onClick={() => onSeleccionar(ej.id)} style={estiloItemSelector}>
                   <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={18} />
                   <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)', textAlign: 'left' }}>{ej.nombre}</span>
-                  {u && <span style={{ fontSize: '12px', color: '#f97316', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
+                  {u && <span style={{ fontSize: '12px', color: 'var(--color-acento)', flexShrink: 0 }}>{u.peso} {u.unidad}</span>}
                 </button>
               )
             })
@@ -553,7 +553,7 @@ function SelectorEjercicio({ candidatos, busqueda, onBusqueda, onSeleccionar, ul
 // ─── Estilos ─────────────────────────────────────────────────────────────
 
 function estiloAccion(dis) {
-  return { background: 'none', border: 'none', color: dis ? 'var(--color-texto-secundario)' : '#f97316', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
+  return { background: 'none', border: 'none', color: dis ? 'var(--color-texto-secundario)' : 'var(--color-acento)', fontSize: '14px', fontWeight: '600', cursor: dis ? 'default' : 'pointer', padding: 0, whiteSpace: 'nowrap' }
 }
 
 const estiloLabel        = { display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: '500', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }

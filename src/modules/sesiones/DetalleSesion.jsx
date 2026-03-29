@@ -25,7 +25,7 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
         <button
           onClick={onVolver}
           style={{
-            background: 'none', border: 'none', color: '#f97316',
+            background: 'none', border: 'none', color: 'var(--color-acento)',
             fontSize: '15px', cursor: 'pointer', padding: '0',
             display: 'flex', alignItems: 'center', gap: '4px',
           }}

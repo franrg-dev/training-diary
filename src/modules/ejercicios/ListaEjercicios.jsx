@@ -53,7 +53,7 @@ export default function ListaEjercicios({ ejercicios, cargando, onSeleccionar, o
             onClick={onNuevo}
             style={{
               width: '40px', height: '40px', borderRadius: '12px',
-              backgroundColor: '#f97316', border: 'none', color: '#fff',
+              backgroundColor: 'var(--color-acento)', border: 'none', color: '#fff',
               cursor: 'pointer', display: 'flex',
               alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               padding: 0,
@@ -162,9 +162,9 @@ function ChipGrupo({ etiqueta, activo, color, onClick }) {
         flexShrink: 0,
         padding: '6px 14px',
         borderRadius: '20px',
-        border: `1px solid ${activo ? (color || '#f97316') : 'var(--color-borde)'}`,
-        backgroundColor: activo ? (color ? color + '22' : '#f9731622') : 'transparent',
-        color: activo ? (color || '#f97316') : 'var(--color-texto-secundario)',
+        border: `1px solid ${activo ? (color || 'var(--color-acento)') : 'var(--color-borde)'}`,
+        backgroundColor: activo ? (color ? color + '22' : 'rgba(0,191,255,0.13)') : 'transparent',
+        color: activo ? (color || 'var(--color-acento)') : 'var(--color-texto-secundario)',
         fontSize: '13px',
         fontWeight: activo ? '600' : '400',
         cursor: 'pointer',

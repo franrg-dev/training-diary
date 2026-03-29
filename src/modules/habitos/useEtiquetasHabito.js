@@ -26,7 +26,7 @@ export function useEtiquetasHabito() {
   const crear = useCallback(async (datos) => {
     await db.etiquetasHabito.add({
       nombre: datos.nombre.trim(),
-      color:  datos.color || '#f97316',
+      color:  datos.color || 'var(--color-acento)',
     })
     await cargar()
   }, [cargar])
@@ -34,7 +34,7 @@ export function useEtiquetasHabito() {
   const actualizar = useCallback(async (id, datos) => {
     await db.etiquetasHabito.update(id, {
       nombre: datos.nombre.trim(),
-      color:  datos.color || '#f97316',
+      color:  datos.color || 'var(--color-acento)',
     })
     await cargar()
   }, [cargar])

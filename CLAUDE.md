@@ -106,7 +106,7 @@ Each major feature is a **module** in `src/modules/{nombre}/`. Modules follow th
 
 Routes are defined in `App.jsx`. HashRouter is used (for GitHub Pages subpath `/training-diary/`).
 
-**Page order in navbar:** Diario | Ejercicios | Sesiones | Registro | Sync
+**Page order in navbar:** Hábitos | Ejercicios | Diario (central) | Nutrición | Ajustes
 
 **Default route:** `/` → redirects to `/diario`
 
@@ -192,24 +192,95 @@ db.version(3).stores({
 ## Styling & Design
 
 - **CSS Framework:** Tailwind CSS v4 (via @tailwindcss/vite plugin)
-- **No tailwind.config.js** — Config via CSS variables in `:root`
-- **Color scheme:** Dark mode by default, orange accent (#f97316)
-- **CSS custom properties:**
-  ```css
-  :root {
-    --altura-navbar: 70px;
-    --color-primary: #f97316;     /* orange accent */
-    --color-bg: #0f0f0f;          /* dark bg */
-    --color-border: #2e2e2e;      /* borders */
-    --safe-area-bottom: env(safe-area-inset-bottom);
-  }
-  ```
+- **No tailwind.config.js** — Config via CSS variables en `:root` (ver `src/index.css`)
+- **Estética:** iOS 26 Liquid Glass — blur 40px, saturate 200%, specular highlights, radios generosos
 - **Layout:** `.contenido-principal` class handles scroll area + navbar padding
 
-**iOS Support:**
-- `viewport-fit=cover` for notch handling
-- `safe-area-inset-*` for iPhone home indicator
-- App icon 192px & 512px in `/public/icons/`
+### Paleta de colores
+
+**IMPORTANTE: No usar nunca naranja (#f97316) ni ningún tono naranja/ámbar. La paleta es cian/lima.**
+
+| Token CSS | Modo oscuro | Modo claro |
+|---|---|---|
+| `--color-fondo` | `#0A192F` (Azul Noche) | `#F2F2F7` (gris sistema iOS) |
+| `--color-superficie` | `#0F2540` | `#FFFFFF` |
+| `--color-superficie-2` | `#152F52` | `#EBF6FF` |
+| `--color-superficie-3` | `#1C3A65` | `#D4EEFF` |
+| `--color-texto` | `#FFFFFF` | `#1A2E44` |
+| `--color-texto-secundario` | `rgba(255,255,255,0.55)` | `#4A6B8A` |
+| `--color-texto-terciario` | `rgba(255,255,255,0.30)` | `#7A9BB8` |
+| `--color-acento` | `#00FFFF` (Cian brillante) | `#00BFFF` (Cian eléctrico) |
+| `--color-acento-hover` | `#00D8E8` | `#009ED4` |
+| `--color-acento-suave` | `rgba(0,255,255,0.12)` | `rgba(0,191,255,0.12)` |
+| `--color-acento-2` | `#CCFF00` (Lima) | `#8BC400` |
+| `--color-acento-2-suave` | `rgba(204,255,0,0.12)` | `rgba(139,196,0,0.12)` |
+| `--color-exito` | `#30D158` | `#30D158` |
+| `--color-peligro` | `#FF453A` | `#FF453A` |
+
+### Gradientes
+
+```css
+/* Monocromático cian — sutil, NO cian→lima en gradientes principales */
+--gradiente-acento:       linear-gradient(160deg, #00FFFF 0%, #00C8E8 100%);  /* oscuro */
+--gradiente-acento:       linear-gradient(160deg, #00BFFF 0%, #0099CC 100%);  /* claro */
+--gradiente-acento-suave: linear-gradient(160deg, rgba(0,255,255,0.16) 0%, rgba(0,200,232,0.10) 100%);
+```
+
+El lima (`--color-acento-2`) es solo para **acentos secundarios puntuales**, nunca en gradientes principales.
+
+### Materiales Liquid Glass
+
+```css
+/* Navbar / modales / dropdowns */
+backdrop-filter: blur(40px) saturate(200%);
+-webkit-backdrop-filter: blur(40px) saturate(200%);
+
+/* Oscuro */
+background: rgba(10, 25, 47, 0.82);
+border: 1px solid rgba(0, 255, 255, 0.13);
+box-shadow: ..., inset 0 1px 0 rgba(0, 255, 255, 0.14);  /* specular cian */
+
+/* Claro */
+background: rgba(255, 255, 255, 0.88);
+border: 1px solid rgba(0, 168, 224, 0.14);
+box-shadow: ..., inset 0 1px 0 rgba(255, 255, 255, 0.95);
+```
+
+### Reglas para escribir nuevo código UI
+
+1. **Acento** → siempre `var(--color-acento)`, nunca hex hardcodeado
+2. **Acento con opacidad** → `var(--color-acento-suave)` o `rgba(0,191,255,0.XX)`
+3. **Botones primarios** → `.app-btn-acento` (gradiente cian, texto `#0A1929`)
+4. **Botones secundarios** → `.app-btn-secundario` (glass, texto normal)
+5. **Inputs con foco** → `border-color: var(--color-acento)` + `box-shadow: 0 0 0 3px rgba(0,191,255,0.15)`
+6. **Verde completado/éxito** → `var(--color-exito)` (`#30D158`)
+7. **Rojo peligro/eliminar** → `var(--color-peligro)` (`#FF453A`)
+8. **Iconos activos en navbar** → `var(--color-acento)` + `filter: drop-shadow(0 0 6px rgba(0,255,255,0.5))`
+
+### Clases utilitarias disponibles (src/index.css)
+
+```
+Tarjetas:   .app-card  .app-card-elevada  .app-grupo  .app-grupo-fila
+Botones:    .app-btn-acento  .app-btn-secundario  .app-btn-peligro  .app-btn-tonal  .app-btn-icono
+Texto:      .app-large-title  .app-title1/2/3  .app-headline  .app-footnote  .app-caption1/2
+Labels:     .app-group-label
+Inputs:     .app-input  .app-textarea
+Chips:      .app-chip  .app-badge
+Vacío:      .app-empty-state  .app-empty-icon  .app-empty-title  .app-empty-text
+```
+
+### Navbar
+
+- **Orden:** Hábitos | Ejercicios | **Diario** (central) | Nutrición | Ajustes
+- **Diario:** círculo con `linear-gradient(160deg, #00FFFF, #00C0E0)`, icono en `#0A1929`
+- **Iconos laterales activos:** `color: var(--color-acento)` + glow cian
+- **Sin labels** bajo los iconos
+
+### iOS Support
+- `viewport-fit=cover` para notch
+- `safe-area-inset-*` para iPhone home indicator
+- `--altura-navbar: 84px`
+- Iconos PWA en `/public/icons/` — regenerar con `node generate-icons.mjs`
 
 ## PWA & Offline
 
@@ -276,7 +347,7 @@ export function use{Nombre}() {
 - Email + OTP login in NavBar's Sync panel
 - `db.cloud.login({ email, grant_type: 'otp', otp })`
 - `db.cloud.logout()` to sign out
-- State visible in navbar (green dot = synced, orange dot = syncing, gray = offline)
+- State visible in Ajustes sync panel (green = synced, cyan = syncing, gray = offline)
 
 **Important:** Local data (with `++id`) won't sync to cloud. New records get `@id` UUIDs automatically.
 

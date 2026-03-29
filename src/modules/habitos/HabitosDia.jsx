@@ -146,7 +146,7 @@ export default function HabitosDia({
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
-          <span style={{ flex: 1, textAlign: 'center', fontSize: '13px', fontWeight: '500', color: esHoy ? '#f97316' : 'var(--color-texto)' }}>
+          <span style={{ flex: 1, textAlign: 'center', fontSize: '13px', fontWeight: '500', color: esHoy ? 'var(--color-acento)' : 'var(--color-texto)' }}>
             {formatearFechaLarga(fecha)}
           </span>
           <button onClick={() => irDia(1)} style={estiloNavDia} aria-label="Día siguiente">
@@ -163,7 +163,7 @@ export default function HabitosDia({
               <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
                 {completados} de {total} completados
               </span>
-              <span style={{ fontSize: '12px', fontWeight: '600', color: '#f97316' }}>
+              <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--color-acento)' }}>
                 {Math.round((completados / total) * 100)}%
               </span>
             </div>
@@ -171,7 +171,7 @@ export default function HabitosDia({
               <div style={{
                 height: '100%',
                 width: `${(completados / total) * 100}%`,
-                backgroundColor: completados === total ? '#22c55e' : '#f97316',
+                backgroundColor: completados === total ? 'var(--color-exito)' : 'var(--color-acento)',
                 borderRadius: '2px',
                 transition: 'width 0.3s ease',
               }} />
@@ -283,8 +283,8 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
           onClick={puedeMarcarse || completado ? onToggle : undefined}
           style={{
             width: '26px', height: '26px', borderRadius: '8px',
-            backgroundColor: completado ? '#22c55e' : bloqueado ? 'var(--color-superficie)' : 'transparent',
-            border: `2px solid ${completado ? '#22c55e' : bloqueado ? 'var(--color-borde)' : 'var(--color-borde)'}`,
+            backgroundColor: completado ? 'var(--color-exito)' : bloqueado ? 'var(--color-superficie)' : 'transparent',
+            border: `2px solid ${completado ? 'var(--color-exito)' : bloqueado ? 'var(--color-borde)' : 'var(--color-borde)'}`,
             cursor: (puedeMarcarse || completado) ? 'pointer' : 'not-allowed',
             flexShrink: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -332,7 +332,7 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
             <p style={{ margin: 0, fontSize: '11px', color: 'var(--color-texto-secundario)' }}>
               {subCompletados.length}/{subhabitos.length} subhábitos
               {(obligatorios.length > 0 || minimo > 0) && !puedeMarcarse && (
-                <span style={{ color: '#f97316' }}>
+                <span style={{ color: 'var(--color-acento)' }}>
                   {' · '}
                   {obligatorios.length > 0 && minimo > 0
                     ? `${minimo} requeridos + obligatorios`
@@ -403,8 +403,8 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
                   onClick={() => onToggleSubhabito(s.id)}
                   style={{
                     width: '20px', height: '20px', borderRadius: '6px', flexShrink: 0,
-                    backgroundColor: marcado ? '#22c55e' : 'transparent',
-                    border: `2px solid ${marcado ? '#22c55e' : 'var(--color-borde)'}`,
+                    backgroundColor: marcado ? 'var(--color-exito)' : 'transparent',
+                    border: `2px solid ${marcado ? 'var(--color-exito)' : 'var(--color-borde)'}`,
                     cursor: 'pointer', padding: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     transition: 'background-color 0.15s, border-color 0.15s',
@@ -429,7 +429,7 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
 
                 {/* Indicador obligatorio */}
                 {s.obligatorio && (
-                  <span style={{ fontSize: '10px', color: '#f97316', fontWeight: '600', flexShrink: 0 }}>
+                  <span style={{ fontSize: '10px', color: 'var(--color-acento)', fontWeight: '600', flexShrink: 0 }}>
                     OBL
                   </span>
                 )}
