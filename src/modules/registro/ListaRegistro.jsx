@@ -70,7 +70,7 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
           placeholder="Buscar ejercicio…"
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
-          style={{ width: '100%', padding: '10px 12px 10px 36px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '10px', color: 'var(--color-texto)', fontSize: '15px', outline: 'none' }}
+          className="app-input" style={{ padding: '12px 12px 12px 40px' }}
         />
         {busqueda && (
           <button
@@ -101,9 +101,9 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
               <button
                 key={ej.id}
                 onClick={() => onSeleccionar(ej)}
-                style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '14px', marginBottom: '8px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '12px', cursor: 'pointer', textAlign: 'left' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '16px', marginBottom: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '20px', boxShadow: 'var(--sombra-1)', cursor: 'pointer', textAlign: 'left' }}
               >
-                <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '14px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={20} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>

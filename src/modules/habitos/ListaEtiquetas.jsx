@@ -23,16 +23,18 @@ export default function ListaEtiquetas({
     <div style={{ position: 'relative', height: '100%' }}>
       {/* Cabecera */}
       <div style={{ padding: '20px 16px 16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
-          <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', gap: '10px' }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             {tituloDropdown ?? (
               <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>
                 Etiquetas
               </h1>
             )}
-            <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
-              {etiquetas.length} etiqueta{etiquetas.length !== 1 ? 's' : ''}
-            </p>
+            {!tituloDropdown && (
+              <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
+                {etiquetas.length} etiqueta{etiquetas.length !== 1 ? 's' : ''}
+              </p>
+            )}
           </div>
           <button
             onClick={onNueva}

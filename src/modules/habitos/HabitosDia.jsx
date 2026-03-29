@@ -119,15 +119,8 @@ export default function HabitosDia({
           )}
           <button
             onClick={() => setModalCalendario(true)}
-            style={{
-              width: '34px', height: '34px', borderRadius: '10px',
-              backgroundColor: 'var(--color-superficie)',
-              border: '1px solid var(--color-borde)',
-              color: 'var(--color-texto-secundario)',
-              cursor: 'pointer', display: 'flex',
-              alignItems: 'center', justifyContent: 'center',
-              padding: 0, flexShrink: 0,
-            }}
+            className="app-btn-nav"
+            style={{ width: '36px', height: '36px' }}
             aria-label="Abrir calendario"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -140,16 +133,16 @@ export default function HabitosDia({
         </div>
 
         {/* Fila 2: < fecha > */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '14px' }}>
-          <button onClick={() => irDia(-1)} style={estiloNavDia} aria-label="Día anterior">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+          <button onClick={() => irDia(-1)} className="app-btn-nav" aria-label="Día anterior">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
-          <span style={{ flex: 1, textAlign: 'center', fontSize: '13px', fontWeight: '500', color: esHoy ? 'var(--color-acento)' : 'var(--color-texto)' }}>
+          <span style={{ flex: 1, textAlign: 'center', fontSize: '14px', fontWeight: '600', color: esHoy ? 'var(--color-acento)' : 'var(--color-texto)' }}>
             {formatearFechaLarga(fecha)}
           </span>
-          <button onClick={() => irDia(1)} style={estiloNavDia} aria-label="Día siguiente">
+          <button onClick={() => irDia(1)} className="app-btn-nav" aria-label="Día siguiente">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
@@ -158,22 +151,21 @@ export default function HabitosDia({
 
         {/* Progreso del día (si hay hábitos) */}
         {total > 0 && (
-          <div style={{ marginBottom: '14px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', color: 'var(--color-texto-secundario)' }}>
                 {completados} de {total} completados
               </span>
-              <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--color-acento)' }}>
+              <span style={{ fontSize: '14px', fontWeight: '800', letterSpacing: '-0.5px', color: completados === total ? 'var(--color-exito)' : 'var(--color-acento)' }}>
                 {Math.round((completados / total) * 100)}%
               </span>
             </div>
-            <div style={{ height: '4px', backgroundColor: 'var(--color-borde)', borderRadius: '2px', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%',
+            <div className="app-progress-track">
+              <div className="app-progress-fill" style={{
                 width: `${(completados / total) * 100}%`,
-                backgroundColor: completados === total ? 'var(--color-exito)' : 'var(--color-acento)',
-                borderRadius: '2px',
-                transition: 'width 0.3s ease',
+                background: completados === total
+                  ? 'linear-gradient(90deg, #30D158, #26B049)'
+                  : 'var(--gradiente-acento)',
               }} />
             </div>
           </div>
@@ -270,10 +262,11 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
       <div
         style={{
           display: 'flex', alignItems: 'center', gap: '12px',
-          padding: '14px',
+          padding: '16px',
           backgroundColor: 'var(--color-superficie)',
           border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
-          borderRadius: tieneSubhabitos && expandido ? '12px 12px 0 0' : '12px',
+          borderRadius: tieneSubhabitos && expandido ? '20px 20px 0 0' : '20px',
+          boxShadow: 'var(--sombra-1)',
           opacity: completado ? 0.7 : 1,
           transition: 'opacity 0.2s, border-color 0.2s',
         }}
@@ -384,7 +377,7 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
           backgroundColor: 'var(--color-superficie)',
           border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
           borderTop: '1px solid var(--color-borde)',
-          borderRadius: '0 0 12px 12px',
+          borderRadius: '0 0 20px 20px',
           padding: '4px 0',
         }}>
           {subhabitos.map((s, idx) => {
@@ -462,10 +455,3 @@ function ChipFiltro({ label, color, activo, onClick }) {
   )
 }
 
-const estiloNavDia = {
-  background: 'none', border: 'none',
-  color: 'var(--color-texto-secundario)',
-  cursor: 'pointer', padding: '6px',
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-  flexShrink: 0,
-}

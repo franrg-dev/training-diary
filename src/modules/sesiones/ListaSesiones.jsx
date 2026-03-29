@@ -20,16 +20,18 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
   return (
     <div>
       {/* — Cabecera — */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 16px 0' }}>
-        <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 16px 0', gap: '10px' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           {tituloDropdown ?? (
             <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>
               Sesiones
             </h1>
           )}
-          <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
-            {sesiones.length} plantilla{sesiones.length !== 1 ? 's' : ''}
-          </p>
+          {!tituloDropdown && (
+            <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
+              {sesiones.length} plantilla{sesiones.length !== 1 ? 's' : ''}
+            </p>
+          )}
         </div>
         <button
           onClick={onNuevo}
@@ -51,7 +53,7 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
       {/* — Buscador — */}
       <div style={{ padding: '14px 16px 0', position: 'relative' }}>
         <svg
-          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-18%)', color: 'var(--color-texto-secundario)' }}
+          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}
           width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
         >
@@ -63,17 +65,14 @@ export default function ListaSesiones({ sesiones, cargando, ejercicios, onSelecc
           placeholder="Buscar sesión…"
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
-          style={{
-            width: '100%', padding: '10px 12px 10px 36px',
-            backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)',
-            borderRadius: '10px', color: 'var(--color-texto)', fontSize: '15px', outline: 'none',
-          }}
+          className="app-input"
+          style={{ padding: '12px 40px 12px 40px' }}
         />
         {busqueda && (
           <button
             onClick={() => setBusqueda('')}
             style={{
-              position: 'absolute', right: '28px', top: '50%', transform: 'translateY(-18%)',
+              position: 'absolute', right: '28px', top: '50%', transform: 'translateY(-50%)',
               background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: 0,
             }}
           >×</button>

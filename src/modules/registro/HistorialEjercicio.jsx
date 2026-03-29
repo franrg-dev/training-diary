@@ -155,9 +155,9 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
               >
                 <p style={{ margin: '0 0 4px', fontSize: '12px', color: 'var(--color-texto-secundario)' }}>{formatearFecha(r.fecha)}</p>
                 <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                  {r.duracion && <span><span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-acento)' }}>{r.duracion}</span><span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', marginLeft: '3px' }}>min</span></span>}
-                  {r.ritmo    && <span><span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-acento)' }}>{r.ritmo}</span><span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', marginLeft: '3px' }}>{ritmoLabel}</span></span>}
-                  {r.volumen  && <span><span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-acento)' }}>{r.volumen}</span><span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', marginLeft: '3px' }}>{volumenLabel}</span></span>}
+                  {r.duracion && <span style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}><span className="app-stat-number-sm" style={{ color: 'var(--color-acento)' }}>{r.duracion}</span><span className="app-stat-label">min</span></span>}
+                  {r.ritmo    && <span style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}><span className="app-stat-number-sm" style={{ color: 'var(--color-acento)' }}>{r.ritmo}</span><span className="app-stat-label">{ritmoLabel}</span></span>}
+                  {r.volumen  && <span style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}><span className="app-stat-number-sm" style={{ color: 'var(--color-acento)' }}>{r.volumen}</span><span className="app-stat-label">{volumenLabel}</span></span>}
                 </div>
               </div>
             )

@@ -2,8 +2,9 @@ import { NavLink } from 'react-router-dom'
 import { useNavReset } from '../context/NavResetContext'
 
 /**
- * Barra de navegación inferior — pill flotante Liquid Glass iOS 26.
- * Iconos originales sin modificar; colores actualizados a paleta cian/lima.
+ * Barra de navegación inferior — cápsula oscura sólida.
+ * Activo: círculo claro envolviendo el icono (claymorphism).
+ * Sin labels. Sin glassmorphism.
  */
 
 const seccionesLateral = [
@@ -30,12 +31,11 @@ export default function NavBar() {
       <nav
         style={{
           height: '64px',
-          backgroundColor: 'var(--navbar-bg)',
-          backdropFilter: 'blur(40px) saturate(200%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(200%)',
+          /* Fondo oscuro sólido — idéntico en claro y oscuro */
+          backgroundColor: '#0A1929',
           borderRadius: '40px',
-          border: '1px solid var(--navbar-borde)',
-          boxShadow: 'var(--navbar-sombra)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.40), 0 2px 8px rgba(0,0,0,0.25)',
           display: 'flex',
           alignItems: 'center',
           pointerEvents: 'auto',
@@ -53,41 +53,40 @@ export default function NavBar() {
               alignItems: 'center', justifyContent: 'center',
               padding: '10px',
               textDecoration: 'none',
-              color: isActive ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
-              transition: 'color 0.18s',
-              filter: isActive
-                ? 'drop-shadow(0 0 6px rgba(0, 255, 255, 0.50))'
-                : 'none',
             })}
           >
-            <Icono />
+            {({ isActive }) => (
+              <div style={{
+                width: '40px', height: '40px',
+                borderRadius: '50%',
+                backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : 'transparent',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.38)',
+                transition: 'background-color 0.2s, color 0.2s',
+              }}>
+                <Icono activo={isActive} />
+              </div>
+            )}
           </NavLink>
         ))}
 
-        {/* Diario — botón central con gradiente de marca */}
+        {/* Diario — botón central */}
         <NavLink
           to="/diario"
           onClick={() => resetSeccion('/diario')}
-          style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'center', justifyContent: 'center',
-            padding: '8px',
-            textDecoration: 'none',
-          }}
+          style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', textDecoration: 'none' }}
         >
           {({ isActive }) => (
             <div style={{
-              width: '48px', height: '48px',
+              width: '46px', height: '46px',
               borderRadius: '50%',
               background: isActive
-                ? 'linear-gradient(160deg, #00D8F0 0%, #00A8C8 100%)'
-                : 'linear-gradient(160deg, #00FFFF 0%, #00C0E0 100%)',
+                ? 'linear-gradient(160deg, #00FFFF 0%, #00C0E0 100%)'
+                : 'rgba(255,255,255,0.12)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#0A1929',
-              boxShadow: '0 3px 18px rgba(0, 200, 220, 0.55)',
-              transition: 'box-shadow 0.18s, filter 0.18s',
-              filter: isActive ? 'brightness(0.92)' : 'none',
+              color: isActive ? '#0A1929' : 'rgba(255,255,255,0.55)',
+              boxShadow: isActive ? '0 3px 14px rgba(0,200,220,0.50)' : 'none',
+              transition: 'background 0.2s, box-shadow 0.2s, color 0.2s',
             }}>
               <IconoDiario activo={isActive} />
             </div>
@@ -106,14 +105,20 @@ export default function NavBar() {
               alignItems: 'center', justifyContent: 'center',
               padding: '10px',
               textDecoration: 'none',
-              color: isActive ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
-              transition: 'color 0.18s',
-              filter: isActive
-                ? 'drop-shadow(0 0 6px rgba(0, 255, 255, 0.50))'
-                : 'none',
             })}
           >
-            <Icono />
+            {({ isActive }) => (
+              <div style={{
+                width: '40px', height: '40px',
+                borderRadius: '50%',
+                backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : 'transparent',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.38)',
+                transition: 'background-color 0.2s, color 0.2s',
+              }}>
+                <Icono activo={isActive} />
+              </div>
+            )}
           </NavLink>
         ))}
       </nav>
