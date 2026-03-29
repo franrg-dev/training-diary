@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
 import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 import { getObjetivos } from '../ajustes/useObjetivos'
+import ModalCalendario from '../habitos/ModalCalendario'
 
 function formatearSueno(minutos) {
   const m = parseInt(minutos, 10) || 0
@@ -301,8 +302,9 @@ export default function DetalleEntrenamiento({
   mbEfectivo,
   onEditarDatos,
   onEditarEntrenamiento,
-  onVolver,
+  tituloDropdown,
   onCambiarDia,
+  onIrAFecha,
 }) {
   const mapaEjercicios = useMemo(
     () => Object.fromEntries((ejercicios || []).map(e => [e.id, e])),
@@ -332,6 +334,7 @@ export default function DetalleEntrenamiento({
 
   const [expandido, setExpandido]           = useState(null)  // índice fuerza
   const [expandidoCardio, setExpandidoCardio] = useState(null) // índice cardio
+  const [modalCalendario, setModalCalendario] = useState(false)
 
   const e = entrada || {}
 
@@ -356,15 +359,7 @@ export default function DetalleEntrenamiento({
 
       {/* ─ Cabecera ─ */}
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 20px', gap: '6px' }}>
-        <button
-          onClick={onVolver}
-          style={{ background: 'none', border: 'none', color: '#f97316', fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '2px', flexShrink: 0 }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-          Diario
-        </button>
+        {tituloDropdown}
 
         {/* Fecha con navegación */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
@@ -390,12 +385,38 @@ export default function DetalleEntrenamiento({
         </div>
 
         <button
+          onClick={() => setModalCalendario(true)}
+          style={{ backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', cursor: 'pointer', padding: '6px 8px', display: 'flex', alignItems: 'center', flexShrink: 0 }}
+          aria-label="Abrir calendario"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+          </svg>
+        </button>
+        <button
           onClick={onEditarDatos}
           style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', flexShrink: 0 }}
         >
           <IconoEditar />
         </button>
       </div>
+
+      {modalCalendario && (
+        <ModalCalendario
+          fechaSeleccionada={fecha}
+          mesInicial={Number(fecha.split('-')[1]) - 1}
+          anioInicial={Number(fecha.split('-')[0])}
+          onSeleccionarDia={(iso) => {
+            onIrAFecha(iso)
+            setModalCalendario(false)
+          }}
+          onCerrar={() => setModalCalendario(false)}
+          titulo="Navegar a fecha"
+        />
+      )}
 
       {/* ══════════════════════════════════════════════
           SUEÑO

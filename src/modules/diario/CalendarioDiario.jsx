@@ -21,6 +21,7 @@ export default function CalendarioDiario({
   onSeleccionarDia,
   onSeleccionarEntrenamiento,
   sesiones,
+  tituloDropdown,
 }) {
   const hoy = new Date()
   const esHoyMes = anioVisualizado === hoy.getFullYear() && mesVisualizado === hoy.getMonth()
@@ -74,8 +75,8 @@ export default function CalendarioDiario({
   return (
     <div>
       {/* — Título página — */}
-      <div style={{ padding: '20px 16px 12px' }}>
-        <h1 style={{ margin: 0, fontSize: '28px', fontWeight: '700', color: 'var(--color-texto)' }}>Diario</h1>
+      <div style={{ padding: '16px 16px 12px' }}>
+        {tituloDropdown}
       </div>
 
       {/* — Card del calendario — */}
