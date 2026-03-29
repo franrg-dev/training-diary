@@ -780,10 +780,9 @@ select.app-input {
 }
 
 .app-segmented-tab.activo {
-  background-color: var(--color-superficie);
+  background-color: var(--color-superficie-3);
   color: var(--color-texto);
   font-weight: 700;
-  box-shadow: var(--sombra-1);
 }
 
 .app-segmented-tab:not(.activo):active {

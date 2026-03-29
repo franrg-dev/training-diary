@@ -8,9 +8,9 @@ export default function PaginaAjustes() {
   return (
     <div className="contenido-principal">
       <div style={{ padding: '20px 16px 0' }}>
-        <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--color-texto)', margin: '0 0 24px' }}>
-          Ajustes
-        </h1>
+        <div className="app-segmented" style={{ marginBottom: '24px' }}>
+          <div className="app-segmented-tab" style={{ fontWeight: '700', color: 'var(--color-texto)' }}>Ajustes</div>
+        </div>
 
         <SeccionApariencia />
         <SeccionObjetivos />
