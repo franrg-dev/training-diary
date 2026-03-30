@@ -87,8 +87,8 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
 
       {/* — Acciones — */}
       <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
-        <button onClick={onEditar} style={estiloBotonEditar}>Editar</button>
-        <button onClick={() => setConfirmarBorrar(true)} style={estiloBotonEliminar}>Eliminar</button>
+        <button onClick={onEditar} className="app-btn-secundario" style={{ flex: 1 }}>Editar</button>
+        <button onClick={() => setConfirmarBorrar(true)} className="app-btn-peligro" style={{ flex: 1 }}>Eliminar</button>
       </div>
 
       {/* — Confirmación de borrado inline — */}
@@ -123,5 +123,3 @@ export default function DetalleSesion({ sesion, ejercicios, onEditar, onEliminar
 }
 
 const estiloSeccion    = { margin: '0 0 10px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }
-const estiloBotonEditar  = { flex: 1, padding: '13px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '12px', color: 'var(--color-texto)', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }
-const estiloBotonEliminar = { flex: 1, padding: '13px', backgroundColor: '#7f1d1d22', border: '1px solid #dc262644', borderRadius: '12px', color: '#f87171', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }

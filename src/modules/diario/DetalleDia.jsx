@@ -259,7 +259,7 @@ export default function DetalleDia({ fecha, entrada, onEditar, onVolver }) {
         <div style={{ flex: 1 }} />
         <button
           onClick={onEditar}
-          style={{ background: 'none', border: '1px solid #f97316', color: 'var(--color-acento)', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: '6px 14px', borderRadius: '8px' }}
+          style={{ background: 'none', border: '1px solid rgba(0,191,255,0.40)', color: 'var(--color-acento)', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: '6px 14px', borderRadius: '10px' }}
         >
           Editar
         </button>

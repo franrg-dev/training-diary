@@ -346,49 +346,12 @@ export default function DetalleEntrenamiento({
       {/* ─ Cabecera ─ */}
       <div style={{ padding: '20px 0 0' }}>
 
-        {/* Fila 1: selector de subsección + calendario + editar */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-          <div style={{ flex: 1 }}>
-            {tituloDropdown}
-          </div>
-          {!esHoy && (
-            <button
-              onClick={() => onIrAFecha(hoyStr)}
-              style={{
-                padding: '5px 12px', borderRadius: '20px',
-                backgroundColor: 'transparent',
-                border: '1px solid var(--color-borde)',
-                color: 'var(--color-texto-secundario)',
-                fontSize: '13px', fontWeight: '500', cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Hoy
-            </button>
-          )}
-          <button
-            onClick={() => setModalCalendario(true)}
-            className="app-btn-nav"
-            style={{ width: '36px', height: '36px' }}
-            aria-label="Abrir calendario"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <line x1="3" y1="9" x2="21" y2="9" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-            </svg>
-          </button>
-          <button
-            onClick={onEditarDatos}
-            className="app-btn-nav"
-            style={{ width: '36px', height: '36px', color: 'var(--color-acento)' }}
-          >
-            <IconoEditar size={18} />
-          </button>
+        {/* Fila 1: selector solo */}
+        <div style={{ marginBottom: '12px' }}>
+          {tituloDropdown}
         </div>
 
-        {/* Fila 2: < fecha > — idéntico a HabitosDia */}
+        {/* Fila 2: < fecha > Hoy CAL Edit */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
           <button onClick={() => onCambiarDia(-1)} className="app-btn-nav" aria-label="Día anterior">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -402,6 +365,40 @@ export default function DetalleEntrenamiento({
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
+          </button>
+          {!esHoy && (
+            <button
+              onClick={() => onIrAFecha(hoyStr)}
+              style={{
+                padding: '5px 12px', borderRadius: '20px',
+                backgroundColor: 'transparent',
+                border: '1px solid var(--color-borde)',
+                color: 'var(--color-texto-secundario)',
+                fontSize: '13px', fontWeight: '500', cursor: 'pointer',
+                whiteSpace: 'nowrap', flexShrink: 0,
+              }}
+            >
+              Hoy
+            </button>
+          )}
+          <button
+            onClick={() => setModalCalendario(true)}
+            className="app-btn-nav"
+            aria-label="Abrir calendario"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+            </svg>
+          </button>
+          <button
+            onClick={onEditarDatos}
+            className="app-btn-nav"
+            style={{ color: 'var(--color-acento)' }}
+          >
+            <IconoEditar size={18} />
           </button>
         </div>
       </div>

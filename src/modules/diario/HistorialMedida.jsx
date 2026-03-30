@@ -36,7 +36,7 @@ function GraficoLinea({ registros }) {
       <polyline
         points={polyline}
         fill="none"
-        stroke="#f97316"
+        stroke="var(--color-acento)"
         strokeWidth="2.5"
         strokeLinejoin="round"
         strokeLinecap="round"
@@ -46,7 +46,7 @@ function GraficoLinea({ registros }) {
         const esUltimo = i === coords.length - 1
         return (
           <g key={i}>
-            <circle cx={c.x} cy={c.y} r={esUltimo ? 5 : 3.5} fill="#f97316" />
+            <circle cx={c.x} cy={c.y} r={esUltimo ? 5 : 3.5} fill="var(--color-acento)" />
             <text
               x={c.x} y={c.y - 10}
               textAnchor="middle"

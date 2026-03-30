@@ -75,7 +75,7 @@ export default function CalendarioDiario({
   return (
     <div>
       {/* — Título página — */}
-      <div style={{ padding: '16px 16px 12px' }}>
+      <div style={{ padding: '20px 16px 12px' }}>
         {tituloDropdown}
       </div>
 
@@ -84,7 +84,8 @@ export default function CalendarioDiario({
         margin: '0 16px',
         backgroundColor: 'var(--color-superficie)',
         border: '1px solid var(--color-borde)',
-        borderRadius: '16px',
+        borderRadius: '24px',
+        boxShadow: 'var(--sombra-1)',
         overflow: 'hidden',
       }}>
         {/* Navegación de mes dentro de la card */}
@@ -93,16 +94,16 @@ export default function CalendarioDiario({
           padding: '14px 12px 10px',
           borderBottom: '1px solid var(--color-borde)',
         }}>
-          <button onClick={() => onCambiarMes(-1)} style={estiloNavMes} aria-label="Mes anterior">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <button onClick={() => onCambiarMes(-1)} className="app-btn-nav" style={{ width: '34px', height: '34px' }} aria-label="Mes anterior">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
           <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--color-texto)' }}>
             {NOMBRES_MES[mesVisualizado]} {anioVisualizado}
           </span>
-          <button onClick={() => onCambiarMes(1)} style={estiloNavMes} aria-label="Mes siguiente">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <button onClick={() => onCambiarMes(1)} className="app-btn-nav" style={{ width: '34px', height: '34px' }} aria-label="Mes siguiente">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
@@ -299,8 +300,9 @@ function MiniCard({ label, valor, sufijo, colorPunto }) {
     <div style={{
       backgroundColor: 'var(--color-superficie)',
       border: '1px solid var(--color-borde)',
-      borderRadius: '12px',
-      padding: '12px',
+      borderRadius: '16px',
+      boxShadow: 'var(--sombra-1)',
+      padding: '14px',
       textAlign: 'center',
     }}>
       <p style={{ margin: '0 0 4px', fontSize: '11px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -335,12 +337,13 @@ function TarjetaEntrada({ entrada, hoyStr, mapaSesiones, onSeleccionar }) {
         width: '100%', padding: '12px 14px', marginBottom: '8px',
         backgroundColor: 'var(--color-superficie)',
         border: `1px solid ${esHoy ? 'rgba(0,191,255,0.40)' : 'var(--color-borde)'}`,
-        borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
+        borderRadius: '16px', cursor: 'pointer', textAlign: 'left',
+        boxShadow: 'var(--sombra-1)',
       }}
     >
       <div style={{
         width: '36px', height: '36px', borderRadius: '10px',
-        backgroundColor: 'rgba(0,191,255,0.13)', border: '1px solid #f9731644',
+        backgroundColor: 'rgba(0,191,255,0.13)', border: '1px solid rgba(0,191,255,0.26)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         flexShrink: 0, fontWeight: '700', fontSize: '15px', color: 'var(--color-acento)',
       }}>
@@ -359,7 +362,7 @@ function TarjetaEntrada({ entrada, hoyStr, mapaSesiones, onSeleccionar }) {
           {!sesion && numFuerza === 0 && numCardio === 0 ? 'Entrenamiento' : null}
         </p>
       </div>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-borde)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="9 18 15 12 9 6" />
       </svg>
     </button>
@@ -372,11 +375,6 @@ function formatearFechaEntrada(fechaStr) {
   return `${DIAS_CORTOS[d.getDay()]}, ${dia} ${MESES_CORTOS[mes - 1]}`
 }
 
-const estiloNavMes = {
-  background: 'none', border: 'none', color: 'var(--color-acento)',
-  cursor: 'pointer', padding: '6px',
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-}
 
 const estiloSeccion = {
   margin: '0 0 12px', fontSize: '13px', color: 'var(--color-texto-secundario)',

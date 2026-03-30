@@ -165,36 +165,10 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
 
       {/* — Acciones — */}
       <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
-        <button
-          onClick={onEditar}
-          style={{
-            flex: 1,
-            padding: '13px',
-            backgroundColor: 'var(--color-superficie)',
-            border: '1px solid var(--color-borde)',
-            borderRadius: '12px',
-            color: 'var(--color-texto)',
-            fontSize: '15px',
-            fontWeight: '600',
-            cursor: 'pointer',
-          }}
-        >
+        <button onClick={onEditar} className="app-btn-secundario" style={{ flex: 1 }}>
           Editar
         </button>
-        <button
-          onClick={() => setConfirmarBorrar(true)}
-          style={{
-            flex: 1,
-            padding: '13px',
-            backgroundColor: '#7f1d1d22',
-            border: '1px solid #dc262644',
-            borderRadius: '12px',
-            color: '#f87171',
-            fontSize: '15px',
-            fontWeight: '600',
-            cursor: 'pointer',
-          }}
-        >
+        <button onClick={() => setConfirmarBorrar(true)} className="app-btn-peligro" style={{ flex: 1 }}>
           Eliminar
         </button>
       </div>
@@ -207,7 +181,7 @@ export default function DetalleEjercicio({ ejercicio, sustitutos, onEditar, onEl
             padding: '16px',
             backgroundColor: 'var(--color-superficie)',
             border: '1px solid #dc262644',
-            borderRadius: '12px',
+            borderRadius: '20px',
           }}
         >
           <p style={{ margin: '0 0 14px', color: 'var(--color-texto)', fontSize: '15px', fontWeight: '500' }}>

@@ -113,7 +113,7 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
 
       {/* — Hero del ejercicio — */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-        <div style={{ width: '50px', height: '50px', borderRadius: '12px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <div style={{ width: '54px', height: '54px', borderRadius: '16px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <IconoEjercicio grupos={ejercicio.gruposMuscular} grupoPrincipal={ejercicio.grupoPrincipal} size={26} />
         </div>
         <div>

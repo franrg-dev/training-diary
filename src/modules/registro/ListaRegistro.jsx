@@ -49,39 +49,41 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
     <div>
       {/* — Cabecera — */}
       <div style={{ padding: '20px 16px 0' }}>
-        {tituloDropdown ?? (
-          <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>Registro</h1>
-        )}
-        <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>Historial de progreso por ejercicio</p>
-      </div>
+        {/* Fila 1: selector solo */}
+        <div style={{ marginBottom: '12px' }}>
+          {tituloDropdown ?? (
+            <h1 style={{ fontSize: '28px', fontWeight: '700', margin: 0, color: 'var(--color-texto)' }}>Registro</h1>
+          )}
+        </div>
 
-      {/* — Buscador — */}
-      <div style={{ padding: '14px 16px 0', position: 'relative' }}>
-        <svg
-          style={{ position: 'absolute', left: '28px', top: '50%', transform: 'translateY(-18%)', color: 'var(--color-texto-secundario)' }}
-          width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input
-          type="search"
-          placeholder="Buscar ejercicio…"
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-          className="app-input" style={{ padding: '12px 12px 12px 40px' }}
-        />
-        {busqueda && (
-          <button
-            onClick={() => setBusqueda('')}
-            style={{ position: 'absolute', right: '28px', top: '50%', transform: 'translateY(-18%)', background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: 0 }}
-          >×</button>
-        )}
+        {/* Fila 2: buscador */}
+        <div style={{ position: 'relative', marginBottom: '14px' }}>
+          <svg
+            style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}
+            width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Buscar ejercicio…"
+            value={busqueda}
+            onChange={e => setBusqueda(e.target.value)}
+            className="app-input" style={{ padding: '12px 36px 12px 40px' }}
+          />
+          {busqueda && (
+            <button
+              onClick={() => setBusqueda('')}
+              style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: 0 }}
+            >×</button>
+          )}
+        </div>
       </div>
 
       {/* — Lista — */}
-      <div style={{ padding: '14px 16px 0' }}>
+      <div style={{ padding: '0 16px 0' }}>
         {ejerciciosOrdenados.length === 0 ? (
           <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--color-texto-secundario)' }}>
             <p style={{ fontSize: '40px', margin: '0 0 12px' }}>{busqueda ? '🔍' : '📊'}</p>

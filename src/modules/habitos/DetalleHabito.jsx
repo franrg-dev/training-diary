@@ -66,7 +66,8 @@ export default function DetalleHabito({ habito, etiquetas, onEditar, onEliminar,
       <div style={{
         backgroundColor: 'var(--color-superficie)',
         border: `1px solid ${tipo.color}44`,
-        borderRadius: '16px',
+        borderRadius: '24px',
+        boxShadow: 'var(--sombra-1)',
         overflow: 'hidden',
         marginBottom: '16px',
       }}>
@@ -78,7 +79,7 @@ export default function DetalleHabito({ habito, etiquetas, onEditar, onEliminar,
           backgroundColor: tipo.color + '11',
         }}>
           <div style={{
-            width: '44px', height: '44px', borderRadius: '12px',
+            width: '44px', height: '44px', borderRadius: '14px',
             backgroundColor: tipo.color + '22',
             border: `1px solid ${tipo.color}44`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',

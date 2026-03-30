@@ -146,7 +146,7 @@ function CheckCompact({ label, checked, onChange }) {
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px',
         backgroundColor: checked ? 'rgba(0,191,255,0.13)' : 'var(--color-superficie)',
         border: `1px solid ${checked ? 'var(--color-acento)' : 'var(--color-borde)'}`,
-        borderRadius: '8px', cursor: 'pointer',
+        borderRadius: '12px', cursor: 'pointer',
         color: checked ? 'var(--color-acento)' : 'var(--color-texto-secundario)',
         transition: 'all 0.15s',
       }}
@@ -389,12 +389,8 @@ export default function FormularioDatosGenerales({
         type="button"
         onClick={handleGuardar}
         disabled={guardando}
-        style={{
-          width: '100%', padding: '14px',
-          backgroundColor: guardando ? 'var(--color-texto-inactivo)' : 'var(--color-acento)',
-          color: '#fff', fontWeight: '700', fontSize: '16px',
-          border: 'none', borderRadius: '12px', cursor: guardando ? 'default' : 'pointer',
-        }}
+        className="app-btn-acento"
+        style={{ width: '100%', opacity: guardando ? 0.6 : 1, cursor: guardando ? 'default' : 'pointer' }}
       >
         {guardando ? 'Guardando…' : 'Guardar'}
       </button>
@@ -406,5 +402,5 @@ export default function FormularioDatosGenerales({
 // ─── Estilos ─────────────────────────────────────────────────────────────
 
 const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '10px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
+const estiloInputBase    = { width: '100%', padding: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '12px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }
 const estiloSufijo       = { position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-inactivo)', pointerEvents: 'none' }

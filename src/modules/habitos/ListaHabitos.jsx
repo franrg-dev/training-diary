@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { TIPOS_HABITO } from './tiposHabito'
 import IconoTipo from './IconoTipo'
 
@@ -15,6 +15,7 @@ export default function ListaHabitos({
 }) {
   const [filtroTipo, setFiltroTipo]         = useState(null)
   const [filtroEtiqueta, setFiltroEtiqueta] = useState(null)
+  const [busqueda, setBusqueda]             = useState('')
 
   // Tipos presentes en el catálogo (solo se muestran si hay >1)
   const tiposPresentes = useMemo(() => {
@@ -30,27 +31,47 @@ export default function ListaHabitos({
 
   const habitosFiltrados = useMemo(() => {
     return habitos.filter(h => {
-      if (filtroTipo     && h.tipo !== filtroTipo)                      return false
+      if (filtroTipo     && h.tipo !== filtroTipo)                         return false
       if (filtroEtiqueta && !(h.etiquetas || []).includes(filtroEtiqueta)) return false
+      if (busqueda       && !h.titulo.toLowerCase().includes(busqueda.toLowerCase())) return false
       return true
     })
-  }, [habitos, filtroTipo, filtroEtiqueta])
+  }, [habitos, filtroTipo, filtroEtiqueta, busqueda])
 
   return (
     <div style={{ position: 'relative', height: '100%' }}>
       {/* Cabecera */}
       <div style={{ padding: '20px 16px 0' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', gap: '10px' }}>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            {tituloDropdown ?? (
-              <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 2px', color: 'var(--color-texto)' }}>
-                Hábitos
-              </h1>
-            )}
-            {!tituloDropdown && (
-              <p style={{ margin: 0, color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
-                {habitos.length} hábito{habitos.length !== 1 ? 's' : ''}
-              </p>
+        {/* Fila 1: selector solo */}
+        <div style={{ marginBottom: '12px' }}>
+          {tituloDropdown ?? (
+            <h1 style={{ fontSize: '28px', fontWeight: '700', margin: 0, color: 'var(--color-texto)' }}>Hábitos</h1>
+          )}
+        </div>
+
+        {/* Fila 2: buscador + botón añadir */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+          <div style={{ flex: 1, position: 'relative' }}>
+            <svg
+              style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}
+              width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="search"
+              placeholder="Buscar hábito…"
+              value={busqueda}
+              onChange={e => setBusqueda(e.target.value)}
+              className="app-input"
+              style={{ padding: '12px 36px 12px 40px' }}
+            />
+            {busqueda && (
+              <button
+                onClick={() => setBusqueda('')}
+                style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-texto-secundario)', cursor: 'pointer', fontSize: '18px', padding: 0 }}
+              >×</button>
             )}
           </div>
           <button
@@ -59,14 +80,12 @@ export default function ListaHabitos({
               width: '40px', height: '40px', borderRadius: '12px',
               backgroundColor: 'var(--color-acento)', border: 'none', color: '#fff',
               cursor: 'pointer', display: 'flex',
-              alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-              padding: 0,
+              alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 0,
             }}
             aria-label="Nuevo hábito"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
+              <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
             </svg>
           </button>
         </div>
@@ -133,14 +152,14 @@ function TarjetaHabito({ habito, etiquetas, onClick }) {
       onClick={onClick}
       style={{
         display: 'flex', alignItems: 'center', gap: '14px',
-        width: '100%', padding: '14px', marginBottom: '8px',
+        width: '100%', padding: '14px', marginBottom: '10px',
         backgroundColor: 'var(--color-superficie)',
         border: '1px solid var(--color-borde)',
-        borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
+        borderRadius: '20px', boxShadow: 'var(--sombra-1)', cursor: 'pointer', textAlign: 'left',
       }}
     >
       <div style={{
-        width: '42px', height: '42px', borderRadius: '10px',
+        width: '42px', height: '42px', borderRadius: '14px',
         backgroundColor: tipo.color + '22',
         border: `1px solid ${tipo.color}44`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',

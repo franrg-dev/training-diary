@@ -78,9 +78,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
   if (pantalla === 'formulario') {
     return (
       <div className="contenido-principal-inner">
-        <div style={{ padding: '0 0 0' }}>
-          <div style={{ padding: '16px 16px 0' }}>{tituloDropdown}</div>
-        </div>
+        <div style={{ padding: '20px 16px 0', marginBottom: '12px' }}>{tituloDropdown}</div>
         <FormularioMedidas
           anio={anio}
           mes={mes}
@@ -97,7 +95,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
   if (pantalla === 'historial' && campoActivo) {
     return (
       <div className="contenido-principal-inner">
-        <div style={{ padding: '16px 16px 0' }}>{tituloDropdown}</div>
+        <div style={{ padding: '20px 16px 0', marginBottom: '12px' }}>{tituloDropdown}</div>
         <HistorialMedida
           campoLabel={campoActivo.label}
           registros={registrosParaCampo(campoActivo.id)}
@@ -112,25 +110,28 @@ export default function MedidasCorporales({ tituloDropdown }) {
     <div style={{ padding: '0 16px 32px' }}>
 
       {/* SelectorSeccion */}
-      <div style={{ padding: '16px 0 20px' }}>{tituloDropdown}</div>
+      <div style={{ padding: '20px 0 12px' }}>{tituloDropdown}</div>
 
       {/* Navegador de mes */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <button
-          onClick={irMesAnterior}
-          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', cursor: 'pointer', padding: '8px', fontSize: '20px', lineHeight: 1 }}
-        >
-          ‹
+        <button onClick={irMesAnterior} className="app-btn-nav" aria-label="Mes anterior">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
         </button>
         <p style={{ margin: 0, fontSize: '17px', fontWeight: '700', color: 'var(--color-texto)' }}>
           {MESES[mes]} {anio}
         </p>
         <button
           onClick={irMesSiguiente}
-          style={{ background: 'none', border: 'none', color: esHoy ? 'var(--color-texto-inactivo)' : 'var(--color-acento)', cursor: esHoy ? 'default' : 'pointer', padding: '8px', fontSize: '20px', lineHeight: 1 }}
+          className="app-btn-nav"
           disabled={esHoy}
+          aria-label="Mes siguiente"
+          style={{ opacity: esHoy ? 0.4 : 1, cursor: esHoy ? 'default' : 'pointer' }}
         >
-          ›
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </button>
       </div>
 
@@ -142,7 +143,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
 
       {/* Sin datos para este mes */}
       {!cargando && !medidaActual && (
-        <div style={{ backgroundColor: 'var(--color-superficie)', borderRadius: '20px', padding: '32px 20px', textAlign: 'center' }}>
+        <div style={{ backgroundColor: 'var(--color-superficie)', borderRadius: '24px', boxShadow: 'var(--sombra-1)', padding: '32px 20px', textAlign: 'center' }}>
           <p style={{ margin: '0 0 6px', fontSize: '32px' }}>📏</p>
           <p style={{ margin: '0 0 4px', fontWeight: '700', color: 'var(--color-texto)', fontSize: '16px' }}>
             Sin medidas este mes
@@ -152,7 +153,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
           </p>
           <button
             onClick={() => setPantalla('formulario')}
-            style={{ padding: '14px 28px', backgroundColor: 'var(--color-acento)', border: 'none', borderRadius: '14px', color: '#fff', fontSize: '15px', fontWeight: '700', cursor: 'pointer' }}
+            className="app-btn-acento"
           >
             + Añadir medidas del mes
           </button>
@@ -161,7 +162,7 @@ export default function MedidasCorporales({ tituloDropdown }) {
 
       {/* Con datos */}
       {!cargando && medidaActual && (
-        <div style={{ backgroundColor: 'var(--color-superficie)', borderRadius: '20px', overflow: 'hidden' }}>
+        <div style={{ backgroundColor: 'var(--color-superficie)', borderRadius: '24px', boxShadow: 'var(--sombra-1)', overflow: 'hidden' }}>
 
           {/* Cabecera tarjeta */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 16px 12px', borderBottom: '1px solid var(--color-borde)' }}>
