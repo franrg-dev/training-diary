@@ -1,67 +1,68 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS — iOS 26 Liquid Glass · Paleta Cian/Lima
+   DESIGN TOKENS — Minimalismo Orgánico · Paleta Natural Unificada
    ============================================================ */
 :root {
-  /* ── Paleta oscura (por defecto): Azul Noche Profundo ── */
-  --color-fondo:             #0A192F;
-  --color-superficie:        #0F2540;
-  --color-superficie-2:      #152F52;
-  --color-superficie-3:      #1C3A65;
-  --color-borde:             rgba(0, 255, 255, 0.10);
-  --color-borde-fuerte:      rgba(0, 255, 255, 0.22);
-  --color-texto:             #FFFFFF;
-  --color-texto-secundario:  rgba(255, 255, 255, 0.55);
-  --color-texto-terciario:   rgba(255, 255, 255, 0.30);
-  --color-texto-inactivo:    rgba(255, 255, 255, 0.18);
+  /* ── Paleta unificada: Crema/Beige Orgánica ── */
+  --color-fondo:             #f8f0e8;
+  --color-superficie:        #FAF8F3;
+  --color-superficie-2:      #E4EBE5;
+  --color-superficie-3:      #F3F0E6;
+  --color-borde:             rgba(22, 28, 24, 0.08);
+  --color-borde-fuerte:      rgba(22, 28, 24, 0.18);
+  --color-texto:             #161C18;
+  --color-texto-secundario:  rgba(22, 28, 24, 0.58);
+  --color-texto-terciario:   rgba(22, 28, 24, 0.36);
+  --color-texto-inactivo:    rgba(22, 28, 24, 0.22);
 
-  /* Acento principal: Cian Brillante */
-  --color-acento:            #00FFFF;
-  --color-acento-hover:      #00D8E8;
-  --color-acento-suave:      rgba(0, 255, 255, 0.12);
+  /* Acento principal: Verde Esmeralda Apagado */
+  --color-acento:            #3A6B4C;
+  --color-acento-hover:      #2E5A3E;
+  --color-acento-suave:      rgba(58, 107, 76, 0.12);
 
-  /* Acento secundario: Lima Vibrante */
-  --color-acento-2:          #CCFF00;
-  --color-acento-2-hover:    #AADD00;
-  --color-acento-2-suave:    rgba(204, 255, 0, 0.12);
+  /* Acento secundario: Naranja Terracota */
+  --color-acento-2:          #E27D60;
+  --color-acento-2-hover:    #C96848;
+  --color-acento-2-suave:    rgba(226, 125, 96, 0.12);
 
-  /* Gradiente de marca — cian monocromático, sutil */
-  --gradiente-acento:        linear-gradient(160deg, #00FFFF 0%, #00C8E8 100%);
-  --gradiente-acento-suave:  linear-gradient(160deg, rgba(0,255,255,0.16) 0%, rgba(0,200,232,0.10) 100%);
+  /* Gradiente de marca — verde esmeralda */
+  --gradiente-acento:        linear-gradient(160deg, #3A6B4C 0%, #2E5A3E 100%);
+  --gradiente-acento-suave:  linear-gradient(160deg, rgba(58,107,76,0.14) 0%, rgba(46,90,62,0.08) 100%);
+  /* Gradiente hero — melocotón pálido → verde salvia */
+  --gradiente-hero:          radial-gradient(ellipse at 70% 30%, #FCEAE3 0%, #E3F0E6 100%);
 
   /* Colores semánticos */
-  --color-exito:             #30D158;
-  --color-exito-suave:       rgba(48, 209, 88, 0.14);
-  --color-peligro:           #FF453A;
-  --color-peligro-suave:     rgba(255, 69, 58, 0.12);
-  --color-advertencia:       #FF9F0A;
+  --color-exito:             #3A6B4C;
+  --color-exito-suave:       rgba(58, 107, 76, 0.12);
+  --color-peligro:           #C94040;
+  --color-peligro-suave:     rgba(201, 64, 64, 0.10);
+  --color-advertencia:       #E27D60;
 
-  /* ── Material Liquid Glass ── */
-  --navbar-bg:    rgba(10, 25, 47, 0.82);
-  --navbar-borde: rgba(0, 255, 255, 0.13);
+  /* ── Navbar sólida — contraste máximo ── */
+  --navbar-bg:    #161C18;
+  --navbar-borde: rgba(255, 255, 255, 0.06);
   --navbar-sombra:
-    0 8px 40px rgba(0, 0, 0, 0.60),
-    0 2px 10px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(0, 255, 255, 0.14);
+    0 8px 40px rgba(22, 28, 24, 0.28),
+    0 2px 10px rgba(22, 28, 24, 0.16);
 
-  --glass-bg:     rgba(12, 30, 55, 0.88);
-  --glass-borde:  rgba(0, 255, 255, 0.13);
+  /* ── Superficies opacas (sin glassmorphism) ── */
+  --glass-bg:     #FFFFFF;
+  --glass-borde:  rgba(22, 28, 24, 0.10);
   --glass-sombra:
-    0 20px 60px rgba(0, 0, 0, 0.55),
-    0 6px 20px  rgba(0, 0, 0, 0.30),
-    inset 0 1px 0 rgba(0, 255, 255, 0.15);
+    0 20px 60px rgba(208, 205, 197, 0.60),
+    0 6px 20px  rgba(208, 205, 197, 0.40);
 
-  /* ── Sombras por nivel ── */
+  /* ── Sombras cálidas (gris cálido #D0CDC5) ── */
   --sombra-1:
-    0 2px 10px rgba(0, 0, 0, 0.22),
-    0 1px 3px  rgba(0, 0, 0, 0.14);
+    0 2px 12px rgba(208, 205, 197, 0.75),
+    0 1px 4px  rgba(22, 28, 24, 0.06);
   --sombra-2:
-    0 6px 28px rgba(0, 0, 0, 0.32),
-    0 2px 8px  rgba(0, 0, 0, 0.18);
+    0 6px 28px rgba(208, 205, 197, 0.85),
+    0 2px 8px  rgba(22, 28, 24, 0.08);
   --sombra-3:
-    0 14px 48px rgba(0, 0, 0, 0.44),
-    0 4px 16px  rgba(0, 0, 0, 0.26);
+    0 14px 48px rgba(208, 205, 197, 0.95),
+    0 4px 16px  rgba(22, 28, 24, 0.10);
 
   /* ── Radios de borde — masivos, claymorphism ── */
   --radio-xs:  8px;
@@ -88,6 +89,21 @@
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --altura-navbar:    84px;
 
+  /* ── Sombras semánticas ── */
+  --sombra-btn-acento:       0 4px 18px rgba(58, 107, 76, 0.35);
+  --sombra-input-foco:       0 0 0 3px rgba(58, 107, 76, 0.15);
+
+  /* ── Color de texto sobre botón de acento ── */
+  --color-btn-acento-texto:  #FFFFFF;
+
+  /* ── Navbar: colores de iconos (fondo siempre oscuro) ── */
+  --navbar-icono-activo:     #FFFFFF;
+  --navbar-icono-inactivo:   rgba(255, 255, 255, 0.38);
+  --navbar-icono-fondo-act:  rgba(255, 255, 255, 0.16);
+  --navbar-diario-activo:    linear-gradient(160deg, #3A6B4C 0%, #2E5A3E 100%);
+  --navbar-diario-inactivo:  rgba(255, 255, 255, 0.12);
+  --navbar-diario-sombra:    0 3px 14px rgba(58, 107, 76, 0.50);
+
   /* ── Animaciones ── */
   --ease-out:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -96,99 +112,7 @@
   --t-spring:    0.32s;
 }
 
-/* ============================================================
-   MODO CLARO
-   ============================================================ */
-[data-tema="claro"] {
-  --color-fondo:             #F5F2EF;
-  --color-superficie:        #FFFFFF;
-  --color-superficie-2:      #EBF6FF;
-  --color-superficie-3:      #D4EEFF;
-  --color-borde:             rgba(0, 168, 224, 0.15);
-  --color-borde-fuerte:      rgba(0, 168, 224, 0.30);
-  --color-texto:             #1A2E44;
-  --color-texto-secundario:  #4A6B8A;
-  --color-texto-terciario:   #7A9BB8;
-  --color-texto-inactivo:    #B0CBDF;
-
-  --color-acento:            #00BFFF;
-  --color-acento-hover:      #009ED4;
-  --color-acento-suave:      rgba(0, 191, 255, 0.12);
-  --color-acento-2:          #8BC400;
-  --color-acento-2-hover:    #70A000;
-  --color-acento-2-suave:    rgba(139, 196, 0, 0.12);
-
-  --gradiente-acento:        linear-gradient(160deg, #00BFFF 0%, #0099CC 100%);
-  --gradiente-acento-suave:  linear-gradient(160deg, rgba(0,191,255,0.14) 0%, rgba(0,153,204,0.08) 100%);
-
-  --navbar-bg:    rgba(255, 255, 255, 0.88);
-  --navbar-borde: rgba(0, 168, 224, 0.14);
-  --navbar-sombra:
-    0 4px 24px rgba(0, 80, 130, 0.09),
-    0 1px 6px  rgba(0, 80, 130, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
-
-  --glass-bg:     rgba(255, 255, 255, 0.90);
-  --glass-borde:  rgba(0, 168, 224, 0.12);
-  --glass-sombra:
-    0 20px 60px rgba(0, 80, 130, 0.13),
-    0 6px 20px  rgba(0, 80, 130, 0.07),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-
-  --sombra-1:
-    0 2px 10px rgba(0, 30, 60, 0.08),
-    0 1px 3px  rgba(0, 30, 60, 0.05);
-  --sombra-2:
-    0 6px 28px rgba(0, 30, 60, 0.11),
-    0 2px 8px  rgba(0, 30, 60, 0.06);
-  --sombra-3:
-    0 14px 48px rgba(0, 30, 60, 0.15),
-    0 4px 16px  rgba(0, 30, 60, 0.08);
-
-  --color-exito-suave:   rgba(48, 209, 88, 0.10);
-  --color-peligro-suave: rgba(255, 69, 58, 0.08);
-}
-
-/* Modo automático */
-@media (prefers-color-scheme: light) {
-  :root:not([data-tema="oscuro"]):not([data-tema="claro"]) {
-    --color-fondo:             #F5F2EF;
-    --color-superficie:        #FFFFFF;
-    --color-superficie-2:      #EBF6FF;
-    --color-superficie-3:      #D4EEFF;
-    --color-borde:             rgba(0, 168, 224, 0.15);
-    --color-borde-fuerte:      rgba(0, 168, 224, 0.30);
-    --color-texto:             #1A2E44;
-    --color-texto-secundario:  #4A6B8A;
-    --color-texto-terciario:   #7A9BB8;
-    --color-texto-inactivo:    #B0CBDF;
-    --color-acento:            #00BFFF;
-    --color-acento-hover:      #009ED4;
-    --color-acento-suave:      rgba(0, 191, 255, 0.12);
-    --color-acento-2:          #8BC400;
-    --color-acento-2-hover:    #70A000;
-    --color-acento-2-suave:    rgba(139, 196, 0, 0.12);
-    --gradiente-acento:        linear-gradient(160deg, #00BFFF 0%, #0099CC 100%);
-    --gradiente-acento-suave:  linear-gradient(160deg, rgba(0,191,255,0.14) 0%, rgba(0,153,204,0.08) 100%);
-    --navbar-bg:    rgba(255, 255, 255, 0.88);
-    --navbar-borde: rgba(0, 168, 224, 0.14);
-    --navbar-sombra:
-      0 4px 24px rgba(0, 80, 130, 0.09),
-      0 1px 6px  rgba(0, 80, 130, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    --glass-bg:     rgba(255, 255, 255, 0.90);
-    --glass-borde:  rgba(0, 168, 224, 0.12);
-    --glass-sombra:
-      0 20px 60px rgba(0, 80, 130, 0.13),
-      0 6px 20px  rgba(0, 80, 130, 0.07),
-      inset 0 1px 0 rgba(255, 255, 255, 1);
-    --sombra-1: 0 2px 10px rgba(0, 30, 60, 0.08), 0 1px 3px rgba(0, 30, 60, 0.05);
-    --sombra-2: 0 6px 28px rgba(0, 30, 60, 0.11), 0 2px 8px rgba(0, 30, 60, 0.06);
-    --sombra-3: 0 14px 48px rgba(0, 30, 60, 0.15), 0 4px 16px rgba(0, 30, 60, 0.08);
-    --color-exito-suave:   rgba(48, 209, 88, 0.10);
-    --color-peligro-suave: rgba(255, 69, 58, 0.08);
-  }
-}
+/* Paleta unificada — no hay modo oscuro ni claro separado */
 
 /* ============================================================
    RESET Y BASE
@@ -222,7 +146,7 @@ html, body {
 }
 
 ::selection {
-  background-color: rgba(0, 255, 255, 0.22);
+  background-color: var(--color-acento-suave);
 }
 
 /* ============================================================
@@ -339,7 +263,7 @@ html, body {
   justify-content: center;
   gap: 7px;
   background: var(--gradiente-acento);
-  color: #0A1929;
+  color: var(--color-btn-acento-texto);
   font-weight: 700;
   border: none;
   border-radius: var(--radio-lg);
@@ -351,7 +275,7 @@ html, body {
   transition:
     opacity var(--t-rapida) var(--ease-out),
     transform var(--t-rapida) var(--ease-out);
-  box-shadow: 0 4px 18px rgba(0, 200, 210, 0.35);
+  box-shadow: var(--sombra-btn-acento);
   -webkit-appearance: none;
   text-decoration: none;
 }
@@ -562,7 +486,7 @@ html, body {
 .app-input:focus {
   border-color: var(--color-acento);
   background-color: var(--color-superficie);
-  box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.15);
+  box-shadow: var(--sombra-input-foco);
 }
 
 .app-textarea {
@@ -766,7 +690,7 @@ select.app-input {
   border: none;
   background: transparent;
   color: var(--color-texto-secundario);
-  font-size: var(--texto-footnote);
+  font-size: var(--texto-subheadline);
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -780,7 +704,7 @@ select.app-input {
 }
 
 .app-segmented-tab.activo {
-  background-color: var(--color-superficie-3);
+  background-color: #D3E1D7;
   color: var(--color-texto);
   font-weight: 700;
 }

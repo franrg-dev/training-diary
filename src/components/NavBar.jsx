@@ -31,11 +31,10 @@ export default function NavBar() {
       <nav
         style={{
           height: '64px',
-          /* Fondo oscuro sólido — idéntico en claro y oscuro */
-          backgroundColor: '#0A1929',
+          backgroundColor: 'var(--navbar-bg)',
           borderRadius: '40px',
-          border: '1px solid rgba(255,255,255,0.07)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.40), 0 2px 8px rgba(0,0,0,0.25)',
+          border: '1px solid var(--navbar-borde)',
+          boxShadow: 'var(--navbar-sombra)',
           display: 'flex',
           alignItems: 'center',
           pointerEvents: 'auto',
@@ -59,9 +58,9 @@ export default function NavBar() {
               <div style={{
                 width: '40px', height: '40px',
                 borderRadius: '50%',
-                backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : 'transparent',
+                backgroundColor: isActive ? 'var(--navbar-icono-fondo-act)' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.38)',
+                color: isActive ? 'var(--navbar-icono-activo)' : 'var(--navbar-icono-inactivo)',
                 transition: 'background-color 0.2s, color 0.2s',
               }}>
                 <Icono activo={isActive} />
@@ -80,12 +79,10 @@ export default function NavBar() {
             <div style={{
               width: '46px', height: '46px',
               borderRadius: '50%',
-              background: isActive
-                ? 'linear-gradient(160deg, #00FFFF 0%, #00C0E0 100%)'
-                : 'rgba(255,255,255,0.12)',
+              background: isActive ? 'var(--navbar-diario-activo)' : 'var(--navbar-diario-inactivo)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: isActive ? '#0A1929' : 'rgba(255,255,255,0.55)',
-              boxShadow: isActive ? '0 3px 14px rgba(0,200,220,0.50)' : 'none',
+              color: isActive ? 'var(--navbar-icono-activo)' : 'var(--navbar-icono-inactivo)',
+              boxShadow: isActive ? 'var(--navbar-diario-sombra)' : 'none',
               transition: 'background 0.2s, box-shadow 0.2s, color 0.2s',
             }}>
               <IconoDiario activo={isActive} />
@@ -111,9 +108,9 @@ export default function NavBar() {
               <div style={{
                 width: '40px', height: '40px',
                 borderRadius: '50%',
-                backgroundColor: isActive ? 'rgba(255,255,255,0.16)' : 'transparent',
+                backgroundColor: isActive ? 'var(--navbar-icono-fondo-act)' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.38)',
+                color: isActive ? 'var(--navbar-icono-activo)' : 'var(--navbar-icono-inactivo)',
                 transition: 'background-color 0.2s, color 0.2s',
               }}>
                 <Icono activo={isActive} />

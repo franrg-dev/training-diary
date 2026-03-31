@@ -12,7 +12,7 @@ import MedidasCorporales           from './MedidasCorporales'
 
 const OPCIONES_SECCION = [
   { id: 'diario',   label: 'Diario'            },
-  { id: 'medidas',  label: 'Medidas Corporales' },
+  { id: 'medidas',  label: 'Medidas' },
   { id: 'calendario', label: 'Mes'               },
 ]
 

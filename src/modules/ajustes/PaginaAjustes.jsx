@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import db from '../../db/database'
-import { getTema, setTema } from './useTema'
 import { getObjetivos, setObjetivos } from './useObjetivos'
 import { getLugares, setLugares } from './useLugares'
 
@@ -12,65 +11,11 @@ export default function PaginaAjustes() {
           <div className="app-segmented-tab" style={{ fontWeight: '700', color: 'var(--color-texto)' }}>Ajustes</div>
         </div>
 
-        <SeccionApariencia />
         <SeccionObjetivos />
         <SeccionLugares />
         <SeccionSincronizacion />
       </div>
     </div>
-  )
-}
-
-// — Apariencia —
-
-const OPCIONES_TEMA = [
-  { valor: 'auto',   etiqueta: 'Automático', icono: IconoAuto   },
-  { valor: 'oscuro', etiqueta: 'Oscuro',     icono: IconoOscuro },
-  { valor: 'claro',  etiqueta: 'Claro',      icono: IconoClaro  },
-]
-
-function SeccionApariencia() {
-  const [temaActual, setTemaActual] = useState(getTema)
-
-  function handleCambiar(valor) {
-    setTema(valor)
-    setTemaActual(valor)
-  }
-
-  return (
-    <section style={estiloSeccion}>
-      <h2 style={estiloTituloSeccion}>Apariencia</h2>
-      <div style={{ display: 'flex', gap: '8px' }}>
-        {OPCIONES_TEMA.map(({ valor, etiqueta, icono: Icono }) => { // eslint-disable-line no-unused-vars
-          const activo = temaActual === valor
-          return (
-            <button
-              key={valor}
-              onClick={() => handleCambiar(valor)}
-              style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '14px 8px',
-                backgroundColor: activo ? 'var(--color-acento)' : 'var(--color-superficie-2)',
-                border: `1px solid ${activo ? 'var(--color-acento)' : 'var(--color-borde)'}`,
-                borderRadius: '12px',
-                color: activo ? '#fff' : 'var(--color-texto-secundario)',
-                fontSize: '12px',
-                fontWeight: activo ? '600' : '400',
-                cursor: 'pointer',
-                transition: 'all 0.15s',
-              }}
-            >
-              <Icono activo={activo} />
-              {etiqueta}
-            </button>
-          )
-        })}
-      </div>
-    </section>
   )
 }
 
@@ -587,42 +532,6 @@ function SeccionSincronizacion() {
 }
 
 // — Iconos —
-
-function IconoAuto({ activo }) {
-  const color = activo ? '#fff' : 'currentColor'
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-    </svg>
-  )
-}
-
-function IconoOscuro({ activo }) {
-  const color = activo ? '#fff' : 'currentColor'
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  )
-}
-
-function IconoClaro({ activo }) {
-  const color = activo ? '#fff' : 'currentColor'
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="5" />
-      <line x1="12" y1="1" x2="12" y2="3" />
-      <line x1="12" y1="21" x2="12" y2="23" />
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-      <line x1="1" y1="12" x2="3" y2="12" />
-      <line x1="21" y1="12" x2="23" y2="12" />
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-    </svg>
-  )
-}
 
 function IconoCloud({ sincronizando, color }) {
   return (
