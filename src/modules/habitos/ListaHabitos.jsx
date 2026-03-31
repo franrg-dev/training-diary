@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo } from 'react'
 import { TIPOS_HABITO } from './tiposHabito'
 import IconoTipo from './IconoTipo'
 
@@ -17,13 +17,11 @@ export default function ListaHabitos({
   const [filtroEtiqueta, setFiltroEtiqueta] = useState(null)
   const [busqueda, setBusqueda]             = useState('')
 
-  // Tipos presentes en el catálogo (solo se muestran si hay >1)
   const tiposPresentes = useMemo(() => {
     const set = new Set(habitos.map(h => h.tipo))
     return TIPOS_HABITO.filter(t => set.has(t.id))
   }, [habitos])
 
-  // Etiquetas que están asignadas a al menos un hábito
   const etiquetasPresentes = useMemo(() => {
     const ids = new Set(habitos.flatMap(h => h.etiquetas || []))
     return etiquetas.filter(e => ids.has(e.id))
@@ -42,7 +40,7 @@ export default function ListaHabitos({
     <div style={{ position: 'relative', height: '100%' }}>
       {/* Cabecera */}
       <div style={{ padding: '20px 16px 0' }}>
-        {/* Fila 1: selector solo */}
+        {/* Fila 1: selector */}
         <div style={{ marginBottom: '12px' }}>
           {tituloDropdown ?? (
             <h1 style={{ fontSize: '28px', fontWeight: '700', margin: 0, color: 'var(--color-texto)' }}>Hábitos</h1>
@@ -53,7 +51,7 @@ export default function ListaHabitos({
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
           <div style={{ flex: 1, position: 'relative' }}>
             <svg
-              style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}
+              style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}
               width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
@@ -78,7 +76,8 @@ export default function ListaHabitos({
             onClick={onNuevo}
             style={{
               width: '40px', height: '40px', borderRadius: '12px',
-              backgroundColor: 'var(--color-acento)', border: 'none', color: '#fff',
+              backgroundColor: 'var(--color-acento)', border: 'none',
+              color: 'var(--color-btn-acento-texto)',
               cursor: 'pointer', display: 'flex',
               alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 0,
             }}
@@ -150,16 +149,11 @@ function TarjetaHabito({ habito, etiquetas, onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '14px',
-        width: '100%', padding: '14px', marginBottom: '10px',
-        backgroundColor: 'var(--color-superficie)',
-        border: '1px solid var(--color-borde)',
-        borderRadius: '20px', boxShadow: 'var(--sombra-1)', cursor: 'pointer', textAlign: 'left',
-      }}
+      className="app-tarjeta"
+      style={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%', marginBottom: '10px', cursor: 'pointer', textAlign: 'left' }}
     >
       <div style={{
-        width: '42px', height: '42px', borderRadius: '14px',
+        width: '42px', height: '42px', borderRadius: '50%',
         backgroundColor: tipo.color + '22',
         border: `1px solid ${tipo.color}44`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -220,23 +214,19 @@ function ChipFiltro({ label, color, activo, onClick }) {
 function EstadoVacio({ hayHabitos, onNuevo }) {
   if (hayHabitos) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--color-texto-secundario)' }}>
-        <p style={{ fontSize: '40px', margin: '0 0 12px' }}>🔍</p>
-        <p style={{ margin: 0, fontWeight: '600' }}>Sin resultados</p>
-        <p style={{ margin: 0, fontSize: '14px' }}>Prueba con otro filtro</p>
+      <div className="app-empty-state">
+        <p className="app-empty-icon">🔍</p>
+        <p className="app-empty-title">Sin resultados</p>
+        <p className="app-empty-text">Prueba con otro filtro</p>
       </div>
     )
   }
   return (
-    <div style={{ textAlign: 'center', marginTop: '60px' }}>
-      <p style={{ fontSize: '48px', margin: '0 0 16px' }}>✅</p>
-      <p style={{ margin: '0 0 6px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '17px' }}>
-        Sin hábitos todavía
-      </p>
-      <p style={{ margin: '0 0 24px', color: 'var(--color-texto-secundario)', fontSize: '14px' }}>
-        Crea tu primer hábito para empezar
-      </p>
-      <button onClick={onNuevo} className="app-btn-acento">
+    <div className="app-empty-state">
+      <p className="app-empty-icon">✅</p>
+      <p className="app-empty-title">Sin hábitos todavía</p>
+      <p className="app-empty-text">Crea tu primer hábito para empezar</p>
+      <button onClick={onNuevo} className="app-btn-acento" style={{ marginTop: '8px' }}>
         Añadir hábito
       </button>
     </div>

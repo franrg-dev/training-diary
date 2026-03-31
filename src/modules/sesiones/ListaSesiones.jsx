@@ -93,12 +93,8 @@ function TarjetaSesion({ sesion, mapaEjercicios, onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '12px',
-        width: '100%', padding: '14px', marginBottom: '10px',
-        backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)',
-        borderRadius: '20px', boxShadow: 'var(--sombra-1)', cursor: 'pointer', textAlign: 'left',
-      }}
+      className="app-tarjeta"
+      style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', marginBottom: '10px', cursor: 'pointer', textAlign: 'left' }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -110,7 +106,7 @@ function TarjetaSesion({ sesion, mapaEjercicios, onClick }) {
       </div>
       <span style={{
         flexShrink: 0, padding: '3px 10px',
-        backgroundColor: 'rgba(0,191,255,0.13)', border: '1px solid rgba(0,191,255,0.26)',
+        backgroundColor: 'var(--color-acento-suave)', border: '1px solid var(--color-borde-fuerte)',
         borderRadius: '20px', color: 'var(--color-acento)', fontSize: '12px', fontWeight: '600',
       }}>
         {numEjercicios}

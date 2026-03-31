@@ -103,9 +103,10 @@ export default function ListaRegistro({ ejercicios, registros, onSeleccionar, ti
               <button
                 key={ej.id}
                 onClick={() => onSeleccionar(ej)}
-                style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '16px', marginBottom: '10px', backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)', borderRadius: '20px', boxShadow: 'var(--sombra-1)', cursor: 'pointer', textAlign: 'left' }}
+                className="app-tarjeta"
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', marginBottom: '10px', cursor: 'pointer', textAlign: 'left' }}
               >
-                <div style={{ width: '46px', height: '46px', borderRadius: '14px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '50%', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <IconoEjercicio grupos={ej.gruposMuscular} grupoPrincipal={ej.grupoPrincipal} size={20} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>

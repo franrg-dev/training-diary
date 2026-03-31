@@ -37,35 +37,16 @@ function GraficoLinea({ registros, color }) {
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', display: 'block', overflow: 'visible' }}>
-      <polyline
-        points={polyline}
-        fill="none"
-        stroke={color}
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        opacity="0.8"
-      />
+      <polyline points={polyline} fill="none" stroke={color} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" opacity="0.8" />
       {coords.map((c, i) => {
         const esUltimo = i === coords.length - 1
         return (
           <g key={i}>
             <circle cx={c.x} cy={c.y} r={esUltimo ? 5 : 3.5} fill={color} />
-            <text
-              x={c.x} y={c.y - 10}
-              textAnchor="middle"
-              fontSize="24"
-              fill={esUltimo ? color : 'var(--color-texto-secundario)'}
-              fontWeight={esUltimo ? '700' : '400'}
-            >
+            <text x={c.x} y={c.y - 10} textAnchor="middle" fontSize="24" fill={esUltimo ? color : 'var(--color-texto-secundario)'} fontWeight={esUltimo ? '700' : '400'}>
               {c.r.peso}
             </text>
-            <text
-              x={c.x} y={H - 4}
-              textAnchor="middle"
-              fontSize="22"
-              fill={esUltimo ? color : 'var(--color-texto-inactivo)'}
-            >
+            <text x={c.x} y={H - 4} textAnchor="middle" fontSize="22" fill={esUltimo ? color : 'var(--color-texto-inactivo)'}>
               {formatearDiaMes(c.r.fecha)}
             </text>
           </g>
@@ -75,16 +56,9 @@ function GraficoLinea({ registros, color }) {
   )
 }
 
-/**
- * Historial de un ejercicio.
- * - Fuerza: gráfico de línea con el color del grupo muscular.
- * - Cardio: últimos valores registrados (duracion/ritmo/volumen), sin gráfico.
- */
 export default function HistorialEjercicio({ ejercicio, registros, onVolver, onEliminarRegistro }) {
   const esCardio = (ejercicio.gruposMuscular || []).includes('cardio')
-
   const [confirmarBorrarId, setConfirmarBorrarId] = useState(null)
-
   const colores = COLORES_GRUPO[ejercicio.grupoPrincipal || (ejercicio.gruposMuscular || [])[0]] || COLORES_GRUPO.core
 
   async function handleEliminar(id) {
@@ -92,7 +66,6 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
     setConfirmarBorrarId(null)
   }
 
-  // Últimas 3 entradas para cardio
   const ultimosCardio = registros.slice().reverse().slice(0, 3)
 
   return (
@@ -102,7 +75,7 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 0 20px' }}>
         <button
           onClick={onVolver}
-          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '15px', cursor: 'pointer', padding: '0', display: 'flex', alignItems: 'center', gap: '4px' }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', fontSize: '15px', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
@@ -111,12 +84,16 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
         </button>
       </div>
 
-      {/* — Hero del ejercicio — */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-        <div style={{ width: '54px', height: '54px', borderRadius: '16px', backgroundColor: colores.bg, border: `1px solid ${colores.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      {/* — Hero — */}
+      <div className="app-tarjeta" style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}>
+        <div style={{
+          width: '54px', height: '54px', borderRadius: '50%',
+          backgroundColor: colores.bg, border: `1px solid ${colores.border}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+        }}>
           <IconoEjercicio grupos={ejercicio.gruposMuscular} grupoPrincipal={ejercicio.grupoPrincipal} size={26} />
         </div>
-        <div>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <h1 style={{ margin: '0 0 6px', fontSize: '20px', fontWeight: '700', color: 'var(--color-texto)' }}>
             {ejercicio.nombre}
           </h1>
@@ -133,9 +110,9 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
         </div>
       </div>
 
-      {/* — Gráfico de línea (solo fuerza, mínimo 2 puntos) — */}
+      {/* — Gráfico de línea (solo fuerza) — */}
       {!esCardio && registros.length >= 2 && (
-        <div className="app-card" style={{ marginBottom: '16px' }}>
+        <div className="app-tarjeta" style={{ marginBottom: '12px' }}>
           <p style={estiloSeccion}>Evolución de peso</p>
           <GraficoLinea registros={registros} color={colores.texto} />
         </div>
@@ -143,16 +120,13 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
 
       {/* — Últimos registros cardio — */}
       {esCardio && ultimosCardio.length > 0 && (
-        <div className="app-card" style={{ marginBottom: '16px' }}>
+        <div className="app-tarjeta" style={{ marginBottom: '12px' }}>
           <p style={estiloSeccion}>Últimos registros</p>
           {ultimosCardio.map((r, i) => {
             const ritmoLabel   = r.modo === 'veces' ? 'Rp/m' : 'Km/h'
             const volumenLabel = r.modo === 'veces' ? 'Rp'   : 'Km'
             return (
-              <div
-                key={r.id}
-                style={{ paddingBottom: i < ultimosCardio.length - 1 ? '10px' : 0, marginBottom: i < ultimosCardio.length - 1 ? '10px' : 0, borderBottom: i < ultimosCardio.length - 1 ? '1px solid var(--color-borde)' : 'none' }}
-              >
+              <div key={r.id} style={{ paddingBottom: i < ultimosCardio.length - 1 ? '10px' : 0, marginBottom: i < ultimosCardio.length - 1 ? '10px' : 0, borderBottom: i < ultimosCardio.length - 1 ? '1px solid var(--color-borde)' : 'none' }}>
                 <p style={{ margin: '0 0 4px', fontSize: '12px', color: 'var(--color-texto-secundario)' }}>{formatearFecha(r.fecha)}</p>
                 <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                   {r.duracion && <span style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}><span className="app-stat-number-sm" style={{ color: 'var(--color-acento)' }}>{r.duracion}</span><span className="app-stat-label">min</span></span>}
@@ -167,7 +141,7 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
 
       {/* — Estado vacío — */}
       {registros.length === 0 && (
-        <div style={{ textAlign: 'center', marginTop: '8px', marginBottom: '20px' }}>
+        <div className="app-tarjeta" style={{ textAlign: 'center' }}>
           <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto-secundario)' }}>Sin datos de progreso</p>
           <p style={{ margin: 0, fontSize: '14px', color: 'var(--color-texto-secundario)' }}>Los registros se añaden desde el diario</p>
         </div>
@@ -175,13 +149,10 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
 
       {/* — Historial completo — */}
       {registros.length > 0 && (
-        <div className="app-card">
+        <div className="app-tarjeta" style={{ padding: '18px 18px 8px' }}>
           <p style={estiloSeccion}>Historial ({registros.length} entrada{registros.length !== 1 ? 's' : ''})</p>
           {registros.slice().reverse().map((r, i) => (
-            <div
-              key={r.id}
-              style={{ borderBottom: i < registros.length - 1 ? '1px solid var(--color-borde)' : 'none', paddingBottom: i < registros.length - 1 ? '12px' : 0, marginBottom: i < registros.length - 1 ? '12px' : 0 }}
-            >
+            <div key={r.id} style={{ borderBottom: i < registros.length - 1 ? '1px solid var(--color-borde)' : 'none', paddingBottom: i < registros.length - 1 ? '12px' : '0', marginBottom: i < registros.length - 1 ? '12px' : '0' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: '0 0 3px', fontSize: '13px', color: 'var(--color-texto-secundario)' }}>
@@ -210,8 +181,8 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
               )}
               {confirmarBorrarId === r.id && (
                 <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
-                  <button onClick={() => setConfirmarBorrarId(null)} style={{ flex: 1, padding: '8px', backgroundColor: 'transparent', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto-secundario)', fontSize: '13px', cursor: 'pointer' }}>Cancelar</button>
-                  <button onClick={() => handleEliminar(r.id)} style={{ flex: 1, padding: '8px', backgroundColor: '#dc2626', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Eliminar</button>
+                  <button onClick={() => setConfirmarBorrarId(null)} className="app-btn-secundario" style={{ flex: 1, padding: '8px', fontSize: '13px' }}>Cancelar</button>
+                  <button onClick={() => handleEliminar(r.id)} className="app-btn-peligro" style={{ flex: 1, padding: '8px', fontSize: '13px' }}>Eliminar</button>
                 </div>
               )}
             </div>
@@ -222,6 +193,4 @@ export default function HistorialEjercicio({ ejercicio, registros, onVolver, onE
   )
 }
 
-const estiloSeccion      = { margin: '0 0 12px', fontSize: '12px', color: 'var(--color-texto-secundario)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.06em' }
-const estiloInputPequeno = { width: '100%', padding: '8px 10px', backgroundColor: 'var(--color-superficie-2)', border: '1px solid var(--color-borde)', borderRadius: '8px', color: 'var(--color-texto)', fontSize: '14px', outline: 'none', fontFamily: 'inherit' }
-const estiloLabelPequeno = { display: 'block', marginBottom: '4px', fontSize: '11px', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }
+const estiloSeccion = { margin: '0 0 12px', fontSize: '11px', fontWeight: '700', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.07em' }

@@ -158,49 +158,36 @@ function ChipGrupo({ etiqueta, activo, color, onClick }) {
 
 function TarjetaEjercicio({ ejercicio, onClick }) {
   const grupos  = ejercicio.gruposMuscular || []
-  // El icono usa grupoPrincipal si existe; si no, el primero del array
   const primero = COLORES_GRUPO[ejercicio.grupoPrincipal || grupos[0]] || COLORES_GRUPO.core
   const resto   = grupos.slice(1).map(g => COLORES_GRUPO[g]).filter(Boolean)
 
   return (
     <button
       onClick={onClick}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '14px',
-        width: '100%', padding: '14px', marginBottom: '10px',
-        backgroundColor: 'var(--color-superficie)', border: '1px solid var(--color-borde)',
-        borderRadius: '20px', boxShadow: 'var(--sombra-1)', cursor: 'pointer', textAlign: 'left',
-      }}
+      className="app-tarjeta"
+      style={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%', marginBottom: '10px', cursor: 'pointer', textAlign: 'left' }}
     >
-      {/* Icono del primer grupo muscular */}
-      <div
-        style={{
-          width: '42px', height: '42px', borderRadius: '14px',
-          backgroundColor: primero.bg, border: `1px solid ${primero.border}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0,
-        }}
-      >
+      <div style={{
+        width: '42px', height: '42px', borderRadius: '50%',
+        backgroundColor: primero.bg, border: `1px solid ${primero.border}`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+      }}>
         <IconoEjercicio grupos={ejercicio.gruposMuscular} grupoPrincipal={ejercicio.grupoPrincipal} size={20} />
       </div>
 
-      {/* Nombre y grupos */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{ margin: '0 0 4px', fontWeight: '600', color: 'var(--color-texto)', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {ejercicio.nombre}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
-          {/* Badge del primer grupo */}
           <span style={{ fontSize: '11px', color: primero.texto, fontWeight: '500' }}>
             {capitalizarGrupo(grupos[0])}
           </span>
-          {/* Badges de grupos adicionales */}
           {resto.map((c, i) => (
             <span key={i} style={{ fontSize: '11px', color: 'var(--color-texto-secundario)' }}>
               · <span style={{ color: c.texto }}>{capitalizarGrupo(grupos[i + 1])}</span>
             </span>
           ))}
-          {/* Volumen si existe */}
           {ejercicio.series > 0 && (
             <span style={{ fontSize: '11px', color: 'var(--color-texto-inactivo)', marginLeft: '4px' }}>
               · {ejercicio.series}×{ejercicio.repeticiones || '—'}
@@ -209,7 +196,6 @@ function TarjetaEjercicio({ ejercicio, onClick }) {
         </div>
       </div>
 
-      {/* Chevron */}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-borde)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="9 18 15 12 9 6" />
       </svg>

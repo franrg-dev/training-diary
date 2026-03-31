@@ -97,7 +97,7 @@ export default function HabitosDia({
     <div style={{ position: 'relative', height: '100%' }}>
       {/* Cabecera */}
       <div style={{ padding: '20px 16px 0' }}>
-        {/* Fila 1: selector solo */}
+        {/* Fila 1: selector */}
         <div style={{ marginBottom: '12px' }}>
           {tituloDropdown}
         </div>
@@ -131,7 +131,7 @@ export default function HabitosDia({
           </button>
         </div>
 
-        {/* Progreso del día (si hay hábitos) */}
+        {/* Progreso del día */}
         {total > 0 && (
           <div style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
@@ -181,13 +181,12 @@ export default function HabitosDia({
       {/* Lista */}
       <div style={{ padding: '0 16px' }}>
         {habitosFiltrados.length === 0 ? (
-          <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--color-texto-secundario)' }}>
-            <p style={{ fontSize: '40px', margin: '0 0 12px' }}>
-              {total === 0 ? '📋' : '🔍'}
+          <div className="app-empty-state">
+            <p className="app-empty-icon">{total === 0 ? '📋' : '🔍'}</p>
+            <p className="app-empty-title">
+              {total === 0 ? 'No hay hábitos para este día' : 'Sin resultados'}
             </p>
-            <p style={{ margin: 0, fontSize: '15px' }}>
-              {total === 0 ? 'No hay hábitos para este día' : 'Sin resultados para el filtro activo'}
-            </p>
+            {total > 0 && <p className="app-empty-text">Prueba con otro filtro</p>}
           </div>
         ) : (
           habitosFiltrados.map(habito => {
@@ -233,7 +232,6 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
   const subhabitos = habito.subhabitos || []
   const tieneSubhabitos = subhabitos.length > 0
 
-  // Descripción de requisitos para el tooltip/hint de bloqueo
   const obligatorios = subhabitos.filter(s => s.obligatorio)
   const minimo = habito.subhabitosMinimo || 0
   const bloqueado = !puedeMarcarse && !completado
@@ -242,14 +240,12 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
     <div style={{ marginBottom: '8px' }}>
       {/* Fila principal */}
       <div
+        className="app-tarjeta"
         style={{
           display: 'flex', alignItems: 'center', gap: '12px',
-          padding: '16px',
-          backgroundColor: 'var(--color-superficie)',
-          border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
-          borderRadius: tieneSubhabitos && expandido ? '20px 20px 0 0' : '20px',
-          boxShadow: 'var(--sombra-1)',
-          opacity: completado ? 0.7 : 1,
+          borderColor: completado ? tipo.color + '55' : undefined,
+          borderRadius: tieneSubhabitos && expandido ? 'var(--radio-xl) var(--radio-xl) 0 0' : undefined,
+          opacity: completado ? 0.75 : 1,
           transition: 'opacity 0.2s, border-color 0.2s',
         }}
       >
@@ -258,8 +254,8 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
           onClick={puedeMarcarse || completado ? onToggle : undefined}
           style={{
             width: '26px', height: '26px', borderRadius: '8px',
-            backgroundColor: completado ? 'var(--color-exito)' : bloqueado ? 'var(--color-superficie)' : 'transparent',
-            border: `2px solid ${completado ? 'var(--color-exito)' : bloqueado ? 'var(--color-borde)' : 'var(--color-borde)'}`,
+            backgroundColor: completado ? 'var(--color-exito)' : 'transparent',
+            border: `2px solid ${completado ? 'var(--color-exito)' : 'var(--color-borde)'}`,
             cursor: (puedeMarcarse || completado) ? 'pointer' : 'not-allowed',
             flexShrink: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -283,7 +279,7 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
 
         {/* Icono tipo */}
         <div style={{
-          width: '36px', height: '36px', borderRadius: '10px',
+          width: '38px', height: '38px', borderRadius: '50%',
           backgroundColor: tipo.color + '22',
           border: `1px solid ${tipo.color}44`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -302,7 +298,6 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
           }}>
             {habito.titulo}
           </p>
-          {/* Hint de progreso subhábitos */}
           {tieneSubhabitos && (
             <p style={{ margin: 0, fontSize: '11px', color: 'var(--color-texto-secundario)' }}>
               {subCompletados.length}/{subhabitos.length} subhábitos
@@ -333,7 +328,7 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
           )}
         </div>
 
-        {/* Chevron expandir (solo si tiene subhábitos) */}
+        {/* Chevron expandir */}
         {tieneSubhabitos && (
           <button
             onClick={() => setExpandido(v => !v)}
@@ -359,7 +354,8 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
           backgroundColor: 'var(--color-superficie)',
           border: `1px solid ${completado ? tipo.color + '44' : 'var(--color-borde)'}`,
           borderTop: '1px solid var(--color-borde)',
-          borderRadius: '0 0 20px 20px',
+          borderRadius: '0 0 var(--radio-xl) var(--radio-xl)',
+          boxShadow: 'var(--sombra-1)',
           padding: '4px 0',
         }}>
           {subhabitos.map((s, idx) => {
@@ -393,7 +389,6 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
                   )}
                 </button>
 
-                {/* Texto subhábito */}
                 <span style={{
                   flex: 1, fontSize: '14px',
                   color: marcado ? 'var(--color-texto-secundario)' : 'var(--color-texto)',
@@ -402,7 +397,6 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
                   {s.texto}
                 </span>
 
-                {/* Indicador obligatorio */}
                 {s.obligatorio && (
                   <span style={{ fontSize: '10px', color: 'var(--color-acento)', fontWeight: '600', flexShrink: 0 }}>
                     OBL
@@ -436,4 +430,3 @@ function ChipFiltro({ label, color, activo, onClick }) {
     </button>
   )
 }
-

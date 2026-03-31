@@ -11,20 +11,45 @@ export default function PaginaAjustes() {
           <div className="app-segmented-tab" style={{ fontWeight: '700', color: 'var(--color-texto)' }}>Ajustes</div>
         </div>
 
+        <SeccionSincronizacion />
         <SeccionObjetivos />
         <SeccionLugares />
-        <SeccionSincronizacion />
       </div>
     </div>
+  )
+}
+
+// — Icono pill local —
+
+function IconoPill({ children, pillBg }) {
+  return (
+    <div style={{
+      width: '40px', height: '40px', borderRadius: '50%',
+      backgroundColor: pillBg,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      flexShrink: 0,
+    }}>
+      {children}
+    </div>
+  )
+}
+
+function IconoEditar({ size = 20 }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 -960 960 960" fill="currentColor">
+      <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+    </svg>
   )
 }
 
 // — Objetivos —
 
 const LABELS_DIRECCION = { deficit: 'Déficit', volumen: 'Volumen', mantenimiento: 'Mantenimiento' }
+const COLOR_DIRECCION  = { deficit: 'var(--color-peligro)', volumen: 'var(--color-exito)', mantenimiento: 'var(--color-texto-secundario)' }
 
 function SeccionObjetivos() {
-  const [obj, setObj] = useState(getObjetivos)
+  const [obj, setObj]         = useState(getObjetivos)
+  const [editando, setEditando] = useState(false)
 
   function actualizar(campo, valor) {
     const nuevo = { ...obj, [campo]: valor }
@@ -46,137 +71,169 @@ function SeccionObjetivos() {
     setObjetivos(nuevo)
   }
 
-  const esDeficit      = obj.pesoObjetivoTipo === 'deficit'
+  const esDeficit       = obj.pesoObjetivoTipo === 'deficit'
   const esMantenimiento = obj.pesoObjetivoTipo === 'mantenimiento'
 
   return (
-    <section style={estiloSeccion}>
-      <h2 style={estiloTituloSeccion}>Objetivos diarios</h2>
-
-      {/* — Peso a largo plazo (arriba del todo) — */}
-      <p style={estiloSubtitulo}>Peso a largo plazo</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-        <InputObjetivo
-          label="Peso objetivo"
-          sufijo="kg"
-          value={obj.pesoObjetivo}
-          onChange={v => actualizar('pesoObjetivo', v)}
-          placeholder="70"
-          decimal
-        />
-        <div>
-          <p style={estiloLabelInput}>Dirección</p>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            {['deficit', 'volumen', 'mantenimiento'].map(tipo => (
-              <button
-                key={tipo}
-                onClick={() => cambiarDireccion(tipo)}
-                style={{
-                  flex: 1,
-                  padding: '10px 4px',
-                  backgroundColor: obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-superficie-2)',
-                  border: `1px solid ${obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-borde)'}`,
-                  borderRadius: '8px',
-                  color: obj.pesoObjetivoTipo === tipo ? '#fff' : 'var(--color-texto-secundario)',
-                  fontSize: '11px',
-                  fontWeight: obj.pesoObjetivoTipo === tipo ? '600' : '400',
-                  cursor: 'pointer',
-                }}
-              >
-                {LABELS_DIRECCION[tipo]}
-              </button>
-            ))}
-          </div>
-        </div>
+    <div className="app-tarjeta" style={{ marginBottom: '16px' }}>
+      {/* Cabecera */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: editando ? '18px' : '16px' }}>
+        <IconoPill pillBg="rgba(139,105,20,0.15)">
+          <svg width="22" height="22" viewBox="0 -960 960 960" fill="#8B6914">
+            <path d="M280-120v-80h160v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80v-80h400v80h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h160v80H280Zm0-408v-152h-80v40q0 38 22 68.5t58 43.5Zm285 93q35-35 35-85v-240H360v240q0 50 35 85t85 35q50 0 85-35Zm115-93q36-13 58-43.5t22-68.5v-40h-80v152Zm-200-52Z"/>
+          </svg>
+        </IconoPill>
+        <p style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: 'var(--color-texto)', flex: 1 }}>
+          Objetivos diarios
+        </p>
+        <button
+          onClick={() => setEditando(v => !v)}
+          style={{ background: 'none', border: 'none', color: 'var(--color-acento)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+          aria-label={editando ? 'Cerrar edición' : 'Editar objetivos'}
+        >
+          {editando
+            ? <span style={{ fontSize: '14px', fontWeight: '500' }}>Listo</span>
+            : <IconoEditar size={18} />
+          }
+        </button>
       </div>
 
-      {/* — Nutrición — */}
-      <p style={{ ...estiloSubtitulo, marginTop: '16px' }}>Nutrición</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+      {editando ? (
+        /* — Formulario de edición — */
         <div>
-          <p style={estiloLabelInput}>Dif. KCal</p>
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            {esDeficit && (
+          <p style={estiloSubtituloForm}>Peso a largo plazo</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+            <InputObjetivo label="Peso objetivo" sufijo="kg" value={obj.pesoObjetivo} onChange={v => actualizar('pesoObjetivo', v)} placeholder="70" decimal />
+            <div>
+              <p style={estiloLabelInput}>Dirección</p>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {['deficit', 'volumen', 'mantenimiento'].map(tipo => (
+                  <button
+                    key={tipo}
+                    onClick={() => cambiarDireccion(tipo)}
+                    style={{
+                      flex: 1, padding: '10px 4px',
+                      backgroundColor: obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-superficie-2)',
+                      border: `1px solid ${obj.pesoObjetivoTipo === tipo ? 'var(--color-acento)' : 'var(--color-borde)'}`,
+                      borderRadius: '8px',
+                      color: obj.pesoObjetivoTipo === tipo ? 'var(--color-btn-acento-texto)' : 'var(--color-texto-secundario)',
+                      fontSize: '11px', fontWeight: obj.pesoObjetivoTipo === tipo ? '600' : '400', cursor: 'pointer',
+                    }}
+                  >
+                    {LABELS_DIRECCION[tipo]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <p style={{ ...estiloSubtituloForm, marginTop: '16px' }}>Nutrición</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+            <div>
+              <p style={estiloLabelInput}>Dif. KCal</p>
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                {esDeficit && (
+                  <span style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '14px', color: 'var(--color-texto-secundario)', pointerEvents: 'none', zIndex: 1 }}>−</span>
+                )}
+                <input
+                  type="number" inputMode="numeric"
+                  placeholder={esDeficit ? '500' : '300'}
+                  disabled={esMantenimiento}
+                  value={esMantenimiento ? 0 : (obj.kcalDiferencia ? Math.abs(obj.kcalDiferencia) : '')}
+                  min={0} step="1"
+                  onChange={e => {
+                    const raw = e.target.value
+                    if (raw === '') { actualizar('kcalDiferencia', 0); return }
+                    const num = parseInt(raw, 10)
+                    if (!isNaN(num)) actualizar('kcalDiferencia', esDeficit ? -Math.abs(num) : Math.abs(num))
+                  }}
+                  className="app-input"
+                  style={{ padding: esDeficit ? '10px 36px 10px 22px' : '10px 36px 10px 10px', opacity: esMantenimiento ? 0.5 : 1 }}
+                />
+                <span style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}>kcal</span>
+              </div>
+            </div>
+            <InputObjetivo label="Proteína" sufijo="g" value={obj.proteinas} onChange={v => actualizar('proteinas', v)} placeholder="150" />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
+            <InputObjetivo label="Carbohidratos" sufijo="g" value={obj.carbohidratos} onChange={v => actualizar('carbohidratos', v)} placeholder="200" />
+            <InputObjetivo label="Grasas" sufijo="g" value={obj.grasas} onChange={v => actualizar('grasas', v)} placeholder="60" />
+          </div>
+
+          <p style={estiloSubtituloForm}>Actividad</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <InputObjetivo label="Pasos" sufijo="pasos" value={obj.pasos} onChange={v => actualizar('pasos', v)} placeholder="10000" />
+            <InputObjetivo label="Agua" sufijo="L" value={obj.agua} onChange={v => actualizar('agua', v)} placeholder="2.5" decimal />
+          </div>
+        </div>
+      ) : (
+        /* — Vista de lectura — */
+        <div>
+          {/* Peso + dirección */}
+          <div style={{ marginBottom: '14px', paddingBottom: '14px', borderBottom: '1px solid var(--color-borde)' }}>
+            <p style={estiloGrupoLabel}>Peso a largo plazo</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '22px', fontWeight: '800', color: 'var(--color-texto)', letterSpacing: '-0.5px' }}>
+                {obj.pesoObjetivo || '—'}{obj.pesoObjetivo ? ' kg' : ''}
+              </span>
               <span style={{
-                position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
-                fontSize: '14px', color: 'var(--color-texto-secundario)', pointerEvents: 'none', zIndex: 1,
-              }}>−</span>
-            )}
-            <input
-              type="number"
-              inputMode="numeric"
-              placeholder={esDeficit ? '500' : '300'}
-              disabled={esMantenimiento}
-              value={esMantenimiento ? 0 : (obj.kcalDiferencia ? Math.abs(obj.kcalDiferencia) : '')}
-              min={0}
-              step="1"
-              onChange={e => {
-                const raw = e.target.value
-                if (raw === '') { actualizar('kcalDiferencia', 0); return }
-                const num = parseInt(raw, 10)
-                if (!isNaN(num)) actualizar('kcalDiferencia', esDeficit ? -Math.abs(num) : Math.abs(num))
-              }}
-              style={{
-                width: '100%', padding: esDeficit ? '10px 36px 10px 22px' : '10px 36px 10px 10px',
-                backgroundColor: esMantenimiento ? 'var(--color-superficie)' : 'var(--color-superficie-2)',
-                border: '1px solid var(--color-borde)',
-                borderRadius: '8px', color: esMantenimiento ? 'var(--color-texto-secundario)' : 'var(--color-texto)',
-                fontSize: '14px', outline: 'none', fontFamily: 'inherit',
-                boxSizing: 'border-box',
-                opacity: esMantenimiento ? 0.5 : 1,
-              }}
-            />
-            <span style={{
-              position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
-              fontSize: '10px', color: 'var(--color-texto-secundario)', pointerEvents: 'none',
-            }}>kcal</span>
+                padding: '3px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600',
+                backgroundColor: COLOR_DIRECCION[obj.pesoObjetivoTipo] + '20',
+                color: COLOR_DIRECCION[obj.pesoObjetivoTipo],
+                border: `1px solid ${COLOR_DIRECCION[obj.pesoObjetivoTipo]}44`,
+              }}>
+                {LABELS_DIRECCION[obj.pesoObjetivoTipo]}
+              </span>
+              {obj.kcalDiferencia !== 0 && (
+                <span style={{ fontSize: '13px', color: 'var(--color-texto-secundario)' }}>
+                  {obj.kcalDiferencia > 0 ? '+' : ''}{obj.kcalDiferencia} kcal
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Nutrición */}
+          <div style={{ marginBottom: '14px', paddingBottom: '14px', borderBottom: '1px solid var(--color-borde)' }}>
+            <p style={estiloGrupoLabel}>Nutrición</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+              <CeldaObjetivo label="Proteína" valor={obj.proteinas} sufijo="g" />
+              <CeldaObjetivo label="Carbos" valor={obj.carbohidratos} sufijo="g" />
+              <CeldaObjetivo label="Grasas" valor={obj.grasas} sufijo="g" />
+            </div>
+          </div>
+
+          {/* Actividad */}
+          <div>
+            <p style={estiloGrupoLabel}>Actividad</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <CeldaObjetivo label="Pasos" valor={obj.pasos} sufijo="pasos" />
+              <CeldaObjetivo label="Agua" valor={obj.agua} sufijo="ℓ" />
+            </div>
           </div>
         </div>
-        <InputObjetivo
-          label="Proteína"
-          sufijo="g"
-          value={obj.proteinas}
-          onChange={v => actualizar('proteinas', v)}
-          placeholder="150"
-        />
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
-        <InputObjetivo
-          label="Carbohidratos"
-          sufijo="g"
-          value={obj.carbohidratos}
-          onChange={v => actualizar('carbohidratos', v)}
-          placeholder="200"
-        />
-        <InputObjetivo
-          label="Grasas"
-          sufijo="g"
-          value={obj.grasas}
-          onChange={v => actualizar('grasas', v)}
-          placeholder="60"
-        />
-      </div>
+      )}
+    </div>
+  )
+}
 
-      {/* — Actividad — */}
-      <p style={estiloSubtitulo}>Actividad</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
-        <InputObjetivo
-          label="Pasos"
-          sufijo="pasos"
-          value={obj.pasos}
-          onChange={v => actualizar('pasos', v)}
-          placeholder="10000"
-        />
-        <InputObjetivo
-          label="Agua"
-          sufijo="L"
-          value={obj.agua}
-          onChange={v => actualizar('agua', v)}
-          placeholder="2.5"
-          decimal
-        />
-      </div>
-    </section>
+function CeldaObjetivo({ label, valor, sufijo }) {
+  return (
+    <div style={{
+      backgroundColor: 'var(--color-superficie-2)',
+      border: '1px solid var(--color-borde)',
+      borderRadius: '12px',
+      padding: '10px 12px',
+    }}>
+      <p style={{ margin: '0 0 2px', fontSize: '10px', fontWeight: '600', color: 'var(--color-texto-secundario)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        {label}
+      </p>
+      <p style={{ margin: 0 }}>
+        <span style={{ fontSize: '18px', fontWeight: '700', color: valor ? 'var(--color-acento)' : 'var(--color-texto-terciario)', letterSpacing: '-0.3px' }}>
+          {valor || '—'}
+        </span>
+        {valor > 0 && <span style={{ fontSize: '11px', color: 'var(--color-texto-secundario)', marginLeft: '3px' }}>{sufijo}</span>}
+      </p>
+    </div>
   )
 }
 
@@ -198,19 +255,10 @@ function InputObjetivo({ label, sufijo, value, onChange, placeholder, decimal = 
             const num = decimal ? parseFloat(raw) : parseInt(raw, 10)
             if (!isNaN(num)) onChange(num)
           }}
-          style={{
-            width: '100%', padding: '10px 36px 10px 10px',
-            backgroundColor: 'var(--color-superficie-2)',
-            border: '1px solid var(--color-borde)',
-            borderRadius: '8px', color: 'var(--color-texto)',
-            fontSize: '14px', outline: 'none', fontFamily: 'inherit',
-            boxSizing: 'border-box',
-          }}
+          className="app-input"
+          style={{ padding: '10px 36px 10px 10px' }}
         />
-        <span style={{
-          position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
-          fontSize: '10px', color: 'var(--color-texto-secundario)', pointerEvents: 'none',
-        }}>
+        <span style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}>
           {sufijo}
         </span>
       </div>
@@ -218,21 +266,24 @@ function InputObjetivo({ label, sufijo, value, onChange, placeholder, decimal = 
   )
 }
 
-const estiloSubtitulo = {
+const estiloSubtituloForm = {
   margin: '0 0 8px',
-  fontSize: '12px',
-  fontWeight: '600',
+  fontSize: '12px', fontWeight: '600',
   color: 'var(--color-texto-secundario)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.06em',
+  textTransform: 'uppercase', letterSpacing: '0.06em',
 }
 
 const estiloLabelInput = {
   margin: '0 0 4px',
-  fontSize: '11px',
+  fontSize: '11px', color: 'var(--color-texto-secundario)',
+  textTransform: 'uppercase', letterSpacing: '0.05em',
+}
+
+const estiloGrupoLabel = {
+  margin: '0 0 8px',
+  fontSize: '11px', fontWeight: '700',
   color: 'var(--color-texto-secundario)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
+  textTransform: 'uppercase', letterSpacing: '0.07em',
 }
 
 // — Lugares de entrenamiento —
@@ -257,8 +308,19 @@ function SeccionLugares() {
   }
 
   return (
-    <section style={estiloSeccion}>
-      <h2 style={estiloTituloSeccion}>Lugares de entrenamiento</h2>
+    <div className="app-tarjeta" style={{ marginBottom: '16px' }}>
+      {/* Cabecera */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <IconoPill pillBg="rgba(43,108,176,0.15)">
+          <svg width="22" height="22" viewBox="0 -960 960 960" fill="#2B6CB0">
+            <path d="M536.5-503.5Q560-527 560-560t-23.5-56.5Q513-640 480-640t-56.5 23.5Q400-593 400-560t23.5 56.5Q447-480 480-480t56.5-23.5ZM480-186q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/>
+          </svg>
+        </IconoPill>
+        <p style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: 'var(--color-texto)', flex: 1 }}>
+          Lugares de entrenamiento
+        </p>
+      </div>
+
       <p style={{ margin: '0 0 14px', fontSize: '13px', color: 'var(--color-texto-secundario)', lineHeight: '1.5' }}>
         Los pesos registrados se asociarán al lugar donde entrenas.
       </p>
@@ -272,8 +334,10 @@ function SeccionLugares() {
               padding: '10px 14px',
               backgroundColor: 'var(--color-superficie-2)',
               border: '1px solid var(--color-borde)',
-              borderRadius: '10px',
+              borderRadius: '12px',
             }}>
+              {/* Dot */}
+              <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#2B6CB0', flexShrink: 0 }} />
               <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-texto)', fontWeight: '500' }}>{nombre}</span>
               <button
                 onClick={() => eliminar(nombre)}
@@ -292,30 +356,19 @@ function SeccionLugares() {
           value={nuevo}
           onChange={e => setNuevo(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && añadir()}
-          style={{
-            flex: 1, padding: '10px 12px',
-            backgroundColor: 'var(--color-superficie-2)',
-            border: '1px solid var(--color-borde)',
-            borderRadius: '8px', color: 'var(--color-texto)',
-            fontSize: '14px', outline: 'none', fontFamily: 'inherit',
-          }}
+          className="app-input"
+          style={{ flex: 1 }}
         />
         <button
           onClick={añadir}
           disabled={!nuevo.trim()}
-          style={{
-            padding: '10px 16px',
-            backgroundColor: nuevo.trim() ? 'var(--color-acento)' : 'var(--color-superficie-2)',
-            border: '1px solid var(--color-borde)',
-            borderRadius: '8px', color: nuevo.trim() ? '#fff' : 'var(--color-texto-secundario)',
-            fontSize: '14px', fontWeight: '600', cursor: nuevo.trim() ? 'pointer' : 'default',
-            transition: 'all 0.15s',
-          }}
+          className={nuevo.trim() ? 'app-btn-acento' : 'app-btn-secundario'}
+          style={{ padding: '10px 18px', opacity: nuevo.trim() ? 1 : 0.5 }}
         >
           Añadir
         </button>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -338,7 +391,6 @@ function SeccionSincronizacion() {
     return () => { subUser.unsubscribe(); subSync.unsubscribe() }
   }, [])
 
-  // Sync automático al volver a primer plano + recarga para reflejar datos nuevos
   useEffect(() => {
     function handleVisibility() {
       if (document.visibilityState === 'visible') {
@@ -354,7 +406,7 @@ function SeccionSincronizacion() {
   const estaLogueado  = usuario?.isLoggedIn === true
   const sincronizando = syncState?.phase === 'pushing' || syncState?.phase === 'pulling'
   const hayError      = syncState?.phase === 'error'
-  const colorEstado   = hayError ? '#ef4444' : sincronizando ? 'var(--color-acento)' : estaLogueado ? 'var(--color-exito)' : 'var(--color-texto-secundario)'
+  const colorEstado   = hayError ? 'var(--color-peligro)' : sincronizando ? 'var(--color-acento)' : estaLogueado ? 'var(--color-exito)' : 'var(--color-texto-secundario)'
 
   async function handleEnviarEmail() {
     if (!email.trim()) return
@@ -383,8 +435,7 @@ function SeccionSincronizacion() {
   }
 
   async function handleForzarSync() {
-    setForzandoSync(true)
-    setMensajeSync(null)
+    setForzandoSync(true); setMensajeSync(null)
     try {
       await db.cloud.sync()
       setMensajeSync('Sincronización completada')
@@ -397,8 +448,7 @@ function SeccionSincronizacion() {
   }
 
   async function handleHardRefresh() {
-    setForzandoSync(true)
-    setMensajeSync(null)
+    setForzandoSync(true); setMensajeSync(null)
     try {
       await db.cloud.sync()
       window.location.reload()
@@ -410,11 +460,16 @@ function SeccionSincronizacion() {
   }
 
   return (
-    <section style={estiloSeccion}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-        <IconoCloud sincronizando={sincronizando} color={colorEstado} />
-        <h2 style={{ ...estiloTituloSeccion, margin: 0 }}>Sincronización</h2>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div className="app-tarjeta" style={{ marginBottom: '16px' }}>
+      {/* Cabecera */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <IconoPill pillBg={estaLogueado ? 'rgba(48,209,88,0.15)' : 'rgba(120,130,150,0.12)'}>
+          <IconoCloud sincronizando={sincronizando} color={colorEstado} size={22} />
+        </IconoPill>
+        <p style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: 'var(--color-texto)', flex: 1 }}>
+          Sincronización
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={estaLogueado && !forzandoSync && !sincronizando ? handleForzarSync : undefined}
             disabled={!estaLogueado || forzandoSync || sincronizando}
@@ -442,19 +497,21 @@ function SeccionSincronizacion() {
 
       {estaLogueado ? (
         <div>
-          <div style={{ padding: '12px', backgroundColor: 'var(--color-superficie-2)', borderRadius: '10px', marginBottom: '16px' }}>
+          <div style={{
+            padding: '12px 14px',
+            backgroundColor: 'var(--color-superficie-2)',
+            border: '1px solid var(--color-borde)',
+            borderRadius: '12px', marginBottom: '16px',
+          }}>
             <p style={{ margin: '0 0 2px', fontSize: '13px', color: 'var(--color-texto)', fontWeight: '600', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {usuario.email}
             </p>
-            <p style={{ margin: 0, fontSize: '12px', color: hayError ? '#ef4444' : 'var(--color-texto-secundario)' }}>
+            <p style={{ margin: 0, fontSize: '12px', color: hayError ? 'var(--color-peligro)' : 'var(--color-texto-secundario)' }}>
               {hayError
                 ? `Error: ${syncState?.error?.message || 'fallo de sincronización'}`
-                : sincronizando
-                ? 'Sincronizando…'
-                : syncState?.phase === 'offline'
-                ? 'Sin conexión'
-                : syncState?.phase
-                ? `Estado: ${syncState.phase}`
+                : sincronizando ? 'Sincronizando…'
+                : syncState?.phase === 'offline' ? 'Sin conexión'
+                : syncState?.phase ? `Estado: ${syncState.phase}`
                 : 'Sincronizado'}
             </p>
           </div>
@@ -462,11 +519,11 @@ function SeccionSincronizacion() {
             Los datos se sincronizan automáticamente entre todos tus dispositivos.
           </p>
           {mensajeSync && (
-            <p style={{ margin: '0 0 10px', fontSize: '12px', textAlign: 'center', color: mensajeSync.includes('Error') ? '#f87171' : 'var(--color-exito)' }}>
+            <p style={{ margin: '0 0 10px', fontSize: '12px', textAlign: 'center', color: mensajeSync.includes('Error') ? 'var(--color-peligro)' : 'var(--color-exito)' }}>
               {mensajeSync}
             </p>
           )}
-          <button onClick={handleLogout} style={estiloBotonDestructivo}>
+          <button onClick={handleLogout} className="app-btn-peligro" style={{ width: '100%' }}>
             Cerrar sesión
           </button>
         </div>
@@ -483,13 +540,15 @@ function SeccionSincronizacion() {
                 value={email}
                 onChange={e => { setEmail(e.target.value); setError(null) }}
                 onKeyDown={e => e.key === 'Enter' && handleEnviarEmail()}
-                style={estiloInput}
+                className="app-input"
+                style={{ marginBottom: error ? '6px' : '10px' }}
               />
-              {error && <p style={{ margin: '6px 0 0', color: '#f87171', fontSize: '13px' }}>{error}</p>}
+              {error && <p style={{ margin: '0 0 10px', color: 'var(--color-peligro)', fontSize: '13px' }}>{error}</p>}
               <button
                 onClick={handleEnviarEmail}
                 disabled={!email.trim() || enviando}
-                style={{ ...estiloBotonPrimario, marginTop: '10px', opacity: (!email.trim() || enviando) ? 0.5 : 1 }}
+                className="app-btn-acento"
+                style={{ width: '100%', opacity: (!email.trim() || enviando) ? 0.5 : 1 }}
               >
                 {enviando ? 'Enviando…' : 'Enviar código'}
               </button>
@@ -506,20 +565,22 @@ function SeccionSincronizacion() {
                 value={otp}
                 onChange={e => { setOtp(e.target.value); setError(null) }}
                 onKeyDown={e => e.key === 'Enter' && handleVerificarOtp()}
-                style={{ ...estiloInput, textAlign: 'center', letterSpacing: '0.15em', fontSize: '18px' }}
+                className="app-input"
+                style={{ textAlign: 'center', letterSpacing: '0.15em', fontSize: '18px', marginBottom: error ? '6px' : '10px' }}
                 autoFocus
               />
-              {error && <p style={{ margin: '6px 0 0', color: '#f87171', fontSize: '13px' }}>{error}</p>}
+              {error && <p style={{ margin: '0 0 10px', color: 'var(--color-peligro)', fontSize: '13px' }}>{error}</p>}
               <button
                 onClick={handleVerificarOtp}
                 disabled={!otp.trim() || enviando}
-                style={{ ...estiloBotonPrimario, marginTop: '10px', opacity: (!otp.trim() || enviando) ? 0.5 : 1 }}
+                className="app-btn-acento"
+                style={{ width: '100%', opacity: (!otp.trim() || enviando) ? 0.5 : 1, marginBottom: '8px' }}
               >
                 {enviando ? 'Verificando…' : 'Entrar'}
               </button>
               <button
                 onClick={() => { setPaso('email'); setOtp(''); setError(null) }}
-                style={{ width: '100%', padding: '10px', marginTop: '8px', backgroundColor: 'transparent', border: 'none', color: 'var(--color-texto-secundario)', fontSize: '13px', cursor: 'pointer' }}
+                style={{ width: '100%', padding: '10px', backgroundColor: 'transparent', border: 'none', color: 'var(--color-texto-secundario)', fontSize: '13px', cursor: 'pointer' }}
               >
                 Cambiar email
               </button>
@@ -527,15 +588,15 @@ function SeccionSincronizacion() {
           )}
         </div>
       )}
-    </section>
+    </div>
   )
 }
 
 // — Iconos —
 
-function IconoCloud({ sincronizando, color }) {
+function IconoCloud({ sincronizando, color, size = 20 }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {sincronizando
         ? <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
         : <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
@@ -545,37 +606,6 @@ function IconoCloud({ sincronizando, color }) {
 }
 
 // — Estilos —
-
-const estiloSeccion = {
-  backgroundColor: 'var(--color-superficie)',
-  border: '1px solid var(--color-borde)',
-  borderRadius: '16px',
-  padding: '20px',
-  marginBottom: '16px',
-}
-
-const estiloTituloSeccion = {
-  margin: '0 0 16px',
-  fontSize: '16px',
-  fontWeight: '600',
-  color: 'var(--color-texto)',
-}
-
-const estiloInput = {
-  width: '100%', padding: '12px',
-  backgroundColor: 'var(--color-superficie-2)',
-  border: '1px solid var(--color-borde)',
-  borderRadius: '10px', color: 'var(--color-texto)',
-  fontSize: '15px', outline: 'none', fontFamily: 'inherit',
-  boxSizing: 'border-box',
-}
-
-const estiloBotonPrimario = {
-  width: '100%', padding: '12px',
-  backgroundColor: 'var(--color-acento)', border: 'none',
-  borderRadius: '10px', color: '#fff',
-  fontSize: '15px', fontWeight: '600', cursor: 'pointer',
-}
 
 function estiloBotonIcono(deshabilitado) {
   return {
@@ -588,11 +618,4 @@ function estiloBotonIcono(deshabilitado) {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0,
   }
-}
-
-const estiloBotonDestructivo = {
-  width: '100%', padding: '11px',
-  backgroundColor: 'transparent', border: '1px solid #dc262644',
-  borderRadius: '10px', color: '#f87171',
-  fontSize: '14px', fontWeight: '600', cursor: 'pointer',
 }

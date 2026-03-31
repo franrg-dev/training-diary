@@ -5,7 +5,9 @@
    ============================================================ */
 :root {
   /* ── Paleta unificada: Crema/Beige Orgánica ── */
-  --color-fondo:             #f8f0e8;
+  --color-fondo:             #e9e0d4;
+  --color-tarjeta:           #fcf7f1;
+  --color-icono-pill:        #ddd4c6;
   --color-superficie:        #FAF8F3;
   --color-superficie-2:      #E4EBE5;
   --color-superficie-3:      #F3F0E6;
@@ -19,6 +21,7 @@
   /* Acento principal: Verde Esmeralda Apagado */
   --color-acento:            #3A6B4C;
   --color-acento-hover:      #2E5A3E;
+  --color-acento-fuerte:     #2A6040;
   --color-acento-suave:      rgba(58, 107, 76, 0.12);
 
   /* Acento secundario: Naranja Terracota */
@@ -128,9 +131,9 @@ html, body {
   background-color: var(--color-fondo);
   color: var(--color-texto);
   font-family:
-    -apple-system, BlinkMacSystemFont,
-    'SF Pro Text', 'SF Pro Display',
+    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
     'Helvetica Neue', Arial, sans-serif;
+  font-optical-sizing: auto;
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -228,6 +231,29 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+/* ─── Tarjeta nueva — minimalismo orgánico ─────────────────────────────── */
+/*
+   border-radius con 8 valores: radio-x radio-x / radio-y radio-y
+   El radio-y menor que radio-x crea un arco más abierto en las esquinas
+   y una curvatura muy suave (puente ligero) en los lados rectos.
+*/
+.app-tarjeta {
+  background-color: var(--color-tarjeta);
+  border-radius: 32px 32px 32px 32px / 28px 28px 28px 28px;
+  padding: 18px 18px 16px;
+  box-shadow:
+    0 2px 20px rgba(160, 135, 100, 0.20),
+    0 1px 5px  rgba(120, 100, 70, 0.10);
+}
+
+/* Grid 2 columnas para tarjetas pareadas */
+.app-tarjeta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
 /* Grupo de filas estilo iOS (lista agrupada) */
