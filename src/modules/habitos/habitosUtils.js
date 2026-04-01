@@ -13,11 +13,11 @@ export function toISO(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-/** Formato largo: "Jueves, 26 de marzo de 2026" */
+/** Formato largo: "Miércoles, 1 abril 2026" */
 export function formatearFechaLarga(fechaISO) {
   const [anio, mes, dia] = fechaISO.split('-').map(Number)
   const d = new Date(anio, mes - 1, dia)
-  return `${DIAS_SEMANA_CAP[d.getDay()]}, ${dia} de ${MESES_ES[mes - 1]} de ${anio}`
+  return `${DIAS_SEMANA_CAP[d.getDay()]}, ${dia} ${MESES_ES[mes - 1]} ${anio}`
 }
 
 /**

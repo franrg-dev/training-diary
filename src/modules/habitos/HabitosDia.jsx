@@ -102,7 +102,7 @@ export default function HabitosDia({
           {tituloDropdown}
         </div>
 
-        {/* Fila 2: < fecha > | CAL */}
+        {/* Fila 2: < fecha | Calendario Editar */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
           <button onClick={() => irDia(-1)} className="app-btn-nav" aria-label="Día anterior">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -112,11 +112,6 @@ export default function HabitosDia({
           <span style={{ flex: 1, textAlign: 'center', fontSize: '14px', fontWeight: '600', color: esHoy ? 'var(--color-acento)' : 'var(--color-texto)' }}>
             {formatearFechaLarga(fecha)}
           </span>
-          <button onClick={() => irDia(1)} className="app-btn-nav" aria-label="Día siguiente">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
           <button
             onClick={() => setModalCalendario(true)}
             className="app-btn-nav"
@@ -127,6 +122,11 @@ export default function HabitosDia({
               <line x1="3" y1="9" x2="21" y2="9" />
               <line x1="8" y1="2" x2="8" y2="6" />
               <line x1="16" y1="2" x2="16" y2="6" />
+            </svg>
+          </button>
+          <button onClick={() => irDia(1)} className="app-btn-nav" aria-label="Día siguiente">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
         </div>
