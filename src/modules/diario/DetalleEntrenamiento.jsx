@@ -370,8 +370,8 @@ function TarjetaNutricion({ e, difKcal, objetivos, mb }) {
         </div>
       </div>
 
-      {/* Quemadas | Anillo diferencia | Consumidas — sube 28px para solapar el header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '-48px', marginBottom: '12px', position: 'relative', zIndex: 1 }}>
+      {/* Quemadas | Anillo diferencia | Consumidas — overlap dinámico según tamaño */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: `${-Math.round(sizeAnillo * 0.2)}px`, marginBottom: '12px', position: 'relative', zIndex: 1 }}>
         <ValorLateral valor={e.kcalQuemadas  || 0} label="Quemadas"   color="#ef4444" />
         <AnilloCentro valor={difKcal} objetivo={objetivos.kcalDiferencia} size={sizeAnillo} />
         <ValorLateral valor={e.kcalConsumidas || 0} label="Consumidas" color="#3b82f6" />
