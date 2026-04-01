@@ -10,24 +10,20 @@ function parseSueno(minutos) {
   return { h: Math.floor(m / 60), min: m % 60 }
 }
 
-const ROJO    = '#f87171'
-const NARANJA = 'var(--color-acento)'
-const VERDE   = '#4ade80'
+const ROJO  = 'var(--color-peligro)'
+const AMBAR = 'var(--color-acento-2)'
+const VERDE = 'var(--color-exito)'
 
-function calcularEstadoKcal(dif, objetivo) {
-  if (objetivo < 0) {
-    if (dif > 0)         return { color: ROJO,    progreso: 1 }
-    if (dif <= objetivo) return { color: VERDE,   progreso: 1 }
-    return { color: NARANJA, progreso: dif / objetivo }
-  }
-  if (objetivo === 0) {
-    const abs = Math.abs(dif)
-    const color = abs <= 100 ? VERDE : abs <= 300 ? NARANJA : ROJO
-    return { color, progreso: Math.min(abs / 300, 1) }
-  }
-  if (dif < 0)           return { color: ROJO,    progreso: 1 }
-  if (dif >= objetivo)   return { color: VERDE,   progreso: 1 }
-  return { color: NARANJA, progreso: dif / objetivo }
+function calcularEstadoKcal(valor, objetivo) {
+  if (!objetivo || objetivo === 0) return { color: ROJO, progreso: 0 }
+  const pct = (valor / objetivo) * 100
+  if (pct <= 0) return { color: ROJO, progreso: 0 }
+  const progreso = Math.min(pct / 100, 1)
+  let color
+  if (pct < 75 || pct > 125)                                      color = ROJO
+  else if ((pct >= 75 && pct < 90) || (pct > 110 && pct <= 125)) color = AMBAR
+  else                                                              color = VERDE
+  return { color, progreso }
 }
 
 const DIAS_CORTOS  = ['DOM', 'LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB']

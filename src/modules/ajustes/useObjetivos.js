@@ -1,7 +1,8 @@
 const CLAVE_LS = 'objetivos'
 
 const DEFAULTS = {
-  kcalDiferencia:  0,      // kcal netas diarias objetivo
+  kcalNutricion:   0,      // kcal consumidas objetivo (para módulo Nutrición)
+  kcalDiferencia:  0,      // kcal netas diarias objetivo (diferencia MB±)
   proteinas:       0,      // g/día
   carbohidratos:   0,      // g/día
   grasas:          0,      // g/día

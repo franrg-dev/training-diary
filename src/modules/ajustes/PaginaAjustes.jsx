@@ -129,6 +129,7 @@ function SeccionObjetivos() {
 
           <p style={{ ...estiloSubtituloForm, marginTop: '16px' }}>Nutrición</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+            <InputObjetivo label="KCal" sufijo="kcal" value={obj.kcalNutricion} onChange={v => actualizar('kcalNutricion', v)} placeholder="2000" />
             <div>
               <p style={estiloLabelInput}>Dif. KCal</p>
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
@@ -153,9 +154,9 @@ function SeccionObjetivos() {
                 <span style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: 'var(--color-texto-secundario)', pointerEvents: 'none' }}>kcal</span>
               </div>
             </div>
-            <InputObjetivo label="Proteína" sufijo="g" value={obj.proteinas} onChange={v => actualizar('proteinas', v)} placeholder="150" />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '16px' }}>
+            <InputObjetivo label="Proteína" sufijo="g" value={obj.proteinas} onChange={v => actualizar('proteinas', v)} placeholder="150" />
             <InputObjetivo label="Carbohidratos" sufijo="g" value={obj.carbohidratos} onChange={v => actualizar('carbohidratos', v)} placeholder="200" />
             <InputObjetivo label="Grasas" sufijo="g" value={obj.grasas} onChange={v => actualizar('grasas', v)} placeholder="60" />
           </div>
@@ -195,6 +196,10 @@ function SeccionObjetivos() {
           {/* Nutrición */}
           <div style={{ marginBottom: '14px', paddingBottom: '14px', borderBottom: '1px solid var(--color-borde)' }}>
             <p style={estiloGrupoLabel}>Nutrición</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+              <CeldaObjetivo label="KCal" valor={obj.kcalNutricion} sufijo="kcal" />
+              <CeldaObjetivo label="Dif. KCal" valor={obj.kcalDiferencia} sufijo="kcal" />
+            </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
               <CeldaObjetivo label="Proteína" valor={obj.proteinas} sufijo="g" />
               <CeldaObjetivo label="Carbos" valor={obj.carbohidratos} sufijo="g" />
