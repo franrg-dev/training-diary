@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { COLORES_GRUPO } from '../ejercicios/coloresGrupo'
 import { IconoEjercicio } from '../ejercicios/iconosEjercicio'
 import { getObjetivos } from '../ajustes/useObjetivos'
@@ -66,10 +66,9 @@ function ValorLateral({ valor, label, color }) {
 
 // ─── Anillo central (diferencia) ─────────────────────────────────────────
 
-function AnilloCentro({ valor, objetivo }) {
-  const size = 230
+function AnilloCentro({ valor, objetivo, size = 230 }) {
   const cx   = size / 2
-  const r    = 96
+  const r    = size / 2.4  // Proporción para mantener el grosor visual
   const circ = 2 * Math.PI * r
 
   const tieneDatos    = valor !== null
@@ -336,6 +335,25 @@ function CeldaMacro({ label, valor, sufijo, objetivo, barColor }) {
 // ─── Tarjeta Nutrición ────────────────────────────────────────────────────
 
 function TarjetaNutricion({ e, difKcal, objetivos, mb }) {
+  const [sizeAnillo, setSizeAnillo] = useState(230)
+
+  useEffect(() => {
+    function calcularTamano() {
+      // En móvil/tablet reducir tamaño para que los laterales quepan
+      const w = window.innerWidth
+      if (w < 480) {
+        setSizeAnillo(140)
+      } else if (w < 640) {
+        setSizeAnillo(170)
+      } else {
+        setSizeAnillo(230)
+      }
+    }
+    calcularTamano()
+    window.addEventListener('resize', calcularTamano)
+    return () => window.removeEventListener('resize', calcularTamano)
+  }, [])
+
   return (
     <div className="app-tarjeta" style={{ marginBottom: '12px' }}>
       {/* Header — z-index alto para quedar siempre sobre el anillo */}
@@ -355,7 +373,7 @@ function TarjetaNutricion({ e, difKcal, objetivos, mb }) {
       {/* Quemadas | Anillo diferencia | Consumidas — sube 28px para solapar el header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '-48px', marginBottom: '12px', position: 'relative', zIndex: 1 }}>
         <ValorLateral valor={e.kcalQuemadas  || 0} label="Quemadas"   color="#ef4444" />
-        <AnilloCentro valor={difKcal} objetivo={objetivos.kcalDiferencia} />
+        <AnilloCentro valor={difKcal} objetivo={objetivos.kcalDiferencia} size={sizeAnillo} />
         <ValorLateral valor={e.kcalConsumidas || 0} label="Consumidas" color="#3b82f6" />
       </div>
 
