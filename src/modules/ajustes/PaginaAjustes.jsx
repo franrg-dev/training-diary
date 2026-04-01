@@ -395,7 +395,6 @@ function SeccionSincronizacion() {
     function handleVisibility() {
       if (document.visibilityState === 'visible') {
         db.cloud.sync()
-          .then(() => window.location.reload())
           .catch(() => {})
       }
     }
