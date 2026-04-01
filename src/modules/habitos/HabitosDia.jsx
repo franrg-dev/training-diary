@@ -289,7 +289,10 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
         </div>
 
         {/* Texto */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{ flex: 1, minWidth: 0, cursor: tieneSubhabitos ? 'pointer' : 'default' }}
+          onClick={tieneSubhabitos ? () => setExpandido(v => !v) : undefined}
+        >
           <p style={{
             margin: '0 0 3px', fontWeight: '600', fontSize: '15px',
             color: 'var(--color-texto)',
@@ -395,13 +398,10 @@ function TarjetaHabitoDia({ habito, completado, puedeMarcarse, subCompletados, o
                   textDecoration: marcado ? 'line-through' : 'none',
                 }}>
                   {s.texto}
+                  {s.obligatorio && (
+                    <span style={{ color: 'var(--color-acento-2)', fontWeight: '700', marginLeft: '2px' }}>*</span>
+                  )}
                 </span>
-
-                {s.obligatorio && (
-                  <span style={{ fontSize: '10px', color: 'var(--color-acento)', fontWeight: '600', flexShrink: 0 }}>
-                    OBL
-                  </span>
-                )}
               </div>
             )
           })}
