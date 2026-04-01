@@ -26,24 +26,28 @@ export function useHabitos() {
 
   const crear = useCallback(async (datos) => {
     await db.habitos.add({
-      titulo:      datos.titulo.trim(),
-      descripcion: datos.descripcion?.trim() || '',
-      tipo:        datos.tipo || 'otros',
-      etiquetas:   datos.etiquetas || [],
-      fechaInicio: datos.fechaInicio || hoyISO(),
-      repeticion:  datos.repeticion || { tipo: 'ninguna', finTipo: 'nunca' },
+      titulo:            datos.titulo.trim(),
+      descripcion:       datos.descripcion?.trim() || '',
+      tipo:              datos.tipo || 'otros',
+      etiquetas:         datos.etiquetas || [],
+      fechaInicio:       datos.fechaInicio || hoyISO(),
+      repeticion:        datos.repeticion || { tipo: 'ninguna', finTipo: 'nunca' },
+      subhabitos:        datos.subhabitos || [],
+      subhabitosMinimo:  datos.subhabitosMinimo || 0,
     })
     await cargar()
   }, [cargar])
 
   const actualizar = useCallback(async (id, datos) => {
     await db.habitos.update(id, {
-      titulo:      datos.titulo.trim(),
-      descripcion: datos.descripcion?.trim() || '',
-      tipo:        datos.tipo || 'otros',
-      etiquetas:   datos.etiquetas || [],
-      fechaInicio: datos.fechaInicio,
-      repeticion:  datos.repeticion || { tipo: 'ninguna', finTipo: 'nunca' },
+      titulo:            datos.titulo.trim(),
+      descripcion:       datos.descripcion?.trim() || '',
+      tipo:              datos.tipo || 'otros',
+      etiquetas:         datos.etiquetas || [],
+      fechaInicio:       datos.fechaInicio,
+      repeticion:        datos.repeticion || { tipo: 'ninguna', finTipo: 'nunca' },
+      subhabitos:        datos.subhabitos || [],
+      subhabitosMinimo:  datos.subhabitosMinimo || 0,
     })
     await cargar()
   }, [cargar])
